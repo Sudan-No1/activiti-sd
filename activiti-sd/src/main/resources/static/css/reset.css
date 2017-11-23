@@ -1,0 +1,47 @@
+html,body,div,span,iframe,
+h1,h2,h3,h4,h5,h6,p,blockquote, pre,a,address,big,cite,code,del,
+em,font,img,ins,small,strong,var,b,u,i,center,
+dl,dt,dd,ol,ul,li,fieldset,form,label,legend{
+    margin: 0;
+    padding: 0;
+}
+
+button,input,select,textarea {
+    font: 12px/1.5 tahoma, arial, "\5b8b\4f53";
+    *line-height: 1.5;
+    -ms-overflow-style: scrollbar;
+    font: 12px/1.5 Tahoma, 'Microsoft Yahei', 'Simsun';
+    color: #666;
+}
+
+h1, h2, h3, h4, h5, h6 {
+    font-size: 100%
+}
+
+ul, ol {
+    list-style: none
+}
+
+a {
+    color: #666;
+    text-decoration: none;
+    outline: 0;
+    border: 0;
+}
+
+/*a:hover{
+text-decoration:underline
+}
+*/
+fieldset, img {
+    border: 0
+}
+
+table {
+    border-collapse: collapse;
+    border-spacing: 0
+}
+
+address, cite, dfn, em, var {
+    font-style: normal;
+}

@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+<style type="text/css">
+table.gridtable {
+	font-family: verdana, arial, sans-serif;
+	font-size: 11px;
+	color: #333333;
+	border-width: 1px;
+	border-color: #666666;
+	border-collapse: collapse;
+}
+
+table.gridtable th {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #dedede;
+}
+
+table.gridtable td {
+	border-width: 1px;
+	padding: 8px;
+	border-style: solid;
+	border-color: #666666;
+	background-color: #ffffff;
+}
+</style>
+</head>
+<body>
+	<h2 class="breadcrumb">个人任务管理列表</h2>
+	<div class="table-responsive">
+		<h3 class="breadcrumb">个人任务</h3>
+		<table class="gridtable">
+			<thead class="bg-primary">
+				<tr>
+					<th>任务ID</th>
+					<th>任务名称</th>
+					<th>创建时间</th>
+					<th>办理人</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr th:each="task : ${userTasks}">
+				<td th:text="${task.id  }"></td>
+				<td th:text="${task.name }"></td>
+				<td th:text="${task.createTime }"></td>
+				<td th:text="${task.assignee }"></td>
+				<td>
+					<a th:href="@{/workflow/viewTaskForm(taskId=${task.id})}">办理任务</a> 
+					<a th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
+				</td>
+			</tr>
+		</tbody>
+		</table>
+		<h3 class="breadcrumb">组任务</h3>
+		<table class="gridtable">
+			<thead class="bg-primary">
+				<tr>
+					<th>任务ID</th>
+					<th>任务名称</th>
+					<th>创建时间</th>
+					<th>办理人</th>
+					<th>操作</th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr th:each="task : ${groupTasks}">
+				<td th:text="${task.id  }"></td>
+				<td th:text="${task.name }"></td>
+				<td th:text="${task.createTime }"></td>
+				<td th:text="${task.assignee }"></td>
+				<td>
+					<a th:href="@{/workflow/chaim(taskId=${task.id})}">拾取任务</a> 
+					<a th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
+				</td>
+			</tr>
+		</tbody>
+		</table>
+	</div>
+	<a th:href="@{/billController/AllocateBill/add}">新建房屋调配流程</a>
+</body>
+</html>

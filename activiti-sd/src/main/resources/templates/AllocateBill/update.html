@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script src="/js/jquery-3.2.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <style>
+        .emMark{
+            display: inline-block;
+            height: 18px;
+            margin: 8px 0;
+            font-size: 18px;
+            color: red;
+        }
+        .form-inp-static{
+		    border: 0;
+		    min-height: 34px;
+		    padding-top: 7px;
+		    padding-bottom: 7px;
+		    margin-bottom: 0;
+		    width: 100%;
+		}
+    </style>
+    <title>房屋调配申请</title>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">房屋调配申请</h3>
+            </div>
+            <div class="panel-body">
+                <!--提示信息-->
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>提示：</strong> 标*为必填项，请认真填写
+                </div>
+					<div class="form-horizontal" >
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起人</label>
+                    	<div class="col-sm-6">
+                            <p class="form-control-static" th:text="${bill.Applicant}"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起单位</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" th:text="${bill.Department}"></p>
+                        </div>
+                    </div>
+                     <div class="form-group">
+                        <label class="col-sm-2 control-label">发起部门</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" th:text="${bill.Unit}"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起日期</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" th:text="${bill.LaunchDate}"></p>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-6">
+                            <p class="form-control-static" th:text="${bill.Description}"></p>
+                        </div>
+                    </div>
+                </div>
+                <!--表单-->
+                <form class="form-horizontal" action="/billController/updateBill" method="post">
+
+
+                    <div class="form-group">
+                        <label for="inpLinkman" class="col-sm-2 control-label">联系人</label>
+                        <div class="col-sm-4">
+                        	<input type="text"
+                                   class="form-control"
+                                   name="Contact"
+                                   value = "" 
+                                   th:value="${bill.Contact}"
+                             />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inpContactWay" class="col-sm-2 control-label">联系方式</label>
+                        <div class="col-sm-4">
+                        	<input type="tel"
+                                   class="form-control"
+                                   name="ContactNo"
+                                   value = "" 
+                                   th:value="${bill.ContactNo}"
+                             />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="radioPurpose1" class="col-sm-2 control-label">房屋用途</label>
+                        <div class="col-sm-4">
+                            <div class="radio" style="display: inline-block;margin-right: 20px;">
+                                <label>
+                                    <input type="radio" name="Purpose" id="radioPurpose1" value="production"  th:checked="${bill.Purpose == 'production'}" />
+                                    生产用房
+                                </label>
+                            </div>
+                            <div class="radio" style="display: inline-block">
+                                <label>
+                                    <input type="radio" name="Purpose" id="radioPurpose2" value="office" th:checked="${bill.Purpose == 'office'}" />
+                                    办公用房
+                                </label>
+                            </div>
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="houseName" class="col-sm-2 control-label">房屋名称</label>
+                        <div class="col-sm-7">
+                        <input type="tel"
+                                   class="form-control"
+                                   name="Name"
+                                   value = "" 
+                                   th:value="${bill.Name}"
+                             />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="houseAddress" class="col-sm-2 control-label">房屋地址</label>
+                        <div class="col-sm-7">
+                        	 <input type="tel"
+                                   class="form-control"
+                                   name="Address"
+                                   value = "" 
+                                   th:value="${bill.Address}"
+                             />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remarks" class="col-sm-2 control-label">需求情况说明</label>
+                        <div class="col-sm-7">
+                            <textarea class="form-control"
+                                      id="remarks"
+                                      name="DemandRemark"
+                                      rows="3"
+                                      th:inline="text">[[${bill.DemandRemark}]]</textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                        	<input type="submit" value="提交">
+<!--                             <a href="javaScript:;" class="btn btn-default">提交</a> -->
+                        </div>
+                    </div>
+                    <input type="hidden" name="BillName" th:value="${bill.IdClass}"><br>
+                    <input type="hidden" name="Id" th:value="${bill.Id}"><br>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

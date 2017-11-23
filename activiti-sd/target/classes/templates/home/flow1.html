@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>dx</title>
+    <link rel="stylesheet" href="css/Normalize.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/common.css"/>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+
+            <a href="javaScript:;"
+               class="foldBtnLeft smallIcon">
+                <span class="collapseIcon"></span>
+            </a>
+
+            <div class="header clearfix">
+                <div class="row">
+                    <!--网站名 or logo-->
+                    <a href="javaScript:;" target="_blank">
+                        <img class="logoImg col-lg-12 col-md-12 col-sm-12"
+                             id="logoImg"
+                             src="images/logo.png"
+                             alt="Logo" />
+                    </a>
+                </div>
+            </div>
+
+            <ul class="nav navbar-default" role="navigation">
+                <li class="">
+                    <a href="drawing.html"
+                       id="drawingLabel">
+                        <span class="glyphicon glyphicon-picture"></span> 图纸管理
+                    </a>
+                </li>
+                <li>
+                    <a href="room.html"
+                       id="roomLabel">
+                        <span class="glyphicon glyphicon-home"></span> 房间筛选
+                    </a>
+                </li>
+                <li>
+                    <a href="javaScript:;"
+                       id="flowLabel"
+                       data-toggle="collapse"
+                       data-target="#navCollapse-1">
+                        <span class="glyphicon glyphicon-retweet"></span> 流程管理
+                    </a>
+                    <ul class="collapse in nav" id="navCollapse-1"><!--下拉菜单1-->
+                        <li class="active">
+                            <a href="javaScript:;" id="flowSubLabel-1">流程管理</a>
+                        </li>
+                        <li>
+                            <a href="flow2.html" id="flowSubLabel-2">流程管理</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="javaScript:;"
+                       id="tasksLabel"
+                       data-toggle="collapse"
+                       data-target="#navCollapse-2">
+                        <span class="glyphicon glyphicon-tasks"></span> 任务管理
+                    </a>
+                    <ul class="collapse nav" id="navCollapse-2"><!--下拉菜单2-->
+                        <li>
+                            <a href="tasks1.html" id="taskSubLabel-2">待办任务</a>
+                        </li>
+                        <li>
+                            <a href="tasks2.html" id="taskSubLabel-3">历史任务</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <!-- 导航 end -->
+
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right ">
+
+            <a href="javaScript:;"
+               class="foldBtnRight smallIcon">
+                <span class="expandIcon"></span>
+            </a>
+
+            <div class="header clearfix">
+                <div class="row">
+                    <a class="btn btn-default pull-right upLoadBtn"
+                       href="javaScript:;"
+                       id="flowDeployBtn"
+                       data-toggle="modal"
+                       data-target="#tasksOperate1">流程部署
+                    </a><!--flow deploy button-->
+                </div>
+            </div>
+
+            <section><!--流程管理 -- 流程管理-->
+                <div class="clearfix" id="flowSubPage-1">
+
+                    <!--search 搜索框-->
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 dataListSearch" >
+                            <form class="input-group" method="get">
+                                <input type="text"
+                                       class="form-control"
+                                       id="flowSearchInp-1"
+                                       placeholder="请输入搜索条件...">
+                                <span class="input-group-btn">
+                                    <a href="javaScript:;"
+                                       class="btn btn-default"
+                                       id="flowSearchBtn-1">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </a>
+                                </span>
+                            </form><!-- /input-group -->
+                        </div><!-- /.col-lg-10 -->
+                    </div>
+
+                    <!-- /.dataList 数据列表-->
+                    <div class="dataList panel panel-default" id="processList-1">
+                        <div class="panel-body">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="50%">文件名</th>
+                                    <th width="20%">版本</th>
+                                    <th width="20%">上传日期</th>
+                                    <th width="10%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>sldkjf.jpg</td>
+                                    <td>4</td>
+                                    <td>2017-10-28</td>
+                                    <td><a href="ex1.json" download='ex1.json'>下载</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div><!-- /.dataList-->
+
+                    <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box">
+                        <ul class="pagination" id="processPages-1"></ul>
+                    </div><!--/Page-->
+
+                </div><!-- /#flowSubPage1-->
+            </section>
+        </article>
+    </div>
+</div>
+
+<!--部署弹窗-->
+<div class="modal fade"
+     id="tasksOperate1"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="tasksLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <form method="get"><!--提交上传文件-->
+                <div class="modal-header">
+                    <a href="javaScript:;"
+                       class="close"
+                       data-dismiss="modal"
+                       aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">
+                        请对此任务进行操作！
+                    </h4>
+                </div>
+                <div class="modal-body tasksDetails">
+                    <h4>储物柜申请</h4>
+                    <p>
+                        装东西装东西装东西，装东西装东西装东西装东西装东西。
+                        装东西装东西装东西，装东西装东西装东西装东西，装东西装东西装东西装东西装东西。
+                    </p>
+                    <p class="text-right">李雷</p>
+                    <p class="text-right">2017-10-28</p>
+
+                </div>
+                <div class="modal-footer">
+                    <a href="javaScript:;"
+                       class="btn btn-default"
+                       data-dismiss="modal">拒绝
+                    </a>
+                    <a href="javaScript:;"
+                       class="btn btn-primary">通过
+                    </a>
+                </div>
+            </form>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#drawing-upload-->
+
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jqPaginator.js"></script>
+<script type="text/javascript" src="js/dx-z.js"></script>
+</body>
+</html>

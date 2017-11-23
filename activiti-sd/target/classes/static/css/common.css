@@ -1,0 +1,108 @@
+html,body{
+    height: 100%;
+}
+
+.header .row{
+    height: 90px;
+    padding: 15px 0;
+}
+.header a>img{
+    height: 60px;
+}
+
+.header .upLoadBtn{
+    width: 90px;
+    margin-right: 15px;
+}
+
+.container aside{
+    padding: 0;
+}
+
+aside>ul li.active{
+    background-color: #ddd;
+}
+
+aside>ul li.active>a{
+    color: #666;
+}
+
+aside>ul>li>a .glyphicon{
+    margin-right: 5px;
+}
+
+aside .nav li>ul li a{
+    padding-left: 50px;
+}
+
+section .dataList{
+    height: 360px;
+}
+
+section .dataListSearch{
+    margin-bottom: 15px;
+}
+
+section>div>.panel:last-child{
+    margin-bottom: 0;
+}
+section>div .panel-body .table{
+    margin-bottom: 0;
+}
+
+aside,article{
+    position: relative;
+}
+
+
+/*侧栏折叠按钮*/
+.foldBtnLeft{
+    position: absolute;
+    right: 0;
+}
+.foldBtnRight{
+    position: absolute;
+    left: 0;
+    display: none;
+}
+
+.collapseIcon{
+    background: url("../images/collapse.png") no-repeat;
+    background-size: 8%;
+}
+
+.expandIcon{
+    background: url("../images/expand.png") no-repeat;
+    background-size: 8%;
+
+}
+
+.smallIcon{
+    width: 14px;
+    height: 50px;
+    overflow: hidden;
+    border: 1px solid #e7e7e7;
+    background-color: #f1f1f1;
+    border-left: 0;
+    border-top-right-radius: 8px;
+    border-bottom-right-radius: 8px;
+}
+
+.smallIcon .collapseIcon,
+.smallIcon .expandIcon{
+    display: block;
+    width: 200px;
+    height: 200px;
+    background-position: -1px 16px;
+    opacity: 0.5;
+}
+/*侧栏折叠按钮 end*/
+
+
+
+
+
+
+
+
+

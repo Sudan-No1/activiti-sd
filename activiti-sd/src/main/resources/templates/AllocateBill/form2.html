@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>房屋归属管理</title>
+</head>
+<body>
+	<form action="/workflow/submitTask" method="POST">
+		<input type="hidden" id="taskId" name="taskId" th:value="${taskId }" />
+		<input type="hidden" id="id" name="id" th:value="${bill.Id }" /> 
+		<input type="hidden" name="conditionName" value="Purpose"><br>
+		<input type="hidden" id="billName" name="billName" value="AllocateBill" /> 
+		<input type="hidden" id="group" name="nextGroup" value="" />
+		<table class="table table-condensed table-striped table-bordered">
+			<tr>
+				<td align="right">发起人:</td>
+				<td><input name="Applicant" type="text"
+					th:value="${bill.Applicant }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">发起单位:</td>
+				<td><input name="Unit" type="text" th:value="${bill.Unit }"
+					readonly></td>
+			</tr>
+			<tr>
+				<td align="right">发起部门:</td>
+				<td><input name="Department" type="text"
+					th:value="${bill.Department }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">发起日期:</td>
+				<td><input name="LaunchDate" type="text"
+					th:value="${bill.LaunchDate }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">编号:</td>
+				<td><input name="Description" type="text"
+					th:value="${bill.Description }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">联系人:</td>
+				<td><input name="Contact" type="text"
+					th:value="${bill.Contact }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">联系方式:</td>
+				<td><input name="ContactNo" type="text"
+					th:value="${bill.ContactNo }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">房屋用途:</td>
+				<td><input name="Purpose" type="text"
+					th:value="${bill.Purpose }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">房屋名称:</td>
+				<td><input name="Name" type="text" th:value="${bill.Name }"
+					readonly></td>
+			</tr>
+			<tr>
+				<td align="right">房屋地址:</td>
+				<td><input name="Address" type="text"
+					th:value="${bill.Address }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">需求情况说明:</td>
+				<td><input name="DemandRemark" type="text"
+					th:value="${bill.DemandRemark }" readonly></td>
+			</tr>
+			<tr>
+				<td align="right">批注:</td>
+				<td><input id="comment" name="comment" type="text"></td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<!-- 使用连线的名称作为按钮 --> 
+					<select id="outcome" name="outcome" onchange="javascript:fillGroup()">
+						<option>请选择流程转向</option>
+						<option th:each="outcome : ${outcomeList }"	th:text="${outcome.name }" onclick="javascript:fillGroup()"></option>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td colspan="2" align="center">
+					<input type="submit" value="提交">
+				</td>
+			</tr>
+		</table>
+	</form>
+	<hr>
+	<table>
+		<thead>
+			<tr>
+				<th>时间</th>
+				<th>批注人</th>
+				<th>批注信息</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="comment: ${commentList}">
+				<td th:text="${comment.time }"></td>
+				<td th:text="${comment.userId }"></td>
+				<td th:text="${comment.fullMessage }"></td>
+			</tr>
+		</tbody>
+	</table>
+	<script type="text/javascript" src="../js/jquery-3.2.1.min.js"></script>
+	<script th:inline="javascript">  
+		var list = /*[[${outcomeList}]]*/  ;
+		
+			console.log(list);
+		function fillGroup(){
+			var name = $('#outcome option:selected').val()
+			list.forEach(function(val){	
+				if(val.name == name){
+					$('#group').val(val.group);
+				}
+		})
+		}
+	</script>
+</body>
+</html>

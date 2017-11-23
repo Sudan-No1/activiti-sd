@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>dx</title>
+    <!--<link rel="stylesheet" href="css/reset.css"/>-->
+    <link rel="stylesheet" href="css/Normalize.css"/>
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/common.css"/>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+
+            <a href="javaScript:;"
+               class="foldBtnLeft smallIcon">
+                <span class="collapseIcon"></span>
+            </a>
+
+            <div class="header clearfix">
+                <div class="row">
+                    <!--网站名 or logo-->
+                    <a href="javaScript:;" target="_blank">
+                        <img class="logoImg col-lg-12 col-md-12 col-sm-12"
+                             id="logoImg"
+                             src="images/logo.png"
+                             alt="Logo" />
+                    </a>
+                </div>
+
+            </div>
+
+            <ul class="nav navbar-default" role="navigation">
+                <li class="active">
+                    <a href="javaScript:;"
+                       id="drawingLabel">
+                        <span class="glyphicon glyphicon-picture"></span> 图纸管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/room"
+                       id="roomLabel">
+                        <span class="glyphicon glyphicon-home"></span> 房间筛选
+                    </a>
+                </li>
+               <li>
+                	<a href="/workflow/deployHome"
+                       id="flowLabel">
+                        <span class="glyphicon glyphicon-retweet"></span> 流程管理
+                    </a>
+                </li>
+                 <li>
+                    <a href="javaScript:;"
+                       id="tasksLabel"
+                       data-toggle="collapse"
+                       data-target="#navCollapse-2">
+                        <span class="glyphicon glyphicon-tasks"></span> 任务管理
+                    </a>
+                    <ul class="collapse in nav" id="navCollapse-2"><!--下拉菜单2-->
+                        <li>
+                            <a href="/billController/billList" id="taskSubLabel-1">表单管理</a>
+                        </li>
+                        <li>
+                            <a href="/workflow/listTask" id="taskSubLabel-2">待办任务</a>
+                        </li>
+                        <li>
+                            <a href="tasks2.html" id="taskSubLabel-3">历史任务</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <!-- 导航 end -->
+
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right ">
+
+            <a href="javaScript:;"
+               class="foldBtnRight smallIcon">
+                <span class="expandIcon"></span>
+            </a>
+
+            <div class="header clearfix">
+                <div class="row">
+                    <a class="btn btn-default pull-right upLoadBtn"
+                       href="javaScript:;"
+                       id="uploadBtn"
+                       data-toggle="modal"
+                       data-target="#drawingUpload">上传
+                    </a><!--drawing upload button-->
+        <!--
+                    <a class="btn btn-default pull-right upLoadBtn"
+                       href="javaScript:;"
+                       data-toggle="modal"
+                       data-target="#lookImg">测试
+                    </a>&lt;!&ndash;drawing upload button&ndash;&gt;
+                    -->
+
+                </div>
+            </div>
+            <section><!--图纸管理-->
+                <div class="clearfix" id="drawingPage">
+                    <!--search 搜索框-->
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 dataListSearch">
+                            <form class="input-group" method="get">
+                                <input type="text"
+                                       class="form-control"
+                                       id="drawSearchInp"
+                                       placeholder="请输入搜索条件...">
+                                <span class="input-group-btn">
+                                    <a href="javaScript:;"
+                                       class="btn btn-default"
+                                       id="drawSearchBtn">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </a>
+                                </span>
+                            </form><!-- /input-group -->
+                        </div><!-- /.col-lg-10 -->
+                    </div><!-- /.row-->
+
+                    <div class="dataList panel panel-default" id="drawingList">
+                        <div class="panel-body">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="50%">文件名</th>
+                                    <th width="20%">版本</th>
+                                    <th width="20%">上传日期</th>
+                                    <th width="10%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr>
+                                    <td>sldkjf.jpg</td>
+                                    <td>4</td>
+                                    <td>2017-10-28</td>
+                                    <td><a href="ex1.json" download='ex1.json'>下载</a></td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div><!-- /.dataList-->
+
+                    <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box">
+                        <ul class="pagination" id="drawingPages"></ul>
+                    </div><!--/Page-->
+
+                </div><!-- /#drawingPage-->
+            </section>
+        </article>
+    </div>
+</div>
+
+<!--
+
+&lt;!&ndash;      测试&ndash;&gt;
+<div class="modal fade modalImg"
+     id="lookImg"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="lookImgLabel">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="javaScript:;"
+                   class="close"
+                   data-dismiss="modal"
+                   aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title">
+                    文件名
+                </h4>
+            </div>
+            <div class="modal-body">
+                <img src="images/Penguins.jpg" alt=""/>
+            </div>
+        </div>
+    </div>
+</div>
+
+-->
+
+<!--上传弹窗-->
+<div class="modal fade"
+     id="drawingUpload"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="drawingUploadLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <form method="get"><!--提交上传文件-->
+                <div class="modal-header">
+                    <a href="javaScript:;"
+                       class="close"
+                       data-dismiss="modal"
+                       aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">
+                        请选择要上传的文件
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <input type="file" id="upload-file" />
+                </div>
+                <div class="modal-footer">
+                    <a href="javaScript:;"
+                       class="btn btn-default"
+                       data-dismiss="modal">取消
+                    </a>
+                    <a href="javaScript:;"
+                       class="btn btn-primary">确定
+                    </a>
+                </div>
+            </form>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#drawing-upload-->
+
+<script src="js/jquery-3.2.1.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jqPaginator.js"></script>
+<script src="js/dx-z.js"></script>
+</body>
+</html>
