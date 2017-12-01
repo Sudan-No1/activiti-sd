@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>dx</title>
+    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+    <script src="/js/jquery-3.2.1.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+ 			<a href="javaScript:;"
+               class="foldBtnLeft smallIcon">
+                <span class="collapseIcon"></span>
+            </a>
+            <div class="header clearfix">
+                <div class="row">
+                    <!--网站名 or logo-->
+                    <a href="javaScript:;" target="_blank">
+                        <img class="logoImg col-lg-12 col-md-12 col-sm-12"
+                             id="logoImg"
+                             src="/images/logo.png"
+                             alt="Logo" />
+                    </a>
+                </div>
+            </div>
+
+            <ul class="nav navbar-default" role="navigation">
+                <li class="">
+                    <a href="/drawing"
+                       id="drawingLabel">
+                        <span class="glyphicon glyphicon-picture"></span> 图纸管理
+                    </a>
+                </li>
+                <li>
+                    <a href="/room"
+                       id="roomLabel">
+                        <span class="glyphicon glyphicon-home"></span> 房屋列表
+                    </a>
+                </li>
+                 <li>
+                	<a href="/workflow/deployHome"
+                       id="flowLabel">
+                        <span class="glyphicon glyphicon-retweet"></span> 流程管理
+                    </a>
+                </li>
+                <li>
+                    <a href="javaScript:;"
+                       id="tasksLabel"
+                       data-toggle="collapse"
+                       data-target="#navCollapse-2">
+                        <span class="glyphicon glyphicon-tasks"></span> 任务管理
+                    </a>
+                    <ul class="collapse in nav" id="navCollapse-2"><!--下拉菜单2-->
+                        <li>
+                            <a href="/billController/billList" id="taskSubLabel-1">表单管理</a>
+                        </li>
+                        <li>
+                            <a href="/workflow/listTask" id="taskSubLabel-2">待办任务</a>
+                        </li>
+                        <li class="active">
+                            <a href="javaScript:;" id="taskSubLabel-3">历史任务</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+        </aside>
+        <!-- 导航 end -->
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right"
+                style="padding-top: 15px;">
+			<a href="javaScript:;"
+               class="foldBtnRight smallIcon">
+                <span class="expandIcon"></span>
+            </a>
+            <section><!--任务管理 -- 历史任务-->
+                <div class="panel panel-default clearfix" id="taskSubPage-3">
+                    <div class="panel-body">
+                        <table class="table table-condensed table-hover text-center">
+                            <thead >
+                            <tr >
+                                <th width="25%" class="text-center">申请类型</th>
+                                <th width="20%" class="text-center">申请人</th>
+                                <th width="20%" class="text-center">申请日期</th>
+                                <th width="35%" class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                     <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box">
+                        <ul class="pagination" id="processPages-3"></ul>
+                    </div><!--/Page-->
+                </div><!-- /#taskSubPage3-->
+            </section>
+        </article>
+    </div>
+</div>
+<!--查看表单信息-->
+<div class="modal fade"
+     id="viewForminfo"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="viewRecordLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="javaScript:;"
+                   class="close"
+                   data-dismiss="modal"
+                   aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title">
+                    表单信息
+                </h4>
+            </div>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#viewExamineRecord-->
+<!--查看审批记录-->
+<div class="modal fade"
+     id="viewExamineRecord"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="viewRecordLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="javaScript:;"
+                   class="close"
+                   data-dismiss="modal"
+                   aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title">
+                    审批记录
+                </h4>
+            </div>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#viewExamineRecord-->
+<script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
+<script src="/js/jqPaginator.js"></script>
+<script type="text/javascript" src="/js/dx-z.js"></script>
+<script type="text/javascript" src="/js/util.js"></script>
+<script th:inline="javascript">
+var currentUser =  [[${realname}]];
+	collapseTasksList();
+	historyTaskPageList(currentUser);
+</script>
+</body>
+</html>

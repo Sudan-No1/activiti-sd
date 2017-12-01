@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/html">
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/comment.css"/>
+    <title>房屋调配申请-填写申请表</title>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">房屋调配申请</h3>
+            </div>
+            <div class="panel-body">
+                <!--提示信息-->
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>提示：</strong> 标*为必填项，请认真填写
+                </div>
+
+                <!--表单-->
+
+                <form class="form-horizontal" action="" method="get" id="applicationForm1">
+
+                    <!--获取并显示用户信息
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起人</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">张兰</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起单位</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">上海总部</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起部门</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">网络发展部</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起日期</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">2017-11-15</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-4">
+                            <p class="form-control-static">2017XXXX294</p>
+                        </div>
+                    </div>
+
+                    -->
+
+                    <div class="form-group">
+                        <label for="inpLinkman" class="col-sm-2 control-label">联系人</label>
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   class="form-control"
+                                   id="inpLinkman"
+                                   name="Contact"
+                                   value=""
+                                   placeholder="联系人姓名" />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="inpContactWay" class="col-sm-2 control-label">联系方式</label>
+                        <div class="col-sm-4">
+                            <input type="tel"
+                                   class="form-control"
+                                   id="inpContactWay"
+                                   name="ContactNo"
+                                   value=""
+                                   placeholder="联系方式" />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="radioPurpose1" class="col-sm-2 control-label">房屋用途</label>
+                        <div class="col-sm-4">
+                            <div class="radio" style="display: inline-block;margin-right: 20px;">
+                                <label>
+                                    <input type="radio" name="Purpose" id="radioPurpose1" value="production"  />
+                                    生产用房
+                                </label>
+                            </div>
+                            <div class="radio" style="display: inline-block">
+                                <label>
+                                    <input type="radio" name="Purpose" id="radioPurpose2" value="office" />
+                                    办公用房
+                                </label>
+                            </div>
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="houseName" class="col-sm-2 control-label">房屋名称</label>
+                        <div class="col-sm-7">
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       id="houseName"
+                                       name="Name"
+                                       value=""
+                                       placeholder="房屋名称" />
+                                <span class="input-group-btn">
+                                    <a class="btn btn-default"
+                                       href="javaScript:;"
+                                       data-toggle="modal"
+                                       data-target="#roomNameList">
+                                        <span class="glyphicon glyphicon-list"></span>
+                                    </a>
+                                </span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <div class="form-group">
+                        <label for="houseAddress" class="col-sm-2 control-label">房屋地址</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   class="form-control"
+                                   id="houseAddress"
+                                   name="AuditAddress"
+                                   value=""
+                                   placeholder="房屋地址" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="remarks" class="col-sm-2 control-label">需求情况说明</label>
+                        <div class="col-sm-7">
+                            <textarea class="form-control"
+                                      id="remarks"
+                                      name="AuditRemark"
+                                      rows="3"
+                                      placeholder="需求情况说明"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="accessory" class="col-sm-2 control-label">附件</label>
+                        <div class="col-sm-4">
+                            <input type="file" id="accessory" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a href="javaScript:;"
+                               class="btn btn-default"
+                               id="submitBtn1">提交</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="roomNameList" tabindex="-1" role="dialog" aria-labelledby="tasksLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="javaScript:;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">请选择调配房间！</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="input-group"
+                                  id="searchRoomForm"
+                                  method="post" >
+                                <input type="text"
+                                       class="form-control"
+                                       id="roomNameSearch"
+                                       placeholder="请输入搜索条件...">
+                                <span class="input-group-btn">
+                                    <a href="javaScript:;"
+                                       class="btn btn-default"
+                                       id="roomNameBtn">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </a>
+                                </span>
+                            </form><!-- /input-group -->
+                        </div><!-- /.col-lg-12 -->
+                    </div><!-- /.row-->
+
+                    <div class="searchResultList">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th width="3%"></th>
+                                <th width="25%">房间名称</th>
+                                <th>房间地址</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                    </div><!-- /.searchResultList-->
+
+                    <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box">
+                        <ul class="pagination" id="modalListPages"></ul>
+                    </div><!--/Page-->
+
+
+                </div><!-- /.modal-body-->
+
+                <div class="modal-footer">
+                    <a href="javaScript:;" class="btn btn-default" data-dismiss="modal">取消</a>
+                    <a href="javaScript:;" class="btn btn-primary" id="getDataBtn"  data-dismiss="modal">确定</a>
+                </div><!-- /.modal-footer-->
+            </div><!-- /."modal-content-->
+        </div><!-- /.modal-dialog-->
+    </div><!-- /.modal-->
+
+
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <script src="js/jqPaginator.js"></script>
+    <script src="js/form-application.js"></script>
+    <script>
+        getRoomName();
+        function getRoomName(){
+            $.ajax({
+                type:"POST",
+                url:"ex2.json",
+                dataType:"json",
+                success: function(str){
+                fn(str);
+            }
+            });
+        }
+        $("#roomNameBtn").click(function(){
+            //获取参数
+            var data = $("#roomNameSearch").val();
+            getRoomDataByCondition(data);
+        });
+
+        function  getRoomDataByCondition(data){
+        $.ajax({
+            type:"POST",
+            url:"ex2.json",
+            data:data,
+            dataType:"json",
+            success: function(str){
+                fn(str);
+            }
+        });
+        }
+
+        function fn(str){
+            $.jqPaginator("#modalListPages", {//pContainer 分页容器
+                totalPages: parseInt(str.length/10)+1,     //数据总页数
+                visiblePages: 6,    //设置最多显示的页码数
+                currentPage: 1,      //设置当前页码
+                pageSize: 10,        //设置每页的条目数
+                first:'<li><a href="javaScript:;">|<<</a></li>',
+                prev:'<li><a href="javaScript:;"><</a></li>',
+                next:'<li><a href="javaScript:;">></a></li>',
+                last:'<li><a href="javaScript:;">>>|</a></li>',
+                page: '<li><a href="javascript:;">{{page}}</a></li>',
+                onPageChange: function(num, type){
+                    if(str.length > 0){
+                        if(num == parseInt(str.length/10)+1){
+                            var tags1 = "";
+                            for(var j = (num-1)*10; j<=str.length-1; j++){
+                                var item = str[j];
+                                tags1 += '<tr><td><input type="radio" name="roomInfo" value="'+j+'" /></td><td>'+item.Name+'</td><td>'+item.AuditAddress+'</td></tr>';
+                            }
+                            $('.modal .table tbody').empty().append(tags1);
+                        }else{
+                            tags1 = "";
+                            for(var q = (num-1)*10; q<=num*10-1; q++){
+                                item = str[q];
+                                tags1 += '<tr><td><input type="radio" name="roomInfo" value="'+j+'" /></td><td>'+item.Name+'</td><td>'+item.AuditAddress+'</td></tr>';
+                            }
+                            $('.modal .table tbody').empty().append(tags1);
+                        }
+                    }else{
+                        alert("很抱歉，没有数据")
+                    }
+                    if(str.length/10 <=1){
+                        $("#modalListPages").hide();
+                    }
+                }
+            });
+
+            $(".modal .table tbody td input").change(function(){
+                var current =$(".modal .table tbody td input:checked").val();
+//                console.log(str[current]);
+                $("#getDataBtn").click(function(){
+                    $("#applicationForm1 input[name='Name']").attr("value",str[current].Name);
+                    $("#applicationForm1 input[name='AuditAddress']").attr("value",str[current].AuditAddress);
+                    $("#applicationForm1 input[name='Purpose']").removeAttr("checked");
+                    $("#applicationForm1 input[value='"+str[current].Purpose+"']").attr("checked","checked");
+
+                });
+
+            });
+        }
+
+
+    </script>
+</body>
+</html>

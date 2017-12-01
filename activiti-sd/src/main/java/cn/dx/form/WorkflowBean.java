@@ -17,10 +17,7 @@ public class WorkflowBean
     private String comment; // 备注
     private String billName; // 备注
     private String url; // form表单url
-    private String conditionName; // 分支的条件名称
-    private Object conditionValue; // 分支的条件名称
     private String applicant; // 申请人
-    private String nextGroup; // 流转组
     
     public File getFile()
     {
@@ -118,22 +115,6 @@ public class WorkflowBean
 		this.url = url;
 	}
 
-	public String getConditionName() {
-		return conditionName;
-	}
-
-	public void setConditionName(String conditionName) {
-		this.conditionName = conditionName;
-	}
-
-	public Object getConditionValue() {
-		return conditionValue;
-	}
-
-	public void setConditionValue(Object conditionValue) {
-		this.conditionValue = conditionValue;
-	}
-
 	public String getApplicant() {
 		return applicant;
 	}
@@ -141,13 +122,4 @@ public class WorkflowBean
 	public void setApplicant(String applicant) {
 		this.applicant = applicant;
 	}
-
-	public String getNextGroup() {
-		return nextGroup;
-	}
-
-	public void setNextGroup(String nextGroup) {
-		this.nextGroup = nextGroup;
-	}
-    
 }

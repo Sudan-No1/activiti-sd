@@ -6,6 +6,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
@@ -48,9 +49,10 @@ public interface WorkflowService
     
     String saveNewDeploye(MultipartFile file);
     
-    void saveStartProcess(WorkflowBean workflowBean, HttpSession session);
+    void saveStartProcess(WorkflowBean workflowBean, Map<String, Object> user);
 
 	void claim(String taskId, String userId);
 
-    
+	List<HistoricProcessInstance> getHistoryTaskList(String username);
+
 }

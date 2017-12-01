@@ -2,9 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/common.css"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <script src="/js/jquery-3.2.1.js"></script>
     <script src="/js/bootstrap.js"></script>
+    
     <style>
         .emMark{
             display: inline-block;
@@ -69,7 +71,7 @@
                     </div>
                 </div>
                 <!--表单-->
-                <form class="form-horizontal" action="/billController/updateBill" method="post">
+                <form class="form-horizontal" action="/billController/updateBill" method="post" enctype="multipart/form-data" id="applicationForm1">
 
 
                     <div class="form-group">
@@ -120,12 +122,22 @@
                     <div class="form-group">
                         <label for="houseName" class="col-sm-2 control-label">房屋名称</label>
                         <div class="col-sm-7">
-                        <input type="tel"
-                                   class="form-control"
-                                   name="Name"
-                                   value = "" 
-                                   th:value="${bill.Name}"
-                             />
+	                        <div class="input-group">
+		                        <input type="tel"
+		                                   class="form-control"
+		                                   name="Name"
+		                                   value = "" 
+		                                   th:value="${bill.Name}"
+		                             />
+		                            <span class="input-group-btn">
+		                                <a class="btn btn-default"
+		                                   href="javaScript:;"
+		                                   data-toggle="modal"
+		                                   data-target="#roomNameList">
+		                                    <span class="glyphicon glyphicon-list"></span>
+		                                </a>
+		                            </span>
+	                        </div>
                         </div>
                     </div>
 
@@ -151,20 +163,100 @@
                                       th:inline="text">[[${bill.DemandRemark}]]</textarea>
                         </div>
                     </div>
-
+					<div class="form-group">
+					    <label class="col-sm-2 control-label">附件</label>
+					    <div class="col-sm-4">
+					        <div class="input-group attachText">
+					            <div class="form-control" th:text="${bill.Attachment}"></div>
+					            <a class="btn input-group-addon" type="button">
+					                <span class="glyphicon glyphicon-folder-open"></span>
+					                 	上传
+					            </a>
+					            <input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />
+					        </div>
+					    </div>
+					</div>
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                        	<input type="submit" value="提交">
+                        	<input class="btn btn-default" type="submit" value="提交">
 <!--                             <a href="javaScript:;" class="btn btn-default">提交</a> -->
                         </div>
                     </div>
                     <input type="hidden" name="BillName" th:value="${bill.IdClass}"><br>
+                    <input type="hidden" name="Area" th:value="${bill.Area}"><br>
                     <input type="hidden" name="Id" th:value="${bill.Id}"><br>
                 </form>
 
             </div>
         </div>
     </div>
-
+	<div class="modal fade" id="roomNameList" tabindex="-1" role="dialog" aria-labelledby="tasksLabel">
+	        <div class="modal-dialog modal-lg" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <a href="javaScript:;" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </a>
+	                    <h4 class="modal-title">请选择调配房间！</h4>
+	                </div>
+	                <div class="modal-body clearfix">
+	                    <div class="row">
+	                        <div class="col-sm-12">
+	                            <form class="input-group"
+	                                  id="searchRoomForm"
+	                                  method="post" >
+	                                <input type="text"
+	                                       class="form-control"
+	                                       id="roomNameSearch"
+	                                       placeholder="请输入搜索条件...">
+	                                <span class="input-group-btn">
+	                                    <a href="javaScript:;"
+	                                       class="btn btn-default"
+	                                       id="roomNameBtn">
+	                                        <i class="glyphicon glyphicon-search"></i>
+	                                    </a>
+	                                </span>
+	                            </form><!-- /input-group -->
+	                        </div><!-- /.col-lg-12 -->
+	                    </div><!-- /.row-->
+	
+	                    <div class="searchResultList">
+	                        <table class="table table-hover">
+	                            <thead>
+	                            <tr>
+	                                <th width="3%"></th>
+	                                <th width="25%">房间名称</th>
+	                                <th width="25%">房间编号</th>
+	                                <th width="25%">房间位置</th>
+	                                <th >所在楼层</th>
+	                            </tr>
+	                            </thead>
+	                            <tbody></tbody>
+	                        </table>
+	
+	                    </div><!-- /.searchResultList-->
+	
+	                    <!--/page 分页-->
+	                    <div aria-label="Page navigation" class="pull-right pages-box">
+	                        <ul class="pagination" id="modalListPages"></ul>
+	                    </div><!--/Page-->
+	
+	
+	                </div><!-- /.modal-body-->
+	
+	                <div class="modal-footer">
+	                    <a href="javaScript:;" class="btn btn-default" data-dismiss="modal">取消</a>
+	                    <a href="javaScript:;" class="btn btn-primary" id="getDataBtn"  data-dismiss="modal">确定</a>
+	                </div><!-- /.modal-footer-->
+	            </div><!-- /."modal-content-->
+	        </div><!-- /.modal-dialog-->
+	    </div><!-- /.modal-->
+<script src="/js/jqPaginator.js"></script>
+<script src="/js/dx-z.js"></script> 
+<script type="text/javascript">
+    function loadFile(file){
+        $(".attachText div").text(file.name);
+    }
+    </script>
 </body>
 </html>

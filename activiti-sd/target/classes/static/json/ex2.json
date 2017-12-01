@@ -1,0 +1,32 @@
+[
+  {
+  "Purpose":"production",
+  "Name":"房间一",
+  "AuditAddress":"2号写字楼13层"
+  },
+  {
+    "Purpose":"office",
+    "Name":"房间二",
+    "AuditAddress":"2号写字楼13层"
+  },
+  {
+    "Purpose":"production",
+    "Name":"房间三",
+    "AuditAddress":"2号写字楼20层"
+  },
+  {
+    "Purpose":"office",
+    "Name":"房间4",
+    "AuditAddress":"2号写字楼20层"
+  },
+  {
+    "Purpose":"production",
+    "Name":"房间5",
+    "AuditAddress":"2号写字楼13层"
+  },
+  {
+    "Purpose":"office",
+    "Name":"房间6",
+    "AuditAddress":"2号写字楼14层"
+  }
+]

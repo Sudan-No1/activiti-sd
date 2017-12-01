@@ -1,9 +1,12 @@
 package cn.dx.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -14,8 +17,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import cn.dx.service.BillService;
+import cn.dx.service.CmdbService;
+import cn.dx.service.UserService;
 import cn.dx.utils.UserUtil;
 
 @Controller
@@ -25,29 +32,86 @@ public class BillController {
 	@Autowired
 	private BillService billService;
 	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private CmdbService cmdbService;
+	
 	@RequestMapping(value="/addBill",method=RequestMethod.POST)
-	public String addBill(HttpServletRequest request){
+	public String addBill(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request){
+		String path = null;
+		String fileName = null;
+		if (!file.isEmpty()) {
+			fileName = file.getOriginalFilename();
+			String suffixName = fileName.substring(fileName.lastIndexOf("."));
+			String filePath = "C:/Sudan_资管/upload/";
+			path = filePath + UUID.randomUUID() + suffixName;
+			File dest = new File(path);
+			if (!dest.getParentFile().exists()) {
+				dest.getParentFile().mkdirs();
+			}
+			try {
+				file.transferTo(dest);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		Map<String ,String[]> map=request.getParameterMap();
+		map.put("Attachment", new String[]{fileName});
+		map.put("Path", new String[]{path});
 		Map<String, Object> user = UserUtil.getUserFromSession(request.getSession());
-		String username = (String)user.get("Username");
+		String username = (String)user.get("USER_LOGIN_NAME");
 		billService.addBill(username,map);
 		String billName = map.get("billName")[0];
 		return "redirect:billList?billName="+billName;
 	}
 	
+	@RequestMapping(value="/queryBill",method=RequestMethod.POST)
+	@ResponseBody
+	public Map<String,Object> queryBill(@RequestParam("businessKey")String businessKey,HttpServletRequest request){
+		String[] split = businessKey.split("\\.");
+    	if(split.length >1){
+    		String billName = split[0];
+    		Long id  = Long.parseLong(split[1]);
+    		return billService.findBillById(billName,id);
+    	}
+    	return null;
+	}
+	
 	@RequestMapping("/{billName}/add")
 	public String addBill(@PathVariable("billName") String billName,
+			@RequestParam("billDescription")String billDescription,
 			HttpServletRequest request,
 			Model model){
 		Map<String, Object> user = UserUtil.getUserFromSession(request.getSession());
-		String username = (String)user.get("Username");
+		String realName = (String)user.get("REAL_NAME");
+		String username = (String)user.get("USER_LOGIN_NAME");
+		Map<String,Object> map = userService.getGroupInfo(username);
 		Date date = new Date(System.currentTimeMillis());
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy");
+		String year = sdf2.format(date);
 		String launchDate = sdf.format(date);
-		String unit = "上海总部";
-		String department = "网络发展部";
-		String description = "2017房屋调配001";
-		model.addAttribute("username", username);
+		String unit = (String) map.get("unit");
+		String department = (String) map.get("department");
+		String description = null;
+		try {
+			String currentNumber = cmdbService.getSerialNumber(year,billDescription);
+			int num = Integer.parseInt(currentNumber.substring(currentNumber.length()-3))+1;
+			if(num<10){
+				description = year+billDescription+"00"+num;
+			}else if(num<100){
+				description = year+billDescription+"0"+num;
+			}else{
+				description = year+billDescription+num;
+			}
+		} catch (Exception e) {
+			description = year+billDescription+"001";
+		}
+		model.addAttribute("username", realName);
 		model.addAttribute("launchDate", launchDate);
 		model.addAttribute("unit", unit);
 		model.addAttribute("department", department);
@@ -55,11 +119,44 @@ public class BillController {
 		return billName+"/add";
 	}
 	
+	@RequestMapping(value="/updateBill",method=RequestMethod.POST)
+	public String updateBill(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request){
+		String path = null;
+		String fileName = null;
+		if (!file.isEmpty()) {
+			fileName = file.getOriginalFilename();
+			String suffixName = fileName.substring(fileName.lastIndexOf("."));
+			String filePath = "C:/Sudan_资管/upload/";
+			path = filePath + UUID.randomUUID() + suffixName;
+			File dest = new File(path);
+			if (!dest.getParentFile().exists()) {
+				dest.getParentFile().mkdirs();
+			}
+			try {
+				file.transferTo(dest);
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		Map<String ,String[]> map=request.getParameterMap();
+		if(fileName != null){
+			map.put("Attachment", new String[]{fileName});
+			map.put("Path", new String[]{path});
+		}else{
+			map.remove("Attachment");
+			map.remove("Path");
+		}
+		String billName = map.get("BillName")[0].replace("\"", "");
+		billService.updateBill(map);
+		return "redirect: billList?billName="+billName;
+	}
 	
 	@RequestMapping(value="/billList",method=RequestMethod.GET)
 	public String billList(HttpServletRequest request,Model model){
 		Map<String, Object> user = UserUtil.getUserFromSession(request.getSession());
-		String username = (String)user.get("Username");
+		String username = (String)user.get("USER_LOGIN_NAME");
 		List<Map<String,Object>> list = billService.findBillListByUser(username);
 		model.addAttribute("list", list);
 		return "/bill/list";
@@ -85,14 +182,4 @@ public class BillController {
 		model.addAttribute("bill", bill);
 		return "/"+billName+"/update";
 	}
-	
-	@RequestMapping(value="/updateBill",method=RequestMethod.POST)
-	public String updateBill(HttpServletRequest request){
-		Map<String ,String[]> map=request.getParameterMap();
-		String billName = map.get("BillName")[0].replace("\"", "");
-		billService.updateBill(map);
-		return "redirect: billList?billName="+billName;
-	}
-	
-	
 }

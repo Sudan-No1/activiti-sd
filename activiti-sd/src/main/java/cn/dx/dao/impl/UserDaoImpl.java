@@ -17,13 +17,9 @@ public class UserDaoImpl implements UserDao {
 	
 	@Override
 	public Map<String, Object> getUserByUserName(String username) {
-		return jdbcTemplate.queryForMap("select * from \"User\" where \"Status\" = 'A' and \"Username\"=?",username);
+		return jdbcTemplate.queryForMap("select * from \"CTUser\" where \"Status\" = 'A' and \"USER_LOGIN_NAME\"=?",username);
 	}
 
-	@Override
-	public List<String> findGroup(String username) {
-		return jdbcTemplate.queryForList("select _new_get_role_list_by_user(?)",new Object[]{username},String.class);
-	}
 
 	@Override
 	public List<Map<String, Object>> getClassListByGroupName(String groupName) {
@@ -46,6 +42,30 @@ public class UserDaoImpl implements UserDao {
 	public List<String> findGroupByGroupName(String group) {
 		String sql = " select \"User\" from view_get_user_by_group where \"Role\" = ?;";
 		return jdbcTemplate.queryForList(sql,String.class,group);
+	}
+
+	@Override
+	public Map<String, Object> findApprover(String unit_code) {
+		String sql = "select * from ur where \"department\" = ? and \"Status\" = 'A';";
+		return jdbcTemplate.queryForMap(sql,unit_code);
+	}
+
+	@Override
+	public List<String> findGroupUsersByGroupname(String group) {
+		String sql = "select * from ur where \"department\" = ? and \"Status\" = 'A';";
+		return jdbcTemplate.queryForList(sql,String.class,group);
+	}
+
+	@Override
+	public List<Map<String, Object>> getAssingeeList(String string) {
+		String sql = "select * from \"UserTask\" where \"Description\" = ? and \"Status\" = 'A';";
+		return jdbcTemplate.queryForList(sql,string);
+	}
+
+	@Override
+	public Map<String, Object> getGroupInfo(String username) {
+		String sql = "select * from view_ctgroup where loginname = ?;";
+		return jdbcTemplate.queryForMap(sql,username);
 	}
 
 }

@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>dx</title>
+    <title>代办任务</title>
     <link rel="stylesheet" href="/css/reset.css"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/common.css"/>
@@ -10,10 +10,13 @@
     <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
     <div class="row">
         <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
-
+ 			<a href="javaScript:;"
+               class="foldBtnLeft smallIcon">
+                <span class="collapseIcon"></span>
+            </a>
             <div class="header clearfix">
                 <div class="row">
                     <!--网站名 or logo-->
@@ -28,15 +31,15 @@
 
             <ul class="nav navbar-default" role="navigation">
                 <li class="">
-                    <a href="drawing.html"
+                    <a href="/drawing"
                        id="drawingLabel">
                         <span class="glyphicon glyphicon-picture"></span> 图纸管理
                     </a>
                 </li>
                 <li>
-                    <a href="room.html"
+                    <a href="/room"
                        id="roomLabel">
-                        <span class="glyphicon glyphicon-home"></span> 房间筛选
+                        <span class="glyphicon glyphicon-home"></span> 房屋列表
                     </a>
                 </li>
                  <li>
@@ -54,7 +57,7 @@
                     </a>
                     <ul class="collapse in nav" id="navCollapse-2"><!--下拉菜单2-->
                         <li class="active">
-                            <a href="javaScript:;" id="taskSubLabel-1">表单管理</a>
+                            <a href="/billController/billList" id="taskSubLabel-1">表单管理</a>
                         </li>
                         <li>
                             <a href="/workflow/listTask" id="taskSubLabel-2">待办任务</a>
@@ -68,6 +71,10 @@
         </aside>
         <!-- 导航 end -->
        <article class="col-lg-9 col-md-9 col-sm-9 pull-right">
+       		<a href="javaScript:;"
+             class="foldBtnRight smallIcon">
+              <span class="expandIcon"></span>
+            </a>
        <div class="header clearfix">
 	        <div class="row">
 	              <div class="col-sm-3 selectBox pull-right">
@@ -91,8 +98,9 @@
                                 <tr>
 									<th width="20%">申请人</th>
 									<th width="20%">申请类型</th>
-									<th width="30%">描述</th>
-									<th width="30%">操作</th>
+									<th width="20%">描述</th>
+									<th width="20%">申请状态</th>
+									<th width="20%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
@@ -104,10 +112,15 @@
 									</td> -->
 									<td th:text="${bill.BillDescription }"></td>
 									<td th:text="${bill.Description }"></td>
-									<td>
+									<td th:text="${bill.ProcessStatus }"></td>
+									
+									<td th:if="${bill.ProcessStatus=='初始录入' }">
 										<a th:href="@{/billController/findBill(id=${bill.Id},billName=${bill.IdClass})}">编辑</a> 
 										<a th:href="@{/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a> 
 										<a th:href="@{/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a> 
+									</td>
+									<td th:if="${bill.ProcessStatus=='审核中' }">
+										<a th:href="@{/workflow/viewHisComment(id=${bill.Id},billName=${bill.IdClass})}">查看审核记录</a> 
 									</td>
 								</tr>
                                 </tbody>
@@ -126,11 +139,15 @@
         </article>
     </div>
 </div>
-<!-- <script>
+<script>
     var y = ($("#logoImg").outerHeight(true)-$(".selectBox").outerHeight(true))/2;
     $(".selectBox").css("margin-top",y);
-</script> -->
+</script>
+<script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
 <script src="/js/jqPaginator.js"></script>
 <script type="text/javascript" src="/js/dx-z.js"></script>
+<script type="text/javascript">
+	collapseTasksList();
+</script>
 </body>
 </html>

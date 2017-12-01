@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+	<link rel="import" href="https:www.baidu.com" id="page1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <script src="/js/jquery-3.2.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <title>房屋调配审批</title>
+    <style>
+        .commentLabel{
+            padding-bottom: 15px;
+        }
+        .comment .labelHeader h4{
+            font-weight: bold;
+            color: #121212;
+        }
+        .comment .labelBody h4{
+            font-weight: bold;
+        }
+        .form-inp-static{
+		    border: 0;
+		    min-height: 34px;
+		    padding-top: 7px;
+		    padding-bottom: 7px;
+		    margin-bottom: 0;
+		    width: 100%;
+		}
+    </style>
+</head>
+<body>
+<div id="page1"></div>
+<div class="container">
+    <div class="panel panel-primary">
+        <div class="panel-heading">
+            <h3 class="panel-title">房屋调配申请</h3>
+        </div>
+        <div class="panel-body">
+            <!--表单-->
+            <h3>申请信息</h3>
+            <form class="form-horizontal" >
+                <div class="row">
+                    <div class="form-group col-sm-5">
+                        <label class="col-sm-6 control-label">发起人</label>
+                        <div class="col-sm-6">
+                        	<p class="form-control-static" th:text="${bill.Applicant }"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+                        <label class="col-sm-3 control-label">联系人</label>
+                        <div class="col-sm-8">
+                        	<p class="form-control-static" th:text="${bill.Contact }"></p>
+                        </div>
+                    </div>
+				</div>
+				
+				<div class="row">
+                    <div class="form-group col-sm-5">
+                        <label class="col-sm-6 control-label">发起单位</label>
+                        <div class="col-sm-6">
+                        	<p class="form-control-static" th:text="${bill.Unit }"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+                        <label class="col-sm-3 control-label">联系方式</label>
+                        <div class="col-sm-8">
+                        	<p class="form-control-static" th:text="${bill.ContactNo }"></p>
+                        </div>
+                    </div>
+				</div>
+				
+				<div class="row">
+                    <div class="form-group col-sm-5">
+                        <label class="col-sm-6 control-label">发起部门</label>
+                        <div class="col-sm-6">
+                        	<p class="form-control-static" th:text="${bill.Department }"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+                        <label class="col-sm-3 control-label">房屋名称</label>
+                        <div class="col-sm-8">
+                        	<p class="form-control-static" th:text="${bill.Name }"></p>
+                        </div>
+                    </div>
+				</div>
+				
+				<div class="row">
+                    <div class="form-group col-sm-5">
+                        <label class="col-sm-6 control-label">发起日期</label>
+                        <div class="col-sm-6">
+                        	<p class="form-control-static" th:text="${bill.LaunchDate }"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+                        <label class="col-sm-3 control-label">房屋地址</label>
+                        <div class="col-sm-8">
+                        	<p class="form-control-static" th:text="${bill.Address }"></p>
+                        </div>
+                    </div>
+				</div>
+				
+				<div class="row">
+                    <div class="form-group col-sm-5">
+                        <label class="col-sm-6 control-label">编号</label>
+                        <div class="col-sm-6">
+                        	<p class="form-control-static" th:text="${bill.Description }"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group col-sm-7">
+                        <label class="col-sm-3 control-label">房屋用途</label>
+                        <div class="col-sm-8">
+                        	<p class="form-control-static" th:if="${bill.Purpose == 'production'}">生产用房</p>
+                        	<p class="form-control-static" th:if="${bill.Purpose == 'office'}">办公用房</p>
+                        </div>
+                    </div>
+                </div>
+				
+				<div class="row">
+                    <div class="form-group col-sm-5">
+                        <label class="col-sm-6 control-label">需求情况说明</label>
+                        <div class="col-sm-6">
+                        	<p class="form-control-static" th:text="${bill.DemandRemark }"></p>
+                        </div>
+                    </div>
+                    <div class="form-group col-sm-7">
+                        <label class="col-sm-3 control-label">附件</label>
+                        <div class="col-sm-8">
+                        	<a th:href="@{/fileController/downloadAttachment(Attachment=${bill.Attachment },Path=${bill.Path })}" th:text="${bill.Attachment }" class="form-control-static" ></a>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            
+            <hr>
+            <h3>网发部回复信息</h3>
+            <!--表单-->
+            <form class="form-horizontal">
+                <div class="row">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">房屋名称</label>
+                        <div class="col-sm-5">
+                            <p class="form-control-static" th:text="${bill.AuditName}"></p>
+                        </div>
+                    </div>
+
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">房屋地址</label>
+                        <div class="col-sm-7">
+                            <p class="form-control-static" th:text="${bill.AuditAddress}"></p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">房屋面积</label>
+                        <div class="col-sm-3">
+                            <p class="form-control-static" th:text="${bill.Area}"></p>
+
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">审核情况说明</label>
+                        <div class="col-sm-3">
+                            <p class="form-control-static" th:text="${bill.AuditRemark}"></p>
+                        </div>
+                    </div>
+
+                </div>
+            </form>
+			<hr>
+            <h3>您的意见</h3>
+            <!--表单-->
+            <form class="form-horizontal" action="/workflow/submitTask" method="post">
+				<input type="hidden" id="taskId" name="taskId" th:value="${taskId }" />
+				<input type="hidden" id="id" name="id" th:value="${bill.Id }" /> 
+				<input type="hidden" name="conditionName" value="Purpose,flag"><br>
+				<input type="hidden" id="taskId" name="Purpose" th:value="${bill.Purpose }" />
+				<input type="hidden" id="taskId" name="flag" value="true" />
+				<input type="hidden" id="billName" name="billName" value="AllocateBill" /> 
+				<input type="hidden" id="group" name="nextGroup" value="" />
+                <!-- <div class="form-group">
+                    <label class="col-sm-2 control-label">意见</label>
+                    <div class="col-sm-3">
+                        <select class="form-control" name="">
+                            <option value="" selected>请选择您的意见</option>
+                            <option value="">通过</option>
+                            <option value="">不通过</option>
+                        </select>
+                    </div>
+                </div> -->
+
+                <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-7">
+                        <textarea class="form-control"
+                                  id="remarks"
+                                  name="comment"
+                                  rows="3"
+                                  placeholder="请输入您的意见"></textarea>
+                        
+                    </div>
+                </div>
+
+                <div class="form-group">
+                	<div class="col-sm-2" ></div>
+                    <div class="col-sm-2" th:each="outcome : ${outcomeList }">
+						<input type="submit" th:onclick="'javascript:fillGroup(\''+${outcome.group }+'\')'" name="outcome" th:value="${outcome.name }" class="btn btn-default" >
+                    </div>
+                </div>
+            </form>
+			<hr>
+            <h3>审批记录</h3>
+            <table class="table table-hover table-bordered" style="width:95%;margin:15px auto">
+            	<thead>
+            		<tr class="info">
+            		<th width="10%">审批人</th>
+            		<th width="20%">审批时间</th>
+            		<th>审批意见</th>
+            		</tr>
+            	</thead>
+            	<tbody>
+            		<tr th:each="comment: ${commentList}" >
+            			<td th:text="${comment.userId }"></td>	
+            			<td th:text="${#dates.format(comment.time, 'yyyy-MM-dd HH:mm:ss')}"></td>	
+            			<td th:text="${comment.fullMessage }"></td>	
+            		</tr>
+            	</tbody>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+	function fillGroup(group){
+		$("group").val(group);
+	}
+</script>
+</body>
+</html>

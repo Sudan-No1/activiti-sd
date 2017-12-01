@@ -52,7 +52,7 @@ public class BillDaoImpl implements BillDao{
 
 	@Override
 	public List<Map<String, Object>> findBillListByUser(String username) {
-		String sql = "select * from \"Bill\" where \"Applicant\" = ? and \"Status\" = 'A';";
+		String sql = "select * from \"Bill\" where \"loginname\" = ? and \"Status\" = 'A' and \"ProcessStatus\" != '流程结束';";
 		return jdbcTemplate.queryForList(sql, username);
 	}
 

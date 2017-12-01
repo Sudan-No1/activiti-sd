@@ -21,6 +21,11 @@ public class PageController {
 		return "/home/room";
 	}
 	
+	@RequestMapping("/test")
+	public String test(){
+		return "/AllocateBill/approvalAdd";
+	}
+	
 	@RequestMapping("/index")
 	public String index(){
 		return "/home/tasks1";
@@ -28,13 +33,13 @@ public class PageController {
 	
 	@RequestMapping("/{billName}/update")
 	public String updateBill(@PathVariable("billName") String billName){
-		return billName+"/update";
+		return "/"+billName+"/update";
 	}
 	
     @RequestMapping("addDeploy")
     public String addDeploy()
     {
-        return "workflow/add";
+        return "/workflow/add";
     }
     
     

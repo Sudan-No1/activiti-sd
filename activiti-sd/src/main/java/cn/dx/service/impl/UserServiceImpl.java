@@ -1,6 +1,5 @@
 package cn.dx.service.impl;
 
-import java.util.List;
 import java.util.Map;
 
 import org.slf4j.Logger;
@@ -31,26 +30,7 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public List<String> findGroup(String username) {
-		List<String> list = null;
-		try {
-			list = userDao.findGroup(username);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-		return list;
-	}
-
-	@Override
-	public List<Map<String, Object>> findClasList(String groupName) {
-		List<Map<String, Object>> list = null;
-		try {
-			list = userDao.getClassListByGroupName(groupName);
-		} catch (Exception e) {
-			log.error(e.getMessage());
-			e.printStackTrace();
-		}
-		return list;
+	public Map<String, Object> getGroupInfo(String username) {
+		return userDao.getGroupInfo(username);
 	}
 }

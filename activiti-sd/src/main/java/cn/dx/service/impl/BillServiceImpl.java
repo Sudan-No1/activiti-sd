@@ -24,15 +24,16 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public void addBill(String username, Map<String, String[]> map) {
+	public void addBill(String username,Map<String, String[]> map) {
 		Map<String,Object> params = new HashMap<>();
 		Set<Entry<String, String[]>> entrySet = map.entrySet();
 		for (Entry<String, String[]> entry : entrySet) {
 			params.put(entry.getKey(), entry.getValue()[0]);
 		}
+		params.put("ProcessStatus", "初始录入");
+		params.put("loginname", username);
 		String billName = (String)params.get("billName");
 		params.remove("billName");
-		params.put("Applicant",username);
 		billDao.addBill(billName,params);
 	}
 

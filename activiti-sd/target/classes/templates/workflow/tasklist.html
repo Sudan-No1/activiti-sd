@@ -63,7 +63,7 @@
                             <a href="javaScript:;" id="taskSubLabel-2">待办任务</a>
                         </li>
                         <li>
-                            <a href="tasks2.html" id="taskSubLabel-3">历史任务</a>
+                            <a href="/workflow/historyTaskList" id="taskSubLabel-3">历史任务</a>
                         </li>
                     </ul>
                 </li>
@@ -86,20 +86,23 @@
                             <table class="table table-condensed table-hover">
                                 <thead>
                                 <tr>
-	                                <th width="15%">任务ID</th>
-									<th width="15%">任务名称</th>
-									<th width="30%">创建时间</th>
+	                                <th width="10%">任务ID</th>
+									<th width="20%">任务类型</th>
+									<th width="20%">任务名称</th>
+									<th width="20%">创建时间</th>
 									<th width="10%">办理人</th>
-									<th width="30%">操作</th>
+									<th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <tr th:each="task : ${userTasks}">
+                                <tr th:each="task : ${userTasks}">
 									<td th:text="${task.id  }"></td>
+                                    <td th:if="${#strings.arraySplit(task.formKey,'/')[0] =='AllocateBill'}">
+                                	房调流程
+                                	</td>
 									<td th:text="${task.name }"></td>
 									<td th:text="${#dates.format(task.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-									<td th:text="${task.assignee }"></td>
+									<td th:text="${realName}"></td>
 									<td>
 										<a th:href="@{/workflow/viewTaskForm(taskId=${task.id})}">办理任务</a> 
 										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
@@ -119,22 +122,26 @@
                             <table class="table table-condensed table-hover">
                                 <thead>
                                 <tr>
-                                	<th width="15%">任务ID</th>
-									<th width="15%">任务名称</th>
-									<th width="30%">创建时间</th>
+                                	 <th width="10%">任务ID</th>
+									<th width="20%">任务类型</th>
+									<th width="20%">任务名称</th>
+									<th width="20%">创建时间</th>
 									<th width="10%">办理人</th>
-									<th width="30%">操作</th>
+									<th>操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="task : ${groupTasks}">
 									<td th:text="${task.id  }"></td>
+									<td th:if="${#strings.arraySplit(task.formKey,'/')[0] =='AllocateBill'}">
+                                	房调流程
+                                	</td>
 									<td th:text="${task.name }"></td>
 									<td th:text="${#dates.format(task.createTime , 'yyyy-MM-dd HH:mm:ss')}"></td>
 									<td th:text="${task.assignee }"></td>
 									<td>
 										<a th:href="@{/workflow/chaim(taskId=${task.id})}">拾取任务</a> 
-										<a th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
+										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
 									</td>
 								</tr>
                                 </tbody>
@@ -142,8 +149,6 @@
                         </div>
 
                     </div>
-
-
                 </div><!-- /#taskSubPage2-->
             </section>
         </article>

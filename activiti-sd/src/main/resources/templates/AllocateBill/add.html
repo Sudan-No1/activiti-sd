@@ -3,8 +3,7 @@
 <head lang="en">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="/css/bootstrap.css"/>
-    <script src="/js/jquery-3.2.1.js"></script>
-    <script src="/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/css/common.css"/>
     <style>
         .emMark{
             display: inline-block;
@@ -39,7 +38,7 @@
 
                 <!--表单-->
 
-                <form class="form-horizontal" action="/billController/addBill" method="post">
+                <form class="form-horizontal" action="/billController/addBill" method="post" enctype="multipart/form-data" id="applicationForm1">
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">发起人</label>
@@ -61,7 +60,7 @@
                                    class="form-inp-static"
                                    name="Department"
                                    value = "" 
-                                   th:value="${department}"
+                                   th:value="${unit}"
                                    readonly/>
                         </div>
                     </div>
@@ -73,7 +72,7 @@
                                    class="form-inp-static"
                                    name="Unit"
                                    value = "" 
-                                   th:value="${unit}"
+                                   th:value="${department}"
                                    readonly/>
                         </div>
                     </div>
@@ -145,14 +144,25 @@
                         <span class="emMark">*</span>
                     </div>
 
-                    <div class="form-group">
+                     <div class="form-group">
                         <label for="houseName" class="col-sm-2 control-label">房屋名称</label>
                         <div class="col-sm-7">
-                            <input type="text"
-                                   class="form-control"
-                                   id="houseName"
-                                   name="Name"
-                                   placeholder="房屋名称" />
+                            <div class="input-group">
+                                <input type="text"
+                                       class="form-control"
+                                       id="houseName"
+                                       name="Name"
+                                       value=""
+                                       placeholder="房屋名称" />
+                                <span class="input-group-btn">
+                                    <a class="btn btn-default"
+                                       href="javaScript:;"
+                                       data-toggle="modal"
+                                       data-target="#roomNameList">
+                                        <span class="glyphicon glyphicon-list"></span>
+                                    </a>
+                                </span>
+                            </div>
                         </div>
                     </div>
 
@@ -177,7 +187,22 @@
                                       placeholder="需求情况说明"></textarea>
                         </div>
                     </div>
+					
+					<div class="form-group">
+					    <label class="col-sm-2 control-label">附件</label>
+					    <div class="col-sm-4">
+					        <div class="input-group attachText">
+					            <div class="form-control"></div>
+					            <a class="btn input-group-addon" type="button">
+					                <span class="glyphicon glyphicon-folder-open"></span>
+					                 	上传
+					            </a>
+					            <input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />
+					        </div>
+					    </div>
+					</div>
 
+					
                 <!--     <div class="form-group">
                         <label for="accessory" class="col-sm-2 control-label">附件</label>
                         <div class="col-sm-4">
@@ -187,17 +212,104 @@
 
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
-                        	<input type="submit" value="提交">
-<!--                             <a href="javaScript:;" class="btn btn-default">提交</a> -->
+                        	<input type="submit" class="btn btn-default" onclick="checkout()" value="提交">
                         </div>
                     </div>
                     <input type="hidden" name="billName" value="AllocateBill"><br>
+                    <input type="hidden" name="Area"><br>
+                    <input type="hidden" name="RoomId"><br>
                     <input type="hidden" name="BillDescription" value="房屋调配流程"><br>
+                    <input type="hidden" name="conditionName" value="Purpose,flag"><br>
+                    <input id="flag" type="hidden" name="flag" value="" /><br>
                 </form>
-
+            	<input type="hidden" name="UseUint" />
+            	<input type="hidden" name="OwnershipCompany" />
+            	<input type="hidden" name="CurrentPurpose" />
             </div>
         </div>
     </div>
+    
+      <div class="modal fade" id="roomNameList" tabindex="-1" role="dialog" aria-labelledby="tasksLabel">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a href="javaScript:;" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </a>
+                    <h4 class="modal-title">请选择调配房间！</h4>
+                </div>
+                <div class="modal-body clearfix">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <form class="input-group"
+                                  id="searchRoomForm"
+                                  method="post" >
+                                <input type="text"
+                                       class="form-control"
+                                       id="roomNameSearch"
+                                       placeholder="请输入搜索条件...">
+                                <span class="input-group-btn">
+                                    <a href="javaScript:;"
+                                       class="btn btn-default"
+                                       id="roomNameBtn">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </a>
+                                </span>
+                            </form><!-- /input-group -->
+                        </div><!-- /.col-lg-12 -->
+                    </div><!-- /.row-->
+
+                    <div class="searchResultList">
+                        <table class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th width="3%"></th>
+                                <th width="25%">房间名称</th>
+                                <th width="25%">房间编号</th>
+                                <th width="25%">房间位置</th>
+                                <th >所在楼层</th>
+                            </tr>
+                            </thead>
+                            <tbody></tbody>
+                        </table>
+
+                    </div><!-- /.searchResultList-->
+
+                    <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box">
+                        <ul class="pagination" id="modalListPages"></ul>
+                    </div><!--/Page-->
+
+
+                </div><!-- /.modal-body-->
+
+                <div class="modal-footer">
+                    <a href="javaScript:;" class="btn btn-default" data-dismiss="modal">取消</a>
+                    <a href="javaScript:;" class="btn btn-primary" id="getDataBtn"  data-dismiss="modal">确定</a>
+                </div><!-- /.modal-footer-->
+            </div><!-- /."modal-content-->
+        </div><!-- /.modal-dialog-->
+    </div><!-- /.modal-->
+    <script src="/js/jquery-3.2.1.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script src="/js/jqPaginator.js"></script>
+    <script src="/js/dx-z.js"></script>
+    <script th:inline="javascript">
+    function checkout(){
+    	var changeUser = ($("input[name='UseUint']").val()==[[${unit}]]);
+    	var changeType =  ($("input[name='OwnershipCompany']").val()==[[${unit}]]);
+    	var externaUnit = ($("input[name='Purpose']:checked").val()== $("input[name='CurrentPurpose']").val());
+    	if(changeUser&&changeType&&externaUnit){
+    		$("input[name='flag']").val("true")
+    	}else{
+    		$("input[name='flag']").val("false");
+    	}
+    	alert($("input[name='flag']").val());
+    }
+    function loadFile(file){
+        $(".attachText div").text(file.name);
+    }
+    </script>
 
 </body>
 </html>

@@ -100,6 +100,23 @@ aside,article{
 
 
 
+/*文件上传样式*/
+.attachText{
+    position: relative;
+}
+
+.attachText input[type='file']{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 34px;
+    opacity: 0;
+}
+
+.attachText .btn .glyphicon{
+    margin-right: 5px;
+    text-align: center;
+}
 
 
 

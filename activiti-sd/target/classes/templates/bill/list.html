@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
-    <title>dx</title>
+    <title>代办任务</title>
     <link rel="stylesheet" href="/css/reset.css"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/common.css"/>
@@ -13,7 +13,7 @@
 <div class="container-fluid">
     <div class="row">
         <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
- 			<a href="javaScript:;"
+            <a href="javaScript:;"
                class="foldBtnLeft smallIcon">
                 <span class="collapseIcon"></span>
             </a>
@@ -42,8 +42,8 @@
                         <span class="glyphicon glyphicon-home"></span> 房屋列表
                     </a>
                 </li>
-                 <li>
-                	<a href="/workflow/deployHome"
+                <li>
+                    <a href="/workflow/deployHome"
                        id="flowLabel">
                         <span class="glyphicon glyphicon-retweet"></span> 流程管理
                     </a>
@@ -63,60 +63,69 @@
                             <a href="/workflow/listTask" id="taskSubLabel-2">待办任务</a>
                         </li>
                         <li>
-                            <a href="tasks2.html" id="taskSubLabel-3">历史任务</a>
+                            <a href="/workflow/historyTaskList" id="taskSubLabel-3">历史任务</a>
                         </li>
                     </ul>
                 </li>
             </ul>
         </aside>
         <!-- 导航 end -->
-       <article class="col-lg-9 col-md-9 col-sm-9 pull-right">
-       		<a href="javaScript:;"
-             class="foldBtnRight smallIcon">
-              <span class="expandIcon"></span>
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right">
+            <a href="javaScript:;"
+               class="foldBtnRight smallIcon">
+                <span class="expandIcon"></span>
             </a>
-       <div class="header clearfix">
-	        <div class="row">
-	              <div class="col-sm-3 selectBox pull-right">
-	                   <select class="form-control" onchange="window.location=this.value">
-	                       <option selected value="billList" class="text-center">---------新建表单---------</option>
-	                       <option value="/billController/AllocateBill/add" class="text-center">
-	                			房屋调配表单
-	                		</option>
-	                   </select>
-	               </div>
-	        </div>
-	   </div>
+            <div class="header clearfix">
+                <div class="row">
+                    <div class="col-sm-3 selectBox pull-right">
+                        <select class="form-control" onchange="window.location=this.value">
+                            <option selected value="billList" class="text-center">---------新建表单---------</option>
+                            <option value="/billController/AllocateBill/add?billDescription=房屋调配" class="text-center">
+                                房屋调配表单
+                            </option>
+                        </select>
+                    </div>
+                </div>
+            </div>
             <section>
                 <div class="clearfix" id="drawingPage" >
-                	
+
 
                     <div class="dataList panel panel-default" id="drawingList">
                         <div class="panel-body">
                             <table class="table table-condensed table-hover">
                                 <thead>
                                 <tr>
-									<th width="20%">申请人</th>
-									<th width="20%">申请类型</th>
-									<th width="30%">描述</th>
-									<th width="30%">操作</th>
+                                    <th width="20%">申请人</th>
+                                    <th width="20%">申请类型</th>
+                                    <th width="20%">描述</th>
+                                    <th width="20%">申请状态</th>
+                                    <th width="20%">操作</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr th:each="bill : ${list}">
-									<td th:text="${bill.Applicant }"></td>
-									<!-- <td th:switch="${billName}">
-										<span th:case="'RoomBill'">房屋申请</span>
-										<span th:case="'AllocateBill'">房调申请</span>
-									</td> -->
-									<td th:text="${bill.BillDescription }"></td>
-									<td th:text="${bill.Description }"></td>
-									<td>
-										<a th:href="@{/billController/findBill(id=${bill.Id},billName=${bill.IdClass})}">编辑</a> 
-										<a th:href="@{/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a> 
-										<a th:href="@{/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a> 
-									</td>
-								</tr>
+                                    <td th:text="${bill.Applicant }"></td>
+                                    <!-- <td th:switch="${billName}">
+                                        <span th:case="'RoomBill'">房屋申请</span>
+                                        <span th:case="'AllocateBill'">房调申请</span>
+                                    </td> -->
+                                    <td th:text="${bill.BillDescription }"></td>
+                                    <td th:text="${bill.Description }"></td>
+                                    <td th:text="${bill.ProcessStatus }"></td>
+
+                                    <td th:if="${bill.ProcessStatus=='初始录入' }">
+                                        <a th:href="@{/billController/findBill(id=${bill.Id},billName=${bill.IdClass})}">编辑</a>
+                                        <a th:href="@{/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a>
+                                        <a th:href="@{/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a>
+                                    </td>
+                                    <td th:if="${bill.ProcessStatus=='审核中' }">
+                                        <a href="javaScript:;"
+                                           data-toggle="modal"
+                                           data-target="#auditRecordModal"
+                                           th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a><!--  添加data-->
+                                    </td>
+                                </tr>
                                 </tbody>
                             </table>
                         </div>
@@ -133,15 +142,76 @@
         </article>
     </div>
 </div>
+
+<!--添加modal-->
+<div class="modal fade"
+     id="auditRecordModal"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="auditRecordLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="javaScript:;"
+                   class="close"
+                   data-dismiss="modal"
+                   aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title">
+                    审核记录
+                </h4>
+            </div>
+
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#drawing-upload-->
+
+
+
+
 <script>
     var y = ($("#logoImg").outerHeight(true)-$(".selectBox").outerHeight(true))/2;
     $(".selectBox").css("margin-top",y);
 </script>
+
 <script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
 <script src="/js/jqPaginator.js"></script>
 <script type="text/javascript" src="/js/dx-z.js"></script>
 <script type="text/javascript">
-	collapseTasksList();
+    collapseTasksList();
+
+    function auditRecordModal(id,billName){
+        if($("#auditRecordModal .modal-content").has(".modal-body").length){
+            $("#auditRecordModal .modal-body").empty();
+        }else {
+            $("#auditRecordModal .modal-content").append("<div class='modal-body'></div>");
+        }
+        $.ajax({
+            type:"GET",
+            url:"/workflow/viewHisComment?Id="+id+"&billName="+billName,
+            dataType:"json",
+            success: function(str){
+                var tags = '<table class="table table-hover"><thead><tr>' +
+                        '<th width="20%">审核人</th>' +
+                        '<th width="25%">审核时间</th>' +
+                        '<th>审核意见</th></tr></thead><tbody>';
+                $.each(str, function(index, item) {
+                    tags += '<tr><td>' + item.userId +
+                            '</td><td>' + item.time +
+                            '</td><td>' +  item.fullMessage +
+                            '</td></tr>';
+                }); 
+                $("#auditRecordModal .modal-body").append(tags);
+                tags +='</tbody></table>';
+            }
+        })
+    }
+
+
+
+
+
 </script>
 </body>
 </html>

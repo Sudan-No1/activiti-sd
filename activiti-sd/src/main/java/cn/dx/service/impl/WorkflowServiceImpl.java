@@ -2,7 +2,6 @@ package cn.dx.service.impl;
 
 import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -16,6 +15,7 @@ import org.activiti.engine.RepositoryService;
 import org.activiti.engine.RuntimeService;
 import org.activiti.engine.TaskService;
 import org.activiti.engine.form.TaskFormData;
+import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.history.HistoricVariableInstance;
 import org.activiti.engine.impl.identity.Authentication;
 import org.activiti.engine.impl.persistence.entity.ProcessDefinitionEntity;
@@ -124,42 +124,51 @@ public class WorkflowServiceImpl implements WorkflowService {
 		repositoryService.deleteDeployment(deploymentId, true);
 	}
 
-	/** 更新请假状态，启动流程实例，让启动的流程实例关联业务 */
+	/** 
+	 * 1.更新请假状态，
+	 * 2.为所有节点设置办理人
+	 * 3.让启动的流程实例关联业务 
+	 **/
 	@Override
-	public void saveStartProcess(WorkflowBean workflowBean, HttpSession session) {
+	public void saveStartProcess(WorkflowBean workflowBean, Map<String, Object> user) {
+		Map<String, Object> variables = new HashMap<String, Object>();
 		String billName = workflowBean.getBillName().replace("\"", "");
-		// 1：获取请假单ID，使用请假单ID，查询请假单的对象Leavebill
 		Long id = workflowBean.getId();
-		String applicant = workflowBean.getApplicant();
+		String applicant = (String)user.get("USER_LOGIN_NAME");
 		Map<String, Object> bill = billDao.findBillById(billName, id);
-		// 2：更新请假单的请假状态从0变成1（初始录入-->审核中）
+		String conditionName = (String)bill.get("conditionName");
+    	if(conditionName!=null){
+    		if(conditionName.contains(",")){
+    			String[] split = conditionName.split(",");
+    			for (String string : split) {
+    	    		Object conditionValue = bill.get(string);
+    	    		variables.put(string, conditionValue);
+				}
+    		}else{
+    			Object conditionValue = bill.get(conditionName);
+    			variables.put(conditionName, conditionValue);
+    		}
+    	}
 		bill.put("ProcessStatus", "审核中");
 		billDao.updateBillState(billName, bill);
-		// 3：使用当前对象获取到流程定义的key（对象的名称就是流程定义的key）
 		String key = bill.get("IdClass").toString().replace("\"", "");
-		/**
-		 * 4：从Session中获取当前任务的办理人，使用流程变量设置下一个任务的办理人 inputUser是流程变量的名称，
-		 * 获取的办理人是流程变量的值
-		 */
-		Map<String, Object> variables = new HashMap<String, Object>();
-		String inputUser = (String) UserUtil.getUserFromSession(session).get("Username");
-		variables.put("inputUser", inputUser);// 表示惟一用户
-		String leader;
-		try {
-			leader = userDao.findGroupLeader(inputUser);
-		} catch (Exception e) {
-			leader = inputUser;
+		Map<String,Object> gourpInfo =userDao.getGroupInfo(applicant);
+		String unit_code = (String)gourpInfo.get("unit_code");
+		Map<String,Object> map = userDao.findApprover(unit_code);
+		List<Map<String,Object>> list = userDao.getAssingeeList("房屋调配流程");
+		for (Map<String, Object> record : list) {
+			String taskname = (String)record.get("TaskName");
+			String assignee = (String)record.get("Assignee");
+			variables.put(taskname, assignee);
 		}
-		variables.put("leader", leader);// 表示惟一用户
-		variables.put("Applicant", applicant);// 放置申请人
-		/**
-		 * 5： (1)使用流程变量设置字符串（格式：Leavebill.id的形式），通过设置，让启动的流程（流程实例）关联业务
-		 * (2)使用正在执行对象表中的一个字段BUSINESS_KEY（Activiti提供的一个字段），让启动的流程（流程实例）关联业务
-		 */
+		String areaLeader = (String)map.get("areaLeader");
+		String departmentLeader = (String)map.get("departmentLeader");
+		variables.put("Applicant", applicant);
+		variables.put("areaLeader", areaLeader);
+		variables.put("departmentLeader", departmentLeader);
 		// 格式：Leavebill.id的形式（使用流程变量）
 		String objId = key + "." + id;
 		variables.put("objId", objId);
-		// 6：使用流程定义的key，启动流程实例，同时设置流程变量，同时向正在执行的执行对象表中的字段BUSINESS_KEY添加业务数据，同时让流程关联业务
 		runtimeService.startProcessInstanceByKey(key, objId, variables);
 
 	}
@@ -255,6 +264,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 				if(split.length>1){
 					String group = split[1];
 					map.put("group", group);
+				}else{
+					map.put("group", null);
 				}
 				if (StringUtils.isNotBlank(name)) {
 //					list.add(name);
@@ -321,43 +332,26 @@ public class WorkflowServiceImpl implements WorkflowService {
 		String taskId = workflowBean.getTaskId();
 		String outcome = workflowBean.getOutcome();
 		String message = workflowBean.getComment();
-		String group = workflowBean.getNextGroup();
-		String conditionName = workflowBean.getConditionName();
 		Long id = workflowBean.getId();
 		String billName = workflowBean.getBillName();
 		Map<String, Object> currentUser = UserUtil.getUserFromSession(session);
-		String username = (String) currentUser.get("Username");
-		Task task = taskService.createTaskQuery()//
+		String username = (String) currentUser.get("USER_LOGIN_NAME");
+		String realName = (String) currentUser.get("REAL_NAME");
+		
+		Task task = taskService.createTaskQuery()
 				.taskId(taskId)
 				.taskAssignee(username).singleResult();
 		//添加批注信息
 		String processInstanceId = task.getProcessInstanceId();
-		Authentication.setAuthenticatedUserId(username);
+		Authentication.setAuthenticatedUserId(realName);
 		taskService.addComment(taskId, processInstanceId, message);
 		Map<String, Object> variables = new HashMap<String, Object>();
+		
 		//更具连线名称跳转下一任务节点
 		if (outcome != null && !outcome.equals("提交")) {
 			variables.put("outcome", outcome);
 		}
 		
-		
-//		String leader = (String) taskService.getVariable(taskId, "leader");
-		if (group != null) {
-			//TODO 根据祖名获取组成员
-		/*	List<String> users = null;
-			switch(group){
-			case "leader0" :users = userDao.findZeroGroupUsersByGroupname(group);break;
-			case "leader1" :users = userDao.findFirstGroupUsersByGroupname(group);break;
-			case "leader2" :users = userDao.findSecondGroupUsersByGroupname(group);break;
-			default: users = userDao.findGroupUsersByGroupname(group);
-			}*/
-			List<String> users = Arrays.asList("u2","u3");
-			variables.put("userIds", users);
-		} 
-		if (conditionName != null) {
-			Object conditionValue = workflowBean.getConditionValue();
-			variables.put(conditionName, conditionValue);
-		}
 		taskService.complete(taskId, variables);
 
 		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
@@ -373,91 +367,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 	
 	
-	/** 指定连线的名称完成任务 */
-	public void saveSubmitTaskOld(WorkflowBean workflowBean, HttpSession session) {
-		// 获取任务ID
-		String taskId = workflowBean.getTaskId();
-		// 获取连线的名称
-		String outcome = workflowBean.getOutcome();
-		// 批注信息
-		String message = workflowBean.getComment();
-		String group = workflowBean.getNextGroup();
-		// 分支名称
-		String conditionName = workflowBean.getConditionName();
-		// 获取请假单ID
-		Long id = workflowBean.getId();
-		String billName = workflowBean.getBillName();
-		
-		Map<String, Object> currentUser = UserUtil.getUserFromSession(session);
-		
-		String username = (String) currentUser.get("Username");
-		/**
-		 * 1：在完成之前，添加一个批注信息，向act_hi_comment表中添加数据，用于记录对当前申请人的一些审核信息
-		 */
-		// 使用任务ID，查询任务对象，获取流程流程实例ID
-		Task task = taskService.createTaskQuery()//
-				.taskId(taskId)// 使用任务ID查询
-				.taskAssignee(username).singleResult();
-		// 获取流程实例ID
-		String processInstanceId = task.getProcessInstanceId();
-		Authentication.setAuthenticatedUserId(username);
-		taskService.addComment(taskId, processInstanceId, message);
-		/**
-		 * 2：如果连线的名称是“提交”，那么就不需要设置，如果不是，就需要设置流程变量 在完成任务之前，设置流程变量，按照连线的名称，去完成任务
-		 * 流程变量的名称：outcome 流程变量的值：连线的名称
-		 */
-		Map<String, Object> variables = new HashMap<String, Object>();
-		if (outcome != null && !outcome.equals("提交")) {
-			variables.put("outcome", outcome);
-		}
-		
-		/*
-		 * if (currentUser.getManager() != null) { variables.put("inputUser",
-		 * currentUser.getManager().getName()); }
-		 */
-		// 3：使用任务ID，完成当前人的个人任务，同时流程变量
-		// 4：当任务完成之后，需要指定下一个任务的办理人
-		String leader = (String) taskService.getVariable(taskId, "leader");
-		if (leader != null) {
-			variables.put("userIds", leader);
-			taskService.removeVariable(taskId, "leader");
-		} else {
-			// List<String> groupUsers =
-			// userDao.findNextGroupUsersByUsernameAndBillName(username,billName);
-			// String url = this.findTaskFormKeyByTaskId(taskId);
-			// String[] formKey = url.split("\\|");
-			// if(formKey.length == 2){
-			// String group = formKey[1];
-			List<String> groupUser = userDao.findGroupByGroupName(group);
-			if (groupUser != null && groupUser.size() > 0) {
-				StringBuilder sb = new StringBuilder();
-				for (String user : groupUser) {
-					sb.append(user).append(",");
-				}
-				variables.put("userIds", sb.toString().substring(0, sb.length() - 1));
-			}
-			// }
-		}
-		if (conditionName != null) {
-			Object conditionValue = workflowBean.getConditionValue();
-			variables.put(conditionName, conditionValue);
-		}
-		taskService.complete(taskId, variables);
-		
-		/**
-		 * 5：在完成任务之后，判断流程是否结束 如果流程结束了，更新请假单表的状态从1变成2（审核中-->审核完成）
-		 */
-		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
-				.processInstanceId(processInstanceId)// 使用流程实例ID查询
-				.singleResult();
-		// 流程结束了
-		if (pi == null) {
-			// 更新请假单表的状态从1变成2（审核中-->审核完成）
-			Map<String, Object> bill = billDao.findBillById(billName, id);
-			bill.put("ProcessStatus", "流程结束");
-			billDao.updateBillState(billName, bill);
-		}
-	}
 
 	/** 获取批注信息，传递的是当前任务ID，获取历史任务ID对应的批注 */
 	@Override
@@ -572,5 +481,13 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public void claim(String taskId, String userId) {
 		taskService.claim(taskId, userId);
 
+	}
+
+	@Override
+	public List<HistoricProcessInstance> getHistoryTaskList(String username) {
+		return historyService.createHistoricProcessInstanceQuery()
+				.variableValueEquals("Applicant", username)
+				.finished()
+				.list();
 	}
 }
