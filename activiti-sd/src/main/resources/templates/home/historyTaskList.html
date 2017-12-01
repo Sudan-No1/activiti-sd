@@ -3,11 +3,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>dx</title>
-    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/common.css"/>
-    <script src="/js/jquery-3.2.1.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -39,7 +37,7 @@
                 <li>
                     <a href="/room"
                        id="roomLabel">
-                        <span class="glyphicon glyphicon-home"></span> 房屋列表
+                        <span class="glyphicon glyphicon-home"></span> 房屋信息
                     </a>
                 </li>
                  <li>
@@ -93,7 +91,7 @@
                         </table>
                     </div>
                      <!--/page 分页-->
-                    <div aria-label="Page navigation" class="pull-right pages-box">
+                    <div aria-label="Page navigation" class="pull-right pages-box" style="margin-right: 15px;">
                         <ul class="pagination" id="processPages-3"></ul>
                     </div><!--/Page-->
                 </div><!-- /#taskSubPage3-->
@@ -145,14 +143,24 @@
         </div><!--/.modal-content-->
     </div><!--/.modal-dialog-->
 </div><!--/#viewExamineRecord-->
-<script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/jqPaginator.js"></script>
-<script type="text/javascript" src="/js/dx-z.js"></script>
-<script type="text/javascript" src="/js/util.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/home.js"></script>
 <script th:inline="javascript">
-var currentUser =  [[${realname}]];
+	var currentUser =  [[${realname}]];
 	collapseTasksList();
-	historyTaskPageList(currentUser);
+	var pageObj = {
+	        pUrl: "/workflow/queryHistoryTaskList",
+	        pContainer: "#processPages-3",
+	        appendId:"#taskSubPage-3 .table tbody",
+	        pNum: 10
+	    };
+
+    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, historyTaskPageList);
+    
+	
 </script>
 </body>
 </html>

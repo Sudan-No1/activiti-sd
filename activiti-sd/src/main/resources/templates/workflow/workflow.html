@@ -3,11 +3,9 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>dx</title>
-    <link rel="stylesheet" href="/css/reset.css"/>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/common.css"/>
-    <script src="/js/jquery-3.2.1.js"></script>
-    <script src="/js/bootstrap.min.js"></script>
 </head>
 <body>
 <div class="container-fluid">
@@ -39,7 +37,7 @@
                 <li>
                     <a href="/room"
                        id="roomLabel">
-                        <span class="glyphicon glyphicon-home"></span> 房屋列表
+                        <span class="glyphicon glyphicon-home"></span> 房屋信息
                     </a>
                 </li>
                  <li class="active">
@@ -55,7 +53,7 @@
                        data-target="#navCollapse-2">
                         <span class="glyphicon glyphicon-tasks"></span> 任务管理
                     </a>
-                    <ul class="collapse in nav" id="navCollapse-2"><!--下拉菜单2-->
+                    <ul class="collapse nav" id="navCollapse-2"><!--下拉菜单2-->
                         <li>
                             <a href="/billController/billList" id="taskSubLabel-1">表单管理</a>
                         </li>
@@ -229,9 +227,10 @@
     </div><!--/.modal-dialog-->
 </div><!--/#drawing-upload-->
 
-<script type="text/javascript" src="/js/jquery-3.2.1.js"></script>
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
 <script src="/js/jqPaginator.js"></script>
-<script type="text/javascript" src="/js/dx-z.js"></script>
+<script src="/js/home.js"></script>
 <script type="text/javascript">
 	collapseTasksList();
 </script>
