@@ -36,15 +36,15 @@ public class CommonController {
 			HttpServletRequest request){
 		Long id = workflowBean.getId();
 		String comment = workflowBean.getComment();
-		Map<String,String[]> params = new HashMap<>();
-		params.put("BillName", new String[]{"AllocateBill"});		
-		params.put("Id", new String[]{id+""});		
-		params.put("AuditName", new String[]{name});		
-		params.put("AuditAddress", new String[]{address});		
-		params.put("RoomId", new String[]{roomId});		
-		params.put("Area", new String[]{area});	
-		params.put("AuditRemark", new String[]{comment});	
-		billService.updateBill(params);
+		Map<String,Object> params = new HashMap<>();
+		params.put("BillName","AllocateBill");		
+		params.put("Id",id+"");		
+		params.put("AuditName",name);		
+		params.put("AuditAddress",address);		
+		params.put("RoomId",Integer.parseInt(roomId));		
+		params.put("Area",area);	
+		params.put("AuditRemark",comment);	
+		billService.updateBillByAudit(params);
 		HttpSession session = request.getSession();
         workflowService.saveSubmitTask(workflowBean, session);
         return "redirect:/workflow/listTask";

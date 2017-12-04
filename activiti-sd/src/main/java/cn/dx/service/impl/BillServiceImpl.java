@@ -64,5 +64,20 @@ public class BillServiceImpl implements BillService {
 		params.remove("BillName");
 		billDao.update(billName,params);
 	}
+	
+	@Override
+	public void updateBillByAudit(Map<String, Object> map) {
+		Map<String,Object> params = new HashMap<>();
+		Set<Entry<String, Object>> entrySet = map.entrySet();
+		for (Entry<String, Object> entry : entrySet) {
+			 Object value = entry.getValue();
+			 if(value != null && !"".equals(value)){
+				 params.put(entry.getKey(), entry.getValue());
+			 }
+		}
+		String billName = ((String)params.get("BillName")).replace("\"", "");
+		params.remove("BillName");
+		billDao.update(billName,params);
+	}
 
 }

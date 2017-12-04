@@ -299,9 +299,9 @@
     	var changeType =  ($("input[name='OwnershipCompany']").val()==[[${unit}]]);
     	var externaUnit = ($("input[name='Purpose']:checked").val()== $("input[name='CurrentPurpose']").val());
     	if(changeUser&&changeType&&externaUnit){
-    		$("input[name='flag']").val("true")
+    		$("input[name='flag']").val("false")
     	}else{
-    		$("input[name='flag']").val("false");
+    		$("input[name='flag']").val("true");
     	}
     	alert($("input[name='flag']").val());
     }

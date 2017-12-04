@@ -17,4 +17,6 @@ public interface BillService {
 
 	void updateBill(Map<String, String[]> map);
 
+	void updateBillByAudit(Map<String, Object> params);
+
 }
