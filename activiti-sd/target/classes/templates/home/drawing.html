@@ -3,73 +3,16 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title>dx</title>
-    <!--<link rel="stylesheet" href="css/reset.css"/>-->
-    <link rel="stylesheet" href="css/Normalize.css"/>
-    <link rel="stylesheet" href="css/bootstrap.css"/>
-    <link rel="stylesheet" href="css/common.css"/>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
 </head>
 <body>
 <div class="container-fluid">
     <div class="row">
         <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
-
-            <a href="javaScript:;"
-               class="foldBtnLeft smallIcon">
-                <span class="collapseIcon"></span>
-            </a>
-
-            <div class="header clearfix">
-                <div class="row">
-                    <!--网站名 or logo-->
-                    <a href="javaScript:;" target="_blank">
-                        <img class="logoImg col-lg-12 col-md-12 col-sm-12"
-                             id="logoImg"
-                             src="images/logo.png"
-                             alt="Logo" />
-                    </a>
-                </div>
-
-            </div>
-
-            <ul class="nav navbar-default" role="navigation">
-                <li class="active">
-                    <a href="javaScript:;"
-                       id="drawingLabel">
-                        <span class="glyphicon glyphicon-picture"></span> 图纸管理
-                    </a>
-                </li>
-                <li>
-                    <a href="/room"
-                       id="roomLabel">
-                        <span class="glyphicon glyphicon-home"></span> 房间筛选
-                    </a>
-                </li>
-               <li>
-                	<a href="/workflow/deployHome"
-                       id="flowLabel">
-                        <span class="glyphicon glyphicon-retweet"></span> 流程管理
-                    </a>
-                </li>
-                 <li>
-                    <a href="javaScript:;"
-                       id="tasksLabel"
-                       data-toggle="collapse"
-                       data-target="#navCollapse-2">
-                        <span class="glyphicon glyphicon-tasks"></span> 任务管理
-                    </a>
-                    <ul class="collapse in nav" id="navCollapse-2"><!--下拉菜单2-->
-                        <li>
-                            <a href="/billController/billList" id="taskSubLabel-1">表单管理</a>
-                        </li>
-                        <li>
-                            <a href="/workflow/listTask" id="taskSubLabel-2">待办任务</a>
-                        </li>
-                        <li>
-                            <a href="tasks2.html" id="taskSubLabel-3">历史任务</a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
+	
+            <div th:include="menu :: copy"></div>
         </aside>
         <!-- 导航 end -->
 
@@ -88,14 +31,6 @@
                        data-toggle="modal"
                        data-target="#drawingUpload">上传
                     </a><!--drawing upload button-->
-        <!--
-                    <a class="btn btn-default pull-right upLoadBtn"
-                       href="javaScript:;"
-                       data-toggle="modal"
-                       data-target="#lookImg">测试
-                    </a>&lt;!&ndash;drawing upload button&ndash;&gt;
-                    -->
-
                 </div>
             </div>
             <section><!--图纸管理-->
@@ -131,12 +66,7 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr>
-                                    <td>sldkjf.jpg</td>
-                                    <td>4</td>
-                                    <td>2017-10-28</td>
-                                    <td><a href="ex1.json" download='ex1.json'>下载</a></td>
-                                </tr>
+                                <!-- json 加载 -->
                                 </tbody>
                             </table>
                         </div>
@@ -153,36 +83,6 @@
         </article>
     </div>
 </div>
-
-<!--
-
-&lt;!&ndash;      测试&ndash;&gt;
-<div class="modal fade modalImg"
-     id="lookImg"
-     tabindex="-1"
-     role="dialog"
-     aria-labelledby="lookImgLabel">
-    <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <a href="javaScript:;"
-                   class="close"
-                   data-dismiss="modal"
-                   aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </a>
-                <h4 class="modal-title">
-                    文件名
-                </h4>
-            </div>
-            <div class="modal-body">
-                <img src="images/Penguins.jpg" alt=""/>
-            </div>
-        </div>
-    </div>
-</div>
-
--->
 
 <!--上传弹窗-->
 <div class="modal fade"
@@ -221,9 +121,21 @@
     </div><!--/.modal-dialog-->
 </div><!--/#drawing-upload-->
 
-<script src="js/jquery-3.2.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jqPaginator.js"></script>
-<script src="js/dx-z.js"></script>
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jqPaginator.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/home.js"></script>
+<script>
+	var pageObj = {
+	        pUrl: "/json/ex1.json",
+	        pContainer: "#drawingPages",
+	        appendId:"#drawingList .table tbody",
+	        pNum: 10
+	    };
+
+    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, drawingFunc);
+    
+</script>
 </body>
 </html>

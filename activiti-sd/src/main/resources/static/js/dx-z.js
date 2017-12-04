@@ -435,10 +435,3 @@ function historyTaskPageList(user){
         }
     });
 }
-
-
-
-
-
-
-

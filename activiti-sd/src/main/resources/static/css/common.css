@@ -19,15 +19,15 @@ html,body{
     padding: 0;
 }
 
-aside>ul li.active{
+aside>div>ul li.active{
     background-color: #ddd;
 }
 
-aside>ul li.active>a{
+aside>div>ul li.active>a{
     color: #666;
 }
 
-aside>ul>li>a .glyphicon{
+aside>div>ul>li>a .glyphicon{
     margin-right: 5px;
 }
 
@@ -103,6 +103,12 @@ aside,article{
 /*文件上传样式*/
 .attachText{
     position: relative;
+}
+
+.attachText>div{
+/* 	overflow: hidden; 
+	text-overflow: ellipsis;
+	white-space: nowrap;  */
 }
 
 .attachText input[type='file']{
