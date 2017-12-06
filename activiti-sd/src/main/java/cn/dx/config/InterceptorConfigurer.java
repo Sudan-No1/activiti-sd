@@ -9,6 +9,7 @@ import cn.dx.interceptor.SessionInterceptor;
 @Configuration
 public class InterceptorConfigurer extends WebMvcConfigurerAdapter{
 	
+	//test
 	@Override
     public void addInterceptors(InterceptorRegistry registry) {
 		registry.addInterceptor(new SessionInterceptor()).addPathPatterns("/cmdbController/*","/billController/*","/userController/*","/workflow/*");
