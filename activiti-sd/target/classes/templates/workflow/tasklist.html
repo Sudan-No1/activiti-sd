@@ -50,7 +50,9 @@
 									<td th:text="${realName}"></td>
 									<td>
 										<a th:href="@{/workflow/viewTaskForm(taskId=${task.id})}">办理任务</a> 
-										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
+										<a data-toggle="modal"
+					                       data-target=".modal"
+					                       th:onclick="javascript:clickFun(\''+${task.id}+'\');">查看当前流程图</a> 
 									</td>
                                 </tr>
                                 </tbody>
@@ -86,7 +88,10 @@
 									<td th:text="${task.assignee }"></td>
 									<td>
 										<a th:href="@{/workflow/chaim(taskId=${task.id})}">拾取任务</a> 
-										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a> 
+										<a data-toggle="modal"
+					                       data-target=".modal"
+					                       th:onclick="javascript:clickFun(\''+${task.id}+'\');">查看当前流程图</a> 
+<!-- 										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a>  -->
 									</td>
 								</tr>
                                 </tbody>
@@ -100,12 +105,34 @@
     </div>
 </div>
 
+<!--查看弹窗-->
+<div class="modal fade"
+     tabindex="-1"
+     role="dialog">
+     <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	
+	    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!--/.modal-->
+
+
+
+
 <script src="/js/jquery-3.2.1.js"></script>
 <script src="/js/bootstrap.min.js"></script>
 <script src="/js/jqPaginator.js"></script>
+<script src="/js/util.js"></script>
 <script src="/js/home.js"></script>
 <script type="text/javascript">
 	collapseTasksList();
+	
+	function clickFun(taskId){
+		var url = "/workflow/viewCurrentImage?taskId="+taskId;
+		dialogViewFun("您当前进行的流程",url,dialogViewImg);
+	}
+	
+	
 </script>
 </body>
 </html>
