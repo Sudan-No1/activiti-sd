@@ -119,5 +119,59 @@
        return tag;
     }*/
     
+    /*弹窗-提交表单*/    
+//    dialogFormFun("请选择要上传的文件","#",dialogDrawUpload())
+    function dialogFormFun(title,url,fun){
+    	//title：弹框标题  url：表单提交地址
+    	//fun: 返回拼接HTML语句
+    	var str = '<form class="form-horizontal" method="get" action="'+url+'"  enctype="multipart/form-data">' +
+    			'<div class="modal-header">' +
+    			'<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
+    			'<h4 class="modal-title">' + title + '</h4></div>'+
+    			fun() +	//内容部分
+    			'</form>';
+    	if($(".modal-content").has("form").length == 0){
+    		$(".modal .modal-content").append(str);
+    	}else{
+    		$(".modal .modal-content").empty();
+    		$(".modal .modal-content").append(str);
+    	}
+    }
+    
+    function dialogDrawUpload(){
+    	return '<div class="modal-body">' +
+			'<input type="file" id="upload-file" /></div>' +
+			'<div class="modal-footer">' +
+			'<a class="btn btn-default" data-dismiss="modal">取消</a>' +
+			'<a class="btn btn-primary">确定</a></div>';
+    }
+    function dialogFlowUpload(){
+    	return '<div class="modal-body">' +
+        	'<div class="form-group">' +
+	    	'<label class="col-sm-2 control-label">名称：</label>' +
+	    	'<div class="col-sm-4">' +
+ 			'<input class="form-control" type="text" name="deployName"></div></div>' +
+ 			'<div class="form-group">' +
+ 			'<label class="col-sm-2 control-label">文件上传：</label>' +
+ 			'<div class="col-sm-4">' +
+	        '<input type="file" name="file"/></div></div>' +
+	        '</div>' +
+			'<div class="modal-footer">' +
+		    '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
+		    '<input type="submit" class="btn btn-primary" value="确定" />' +
+		    '</div>';
+    }
+    
+    /*弹窗-查看视图/数据*/    
+//    dialogViewFun("请选择要上传的文件","#")
+    function dialogViewFun(title,url,fun){//title：弹框标题  url：表单提交地址
+    	alert(1);
+    }
+    
+    
+    
+    
+    
+    
     
     

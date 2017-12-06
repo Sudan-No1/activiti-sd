@@ -2,6 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/Normalize.css"/>
     <link rel="stylesheet" href="/css/bootstrap.css"/>
     <link rel="stylesheet" href="/css/common.css"/>
     <style>
@@ -292,7 +293,8 @@
     <script src="/js/jquery-3.2.1.js"></script>
     <script src="/js/bootstrap.js"></script>
     <script src="/js/jqPaginator.js"></script>
-    <script src="/js/dx-z.js"></script>
+    <!-- <script src="/js/dx-z.js"></script> -->
+    <script src="/js/form/allocateBill.js"></script>
     <script th:inline="javascript">
     function checkout(){
     	var changeUser = ($("input[name='UseUint']").val()==[[${unit}]]);

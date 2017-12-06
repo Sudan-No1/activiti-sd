@@ -26,10 +26,9 @@
             <div class="header clearfix">
                 <div class="row">
                     <a class="btn btn-default pull-right upLoadBtn"
-                       href="javaScript:;"
                        id="uploadBtn"
                        data-toggle="modal"
-                       data-target="#drawingUpload">上传
+                       data-target=".modal" >上传
                     </a><!--drawing upload button-->
                 </div>
             </div>
@@ -86,40 +85,33 @@
 
 <!--上传弹窗-->
 <div class="modal fade"
-     id="drawingUpload"
      tabindex="-1"
-     role="dialog"
-     aria-labelledby="drawingUploadLabel">
-    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
-        <div class="modal-content">
-            <form method="get"><!--提交上传文件-->
-                <div class="modal-header">
-                    <a href="javaScript:;"
-                       class="close"
-                       data-dismiss="modal"
-                       aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </a>
-                    <h4 class="modal-title">
-                        请选择要上传的文件
-                    </h4>
-                </div>
-                <div class="modal-body">
-                    <input type="file" id="upload-file" />
-                </div>
-                <div class="modal-footer">
-                    <a href="javaScript:;"
-                       class="btn btn-default"
-                       data-dismiss="modal">取消
-                    </a>
-                    <a href="javaScript:;"
-                       class="btn btn-primary">确定
-                    </a>
-                </div>
-            </form>
-        </div><!--/.modal-content-->
-    </div><!--/.modal-dialog-->
-</div><!--/#drawing-upload-->
+     role="dialog">
+     <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	    
+    <!--  
+	    <form method="get">
+	    提交上传文件
+		    <div class="modal-header">
+			    <a class="close" data-dismiss="modal" aria-label="Close">
+			    	<span aria-hidden="true">&times;</span>
+			    </a>
+			    <h4 class="modal-title">请选择要上传的文件</h4>
+			</div>
+			<div class="modal-body">
+			    <input type="file" id="upload-file" />
+			</div>
+			    <div class="modal-footer">
+			    <a class="btn btn-default" data-dismiss="modal">取消</a>
+			    <a class="btn btn-primary">确定</a>
+		    </div>
+	    </form>
+     -->
+     
+	    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!--/.modal-->
 
 <script src="/js/jquery-3.2.1.js"></script>
 <script src="/js/bootstrap.min.js"></script>
@@ -133,8 +125,12 @@
 	        appendId:"#drawingList .table tbody",
 	        pNum: 10
 	    };
-
+	//加载数据
     pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, drawingFunc);
+    
+	$("#uploadBtn").click(function(){
+		dialogFormFun("请选择要上传的文件","#",dialogDrawUpload);
+	})
     
 </script>
 </body>

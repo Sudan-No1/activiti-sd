@@ -124,7 +124,9 @@ aside,article{
     text-align: center;
 }
 
-
+.panel .table tbody tr td a{
+	margin-right: 5px;
+}
 
 
 

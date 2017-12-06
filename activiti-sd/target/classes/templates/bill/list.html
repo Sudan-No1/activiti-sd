@@ -2,8 +2,8 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
 <meta charset="UTF-8">
-<title>代办任务</title>
-<link rel="stylesheet" href="/css/reset.css" />
+<title>表单管理</title>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
 <link rel="stylesheet" href="/css/bootstrap.css" />
 <link rel="stylesheet" href="/css/common.css" />
 </head>
@@ -59,7 +59,7 @@
 											<td th:if="${bill.ProcessStatus=='审核中' }">
 												<a  style="cursor: pointer;"
 													data-toggle="modal"
-													data-target="#auditRecordModal"
+													data-target=".modal"
 													th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a>
 											<!--  添加data--></td>
 										</tr>
@@ -84,13 +84,12 @@
 	</div>
 
 	<!--添加modal-->
-	<div class="modal fade" id="auditRecordModal" tabindex="-1"
+	<div class="modal fade" tabindex="-1"
 		role="dialog" aria-labelledby="auditRecordLabel">
 		<div class="modal-dialog modal-lg" role="document">
-			<!--修改弹窗大小 modal-lg / modal-sm -->
 			<div class="modal-content">
 				<div class="modal-header">
-					<a href="javaScript:;" class="close" data-dismiss="modal"
+					<a class="close" data-dismiss="modal"
 						aria-label="Close"> <span aria-hidden="true">&times;</span>
 					</a>
 					<h4 class="modal-title">审核记录</h4>
@@ -101,11 +100,7 @@
 		</div>
 		<!--/.modal-dialog-->
 	</div>
-	<!--/#drawing-upload-->
-
-
-
-
+	<!--/.modal-->
 
 
 	<script src="/js/jquery-3.2.1.js"></script>
