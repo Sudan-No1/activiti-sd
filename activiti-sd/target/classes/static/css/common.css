@@ -105,7 +105,7 @@ aside,article{
     position: relative;
 }
 
-.attachText>div{
+.attachText>div.form-control{
 /* 	overflow: hidden; 
 	text-overflow: ellipsis;
 	white-space: nowrap;  */
@@ -117,6 +117,7 @@ aside,article{
     left: 0;
     font-size: 34px;
     opacity: 0;
+    z-index: 20;
 }
 
 .attachText .btn .glyphicon{
