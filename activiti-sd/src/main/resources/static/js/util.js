@@ -71,8 +71,8 @@
     	tag = "<tr><td>"+item.taskId+"</td><td>"+item.taskFormKey+"</td><td>"+item.taskName+"</td>" +
     			"<td>" + item.taskCreateTime + "</td>" +
     			"<td>" + item.realName + "</td>" +
-    			"<td><a href='/workflow/viewTaskForm?taskId="+task.id+"'>办理任务</a>" +
-    			"<a target='_blank' href='/workflow/viewCurrentImage?taskId="+task.id+"'>查看当前流程图</a>" +
+    			"<td><a href='/workflow/viewTaskForm?taskId="+item.id+"'>办理任务</a>" +
+    			"<a target='_blank' href='/workflow/viewCurrentImage?taskId="+item.id+"'>查看当前流程图</a>" +
     			"</td></tr>";
     	return tag;
     }
@@ -119,7 +119,7 @@
         	 		"</td><td>"+ item.Description +
         	 		"</td><td>" + item.ProcessStatus +
         	 		"</td><td>" +
-		      			"<a style='cursor: pointer;' data-toggle='modal' data-target='#auditRecordModal' onclick='auditRecordModal(" + billId + ","+billIdClass + ")'>查看审核记录</a>" +
+		      			"<a style='cursor: pointer;' data-toggle='modal' data-target='#auditRecordModal' onclick='auditRecordModal(" + item.billId + ","+item.billIdClass + ")'>查看审核记录</a>" +
 		      		"</td></tr>";
         }
        return tag;

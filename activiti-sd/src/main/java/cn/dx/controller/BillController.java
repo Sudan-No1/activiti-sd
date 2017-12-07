@@ -154,11 +154,16 @@ public class BillController {
 	}
 	
 	@RequestMapping(value="/billList",method=RequestMethod.GET)
-	public String billList(HttpServletRequest request,Model model){
+	@ResponseBody
+	public List<Map<String,Object>> billList(HttpServletRequest request){
 		Map<String, Object> user = UserUtil.getUserFromSession(request.getSession());
 		String username = (String)user.get("USER_LOGIN_NAME");
 		List<Map<String,Object>> list = billService.findBillListByUser(username);
-		model.addAttribute("list", list);
+		return list;
+	}
+	
+	@RequestMapping(value="/toBill",method=RequestMethod.GET)
+	public String toBill(HttpServletRequest request){
 		return "/bill/list";
 	}
 	
