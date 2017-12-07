@@ -47,6 +47,7 @@
 										</tr>
 									</thead>
 									<tbody>
+									<!-- 
 										<tr th:each="bill : ${list}">
 											<td th:text="${bill.Applicant }"></td>
 											<td th:text="${bill.BillDescription }"></td>
@@ -61,8 +62,9 @@
 													data-toggle="modal"
 													data-target=".modal"
 													th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a>
-											<!--  添加data--></td>
+											</td>
 										</tr>
+										 -->
 									</tbody>
 								</table>
 							</div>
@@ -106,7 +108,7 @@
 	<script src="/js/jquery-3.2.1.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/jqPaginator.js"></script>
-	<!-- <script src="/js/util.js"></script> -->
+	<script src="/js/util.js"></script>
 	<script src="/js/home.js"></script>
 
 	<script type="text/javascript">
@@ -115,7 +117,16 @@
 		$(".selectBox").css("margin-top", y);
 
 		collapseTasksList();
-
+		
+		var pageObj = {
+		        pUrl: "#",
+		        pContainer: "#billListPages",
+		        appendId:"#billList .table tbody",
+		        pNum: 10
+		    };
+		//加载数据
+	    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, billList);
+	   
 		function auditRecordModal(id, billName) {
 			if ($("#auditRecordModal .modal-content").has(".modal-body").length) {
 				$("#auditRecordModal .modal-body").empty();

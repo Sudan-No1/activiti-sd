@@ -16,8 +16,7 @@
     }; 
 
     /*分页*/
-    function pageList(pUrl, pContainer, pNum,appendId,func){
-    	
+    function pageList(pUrl, pContainer, pNum, appendId, func){
         $.ajax({
             type: "GET",
             url: pUrl,
@@ -66,6 +65,18 @@
         return tag;
     }
     
+    function taskListFunc(str, n){
+    	var item = str[n];
+    	var tag = "";
+    	tag = "<tr><td>"+item.taskId+"</td><td>"+item.taskFormKey+"</td><td>"+item.taskName+"</td>" +
+    			"<td>" + item.taskCreateTime + "</td>" +
+    			"<td>" + item.realName + "</td>" +
+    			"<td><a href='/workflow/viewTaskForm?taskId="+task.id+"'>办理任务</a>" +
+    			"<a target='_blank' href='/workflow/viewCurrentImage?taskId="+task.id+"'>查看当前流程图</a>" +
+    			"</td></tr>";
+    	return tag;
+    }
+    
     /*historyTask数据列表*/
     function historyTaskPageList(str , j){
     	var item = str[j];
@@ -88,36 +99,31 @@
         "</td></tr>";
     }
     
-    /*billList 数据列表
+    /*bill/list 数据列表*/
     function billList(str, n){
         var item = str[n];
         var tag = "";
-        <tr th:each="bill : ${list}"><td th:text="${bill.Applicant }"></td><td th:text="${bill.BillDescription }"></td><td th:text="${bill.Description }"></td><td th:text="${bill.ProcessStatus }"></td><td th:if="${bill.ProcessStatus=='初始录入' }"><a th:href="@{/billController/findBill(id=${bill.Id},billName=${bill.IdClass})}">编辑</a><a th:href="@{/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a><a th:href="@{/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a></td><td th:if="${bill.ProcessStatus=='审核中' }"><a href="javaScript:;" data-toggle="modal" data-target="#auditRecordModal" th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a><!--  添加data--></td></tr>
-        if(item.ProcessStatus=='初始录入'){
-        	alert(2 )
-        	  tag = '<tr>' +
-      		'<td>' + item.Applicant + '</td>' +
-      		'<td>' + item.BillDescription + '</td>' +
-      		'<td>' + item.Description + '</td>' +
-      		'<td>' + item.ProcessStatus + '</td>' +
-      		'<td>' +
-      			'<a href="/billController/findBill?id='+bill.Id+'&billName='+item.IdClass+'">编辑</a>' +
-      			'<a href="/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a>' +
-      			'<a href="/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a></td></tr>';
-        }else if(item.ProcessStatus=='审核中'){
-        	 tag = '<tr>' +
-    		'<td>' + item.Applicant + '</td>' +
-    		'<td>' + item.BillDescription + '</td>' +
-    		'<td>' + item.Description + '</td>' +
-    		'<td>' + item.ProcessStatus + '</td>' +
-    		'<td>' +
-			'<a href="javaScript:;" data-toggle="modal" data-target="#auditRecordModal"' +
-				' th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录' +
-			'</a>' +
-		'</td></tr>';
+        if(item.ProcessStatus =='初始录入'){
+        	 tag = "<tr><td>" + item.Applicant +
+		 	 		"</td><td>" + item.BillDescription +
+			 		"</td><td>"+ item.Description +
+			 		"</td><td>" + item.ProcessStatus +
+			 		"</td><td>" +
+		      			"<a href='/billController/findBill?id=" + item.billId + "&billName=" + item.billIdClass + "'>编辑</a>" +
+		      			"<a href='/billController/deleteBill?id=" + item.billId + "&billName=" + item.billIdClass + "'>删除</a>" +
+		      			"<a href='/workflow/startProcess?id=" + item.billId + "&billName=" + item.billIdClass + "'>申请房间</a>" +
+		      		"</td></tr>";
+		}else if(item.ProcessStatus =='审核中'){
+        	 tag = "<tr><td>" + item.Applicant +
+        	 		"</td><td>" + item.BillDescription +
+        	 		"</td><td>"+ item.Description +
+        	 		"</td><td>" + item.ProcessStatus +
+        	 		"</td><td>" +
+		      			"<a style='cursor: pointer;' data-toggle='modal' data-target='#auditRecordModal' onclick='auditRecordModal(" + billId + ","+billIdClass + ")'>查看审核记录</a>" +
+		      		"</td></tr>";
         }
        return tag;
-    }*/
+    }
     
     /*弹窗-提交表单*/    
 //    dialogFormFun("请选择要上传的文件","#",dialogDrawUpload())
