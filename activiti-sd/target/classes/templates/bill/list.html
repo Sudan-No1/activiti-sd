@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
 <meta charset="UTF-8">
-<title>表单管理</title>
+<title>bill/list</title>
     <link rel="stylesheet" href="/css/Normalize.css"/>
 <link rel="stylesheet" href="/css/bootstrap.css" />
 <link rel="stylesheet" href="/css/common.css" />
@@ -47,6 +47,7 @@
 										</tr>
 									</thead>
 									<tbody>
+									<!-- 
 										<tr th:each="bill : ${list}">
 											<td th:text="${bill.Applicant }"></td>
 											<td th:text="${bill.BillDescription }"></td>
@@ -61,8 +62,9 @@
 													data-toggle="modal"
 													data-target=".modal"
 													th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a>
-											<!--  添加data--></td>
+											</td>
 										</tr>
+										 -->
 									</tbody>
 								</table>
 							</div>
@@ -94,6 +96,7 @@
 					</a>
 					<h4 class="modal-title">审核记录</h4>
 				</div>
+				<div class="modal-body"></div>
 
 			</div>
 			<!--/.modal-content-->
@@ -106,7 +109,7 @@
 	<script src="/js/jquery-3.2.1.js"></script>
 	<script src="/js/bootstrap.min.js"></script>
 	<script src="/js/jqPaginator.js"></script>
-	<!-- <script src="/js/util.js"></script> -->
+	<script src="/js/util.js"></script>
 	<script src="/js/home.js"></script>
 
 	<script type="text/javascript">
@@ -115,7 +118,16 @@
 		$(".selectBox").css("margin-top", y);
 
 		collapseTasksList();
-
+		
+		var pageObj = {
+		        pUrl: "/billController/billList",
+		        pContainer: "#billListPages",
+		        appendId:"#billList .table tbody",
+		        pNum: 10
+		    };
+		//加载数据
+	    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, billList);
+	   
 		function auditRecordModal(id, billName) {
 			if ($("#auditRecordModal .modal-content").has(".modal-body").length) {
 				$("#auditRecordModal .modal-body").empty();
@@ -129,16 +141,20 @@
 						+ billName,
 				dataType : "json",
 				success : function(str) {
+					console.log(str)
 					var tags = '<table class="table table-hover"><thead><tr>'
 							+ '<th width="20%">审核人</th>'
 							+ '<th width="25%">审核时间</th>'
 							+ '<th>审核意见</th></tr></thead><tbody>';
 					$.each(str, function(index, item) {
+						console.log(item.userId)
+						console.log(item.time)
+						console.log(item.fullMessage)
 						tags += '<tr><td>' + item.userId + '</td><td>'
 								+ item.time + '</td><td>' + item.fullMessage
 								+ '</td></tr>';
 					});
-					$("#auditRecordModal .modal-body").append(tags);
+					$(".modal .modal-body").append(tags);
 					tags += '</tbody></table>';
 				}
 			})

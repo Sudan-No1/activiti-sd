@@ -32,7 +32,7 @@
                     next:'<li><a href="javaScript:;">></a></li>',
                     last:'<li><a href="javaScript:;">>>|</a></li>',
                     page: '<li><a href="javascript:;">{{page}}</a></li>',
-                    onPageChange: function(num, type){  //num当前页
+                    onPageChange: function(num, type){ 
                         if(str.length > 0){
                             if(num == parseInt(str.length/pNum)+1){//最后一页显示列表
                                 var tags1 = "";
@@ -48,8 +48,6 @@
                                 }
                                 $(appendId).empty().append(tags1);
                             }
-                        }else{
-                            alert("很抱歉，没有数据")
                         }
                     }
                 });
@@ -68,12 +66,19 @@
     function taskListFunc(str, n){
     	var item = str[n];
     	var tag = "";
-    	tag = "<tr><td>"+item.taskId+"</td><td>"+item.taskFormKey+"</td><td>"+item.taskName+"</td>" +
-    			"<td>" + item.taskCreateTime + "</td>" +
-    			"<td>" + item.realName + "</td>" +
-    			"<td><a href='/workflow/viewTaskForm?taskId="+item.id+"'>办理任务</a>" +
-    			"<a target='_blank' href='/workflow/viewCurrentImage?taskId="+item.id+"'>查看当前流程图</a>" +
-    			"</td></tr>";
+    	var  type = "";
+    	if(item.taskFormKey == "/AllocateBill/form"){
+    		type = "房调申请";
+    	}else if(item.taskFormKey == "/aaa/form"){
+    		type = "其他";
+    	}
+    		tag = "<tr><td>"+item.taskId+"</td><td>"+type+"</td><td>"+item.taskName+"</td>" +
+    		"<td>" + formatDateTime(item.taskCreateTime) + "</td>" +
+    		"<td>" + item.realName + "</td>" +
+    		"<td><a href='/workflow/viewTaskForm?taskId="+item.taskId+"'>办理任务</a>" +
+    		"<a target='_blank' href='/workflow/viewCurrentImage?taskId="+item.taskId+"'>查看当前流程图</a>" +
+    		"</td></tr>";
+    	
     	return tag;
     }
     
@@ -104,14 +109,15 @@
         var item = str[n];
         var tag = "";
         if(item.ProcessStatus =='初始录入'){
+        	console.log(item);
         	 tag = "<tr><td>" + item.Applicant +
 		 	 		"</td><td>" + item.BillDescription +
 			 		"</td><td>"+ item.Description +
 			 		"</td><td>" + item.ProcessStatus +
 			 		"</td><td>" +
-		      			"<a href='/billController/findBill?id=" + item.billId + "&billName=" + item.billIdClass + "'>编辑</a>" +
-		      			"<a href='/billController/deleteBill?id=" + item.billId + "&billName=" + item.billIdClass + "'>删除</a>" +
-		      			"<a href='/workflow/startProcess?id=" + item.billId + "&billName=" + item.billIdClass + "'>申请房间</a>" +
+		      			"<a href='/billController/findBill?id=" + item.Id + "&billName=" + item.IdClass.value + "'>编辑</a>" +
+		      			"<a href='/billController/deleteBill?id=" + item.Id + "&billName=" + item.IdClass.value + "'>删除</a>" +
+		      			"<a href='/workflow/startProcess?id=" + item.Id + "&billName=" + item.IdClass.value + "&outcome=提交申请'>申请房间</a>" +
 		      		"</td></tr>";
 		}else if(item.ProcessStatus =='审核中'){
         	 tag = "<tr><td>" + item.Applicant +
@@ -119,7 +125,7 @@
         	 		"</td><td>"+ item.Description +
         	 		"</td><td>" + item.ProcessStatus +
         	 		"</td><td>" +
-		      			"<a style='cursor: pointer;' data-toggle='modal' data-target='#auditRecordModal' onclick='auditRecordModal(" + item.billId + ","+item.billIdClass + ")'>查看审核记录</a>" +
+		      			"<a style='cursor: pointer;' data-toggle='modal' data-target='.modal' onclick='auditRecordModal(" + item.Id + ","+item.IdClass.value + ")'>查看审核记录</a>" +
 		      		"</td></tr>";
         }
        return tag;
@@ -130,7 +136,7 @@
     function dialogFormFun(title,url,fun){
     	//title：弹框标题  url：表单提交地址
     	//fun: 返回拼接HTML语句
-    	var str = '<form class="form-horizontal" method="get" action="'+url+'"  enctype="multipart/form-data">' +
+    	var str = '<form class="form-horizontal" method="post" action="'+url+'"  enctype="multipart/form-data">' +
     			'<div class="modal-header">' +
     			'<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
     			'<h4 class="modal-title">' + title + '</h4></div>'+

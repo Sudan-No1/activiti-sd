@@ -99,16 +99,10 @@ aside,article{
 /*侧栏折叠按钮 end*/
 
 
-
 /*文件上传样式*/
 .attachText{
     position: relative;
-}
-
-.attachText>div.form-control{
-/* 	overflow: hidden; 
-	text-overflow: ellipsis;
-	white-space: nowrap;  */
+    overflow: hidden;
 }
 
 .attachText input[type='file']{

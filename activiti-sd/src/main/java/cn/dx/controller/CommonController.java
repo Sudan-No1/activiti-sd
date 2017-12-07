@@ -47,7 +47,7 @@ public class CommonController {
 		billService.updateBillByAudit(params);
 		HttpSession session = request.getSession();
         workflowService.saveSubmitTask(workflowBean, session);
-        return "redirect:/workflow/listTask";
+        return "/workflow/taskList";
 	}
 
 }

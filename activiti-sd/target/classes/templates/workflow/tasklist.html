@@ -40,7 +40,8 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr th:each="task : ${userTasks}">
+                                
+                                <!-- <tr th:each="task : ${userTasks}">
 									<td th:text="${task.id  }"></td>
                                     <td th:if="${#strings.arraySplit(task.formKey,'/')[0] =='AllocateBill'}">
                                 	房调流程
@@ -50,55 +51,19 @@
 									<td th:text="${realName}"></td>
 									<td>
 										<a th:href="@{/workflow/viewTaskForm(taskId=${task.id})}">办理任务</a> 
-										<a data-toggle="modal"
-					                       data-target=".modal"
-					                       th:onclick="javascript:clickFun(\''+${task.id}+'\');">查看当前流程图</a> 
+										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a>	
 									</td>
-                                </tr>
+                                </tr> -->
+                                
                                 </tbody>
                             </table>
                         </div>
+						<!--/page 分页-->
+	                    <div aria-label="Page navigation" class="pull-right pages-box">
+	                        <ul class="pagination" id="taskListPages"></ul>
+	                    </div><!--/Page-->
+	                    </div>
 
-                    </div>
-
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            	组任务
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-condensed table-hover">
-                                <thead>
-                                <tr>
-                                	 <th width="10%">任务ID</th>
-									<th width="20%">任务类型</th>
-									<th width="20%">任务名称</th>
-									<th width="20%">创建时间</th>
-									<th width="10%">办理人</th>
-									<th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr th:each="task : ${groupTasks}">
-									<td th:text="${task.id  }"></td>
-									<td th:if="${#strings.arraySplit(task.formKey,'/')[0] =='AllocateBill'}">
-                                	房调流程
-                                	</td>
-									<td th:text="${task.name }"></td>
-									<td th:text="${#dates.format(task.createTime , 'yyyy-MM-dd HH:mm:ss')}"></td>
-									<td th:text="${task.assignee }"></td>
-									<td>
-										<a th:href="@{/workflow/chaim(taskId=${task.id})}">拾取任务</a> 
-										<a data-toggle="modal"
-					                       data-target=".modal"
-					                       th:onclick="javascript:clickFun(\''+${task.id}+'\');">查看当前流程图</a> 
-<!-- 										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a>  -->
-									</td>
-								</tr>
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div>
                 </div><!-- /#taskSubPage2-->
             </section>
         </article>
@@ -127,11 +92,15 @@
 <script type="text/javascript">
 	collapseTasksList();
 	
-	function clickFun(taskId){
-		var url = "/workflow/viewCurrentImage?taskId="+taskId;
-		dialogViewFun("您当前进行的流程",url,dialogViewImg);
-	}
-	
+	var pageObj = {
+	        pUrl: "/workflow/listTask",
+	        pContainer: "#taskListPages",
+	        appendId:"#taskSubPage-2 .table tbody",
+	        pNum: 10
+	    };
+	//加载数据
+    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, taskListFunc);
+    
 	
 </script>
 </body>

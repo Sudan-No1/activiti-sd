@@ -26,6 +26,6 @@ public class UserController {
 //		String username = request.getHeader("iv-user");
 		Map<String,Object> user = userService.findUserByUsername(username);
 		UserUtil.saveUserToSession(request.getSession(), user);
-		return "redirect:/workflow/listTask";
+		return "redirect:/workflow/toTask";
 	}
 }

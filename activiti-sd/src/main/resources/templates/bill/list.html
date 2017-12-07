@@ -96,6 +96,7 @@
 					</a>
 					<h4 class="modal-title">审核记录</h4>
 				</div>
+				<div class="modal-body"></div>
 
 			</div>
 			<!--/.modal-content-->
@@ -140,16 +141,20 @@
 						+ billName,
 				dataType : "json",
 				success : function(str) {
+					console.log(str)
 					var tags = '<table class="table table-hover"><thead><tr>'
 							+ '<th width="20%">审核人</th>'
 							+ '<th width="25%">审核时间</th>'
 							+ '<th>审核意见</th></tr></thead><tbody>';
 					$.each(str, function(index, item) {
+						console.log(item.userId)
+						console.log(item.time)
+						console.log(item.fullMessage)
 						tags += '<tr><td>' + item.userId + '</td><td>'
 								+ item.time + '</td><td>' + item.fullMessage
 								+ '</td></tr>';
 					});
-					$("#auditRecordModal .modal-body").append(tags);
+					$(".modal .modal-body").append(tags);
 					tags += '</tbody></table>';
 				}
 			})

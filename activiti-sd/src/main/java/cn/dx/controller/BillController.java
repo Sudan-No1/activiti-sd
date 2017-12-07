@@ -66,7 +66,7 @@ public class BillController {
 		String username = (String)user.get("USER_LOGIN_NAME");
 		billService.addBill(username,map);
 		String billName = map.get("billName")[0];
-		return "redirect:billList?billName="+billName;
+		return "/bill/list";
 	}
 	
 	@RequestMapping(value="/queryBill",method=RequestMethod.POST)

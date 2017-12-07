@@ -130,11 +130,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 	 * 3.让启动的流程实例关联业务 
 	 **/
 	@Override
-	public void saveStartProcess(WorkflowBean workflowBean, Map<String, Object> user) {
+	public void saveStartProcess(WorkflowBean workflowBean, HttpSession session) {
 		Map<String, Object> variables = new HashMap<String, Object>();
 		String billName = workflowBean.getBillName().replace("\"", "");
 		Long id = workflowBean.getId();
-		String applicant = (String)user.get("USER_LOGIN_NAME");
+    	Map<String,Object> user = UserUtil.getUserFromSession(session);
+    	String applicant = (String)user.get("USER_LOGIN_NAME");
 		Map<String, Object> bill = billDao.findBillById(billName, id);
 		String conditionName = (String)bill.get("conditionName");
     	if(conditionName!=null){
@@ -169,7 +170,16 @@ public class WorkflowServiceImpl implements WorkflowService {
 		// 格式：Leavebill.id的形式（使用流程变量）
 		String objId = key + "." + id;
 		variables.put("objId", objId);
-		runtimeService.startProcessInstanceByKey(key, objId, variables);
+		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(key, objId, variables);
+		String processInstanceId = processInstance.getId();
+		String taskId = taskService.createTaskQuery()
+			.processInstanceId(processInstanceId)
+			.singleResult()
+			.getId();
+		workflowBean.setTaskId(taskId);
+		workflowBean.setBillName(billName);
+		this.saveSubmitTask(workflowBean, session);
+		
 
 	}
 
@@ -331,7 +341,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public void saveSubmitTask(WorkflowBean workflowBean, HttpSession session) {
 		String taskId = workflowBean.getTaskId();
 		String outcome = workflowBean.getOutcome();
-		String message = workflowBean.getComment();
 		Long id = workflowBean.getId();
 		String billName = workflowBean.getBillName();
 		Map<String, Object> currentUser = UserUtil.getUserFromSession(session);
@@ -342,9 +351,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 				.taskId(taskId)
 				.taskAssignee(username).singleResult();
 		//添加批注信息
+		String message = workflowBean.getComment();
 		String processInstanceId = task.getProcessInstanceId();
-		Authentication.setAuthenticatedUserId(realName);
-		taskService.addComment(taskId, processInstanceId, message);
+		if(message != null){
+			Authentication.setAuthenticatedUserId(realName);
+			taskService.addComment(taskId, processInstanceId, message);
+		}
 		Map<String, Object> variables = new HashMap<String, Object>();
 		
 		//更具连线名称跳转下一任务节点

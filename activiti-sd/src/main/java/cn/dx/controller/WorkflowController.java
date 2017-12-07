@@ -1,6 +1,8 @@
 package cn.dx.controller;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -9,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.history.HistoricProcessInstance;
+import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
@@ -22,6 +25,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.google.gson.JsonObject;
+import com.google.gson.annotations.JsonAdapter;
 
 import cn.dx.form.WorkflowBean;
 import cn.dx.service.BillService;
@@ -98,9 +104,8 @@ public class WorkflowController{
     public String startProcess(WorkflowBean workflowBean, 
     		HttpServletRequest request){
     	HttpSession session = request.getSession();
-    	Map<String,Object> user = UserUtil.getUserFromSession(session);
-        workflowService.saveStartProcess(workflowBean,user);
-        return "redirect:listTask";
+        workflowService.saveStartProcess(workflowBean,session);
+        return "/bill/list";
     }
     
     /**
@@ -108,21 +113,38 @@ public class WorkflowController{
      * 
      */
     @RequestMapping("listTask")
-    public String listTask(HttpSession session, Model model){
+    @ResponseBody
+    public List<Map<String,Object>> listTask(HttpSession session, Model model){
         // 1：从Session中获取当前用户名
     	Map<String, Object> user = UserUtil.getUserFromSession(session);
         String loginname = (String)user.get("USER_LOGIN_NAME");
         String realName = (String)user.get("REAL_NAME");
-        if (StringUtils.isEmpty(loginname)){
-            return "redirect:/login";
-        }
         // 2：使用当前用户名查询正在执行的任务表，获取当前任务的集合List<Task>
         List<Task> userTasks = workflowService.findUserTaskListByName(loginname);
-        List<Task> groupTasks = workflowService.findGroupTaskListByName(loginname);
-        model.addAttribute("userTasks",userTasks);
-        model.addAttribute("realName",realName);
-        model.addAttribute("groupTasks",groupTasks);
-        return "workflow/tasklist";
+        List<Map<String,Object>> list = new ArrayList<>();
+        for (Task task : userTasks) {
+        	Map<String, Object> map = new HashMap<>();
+        	map.put("taskId", task.getId());
+        	map.put("taskFormKey", task.getFormKey());
+        	map.put("taskName", task.getName());
+        	map.put("taskCreateTime", task.getCreateTime());
+        	map.put("realName",realName);
+        	list.add(map);
+		}
+        return list;
+    }
+    /**
+     * 任务管理首页显示
+     * 
+     */
+    @RequestMapping("toTask")
+    public String toTask(HttpSession session, Model model){
+    	Map<String, Object> user = UserUtil.getUserFromSession(session);
+    	String loginname = (String)user.get("USER_LOGIN_NAME");
+    	if (StringUtils.isEmpty(loginname)){
+    		return "redirect:/login";
+    	}
+    	return "/workflow/tasklist";
     }
     
     /**
@@ -223,7 +245,7 @@ public class WorkflowController{
     public String submitTask(WorkflowBean workflowBean, HttpServletRequest request){
     	HttpSession session = request.getSession();
         workflowService.saveSubmitTask(workflowBean, session);
-        return "redirect:listTask";
+        return "/workflow/tasklist";
     }
     
     /**

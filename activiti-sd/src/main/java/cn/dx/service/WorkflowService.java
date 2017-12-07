@@ -49,7 +49,7 @@ public interface WorkflowService
     
     String saveNewDeploye(MultipartFile file);
     
-    void saveStartProcess(WorkflowBean workflowBean, Map<String, Object> user);
+    void saveStartProcess(WorkflowBean workflowBean, HttpSession session);
 
 	void claim(String taskId, String userId);
 
