@@ -141,11 +141,10 @@
     /*弹窗-查看视图/数据*/    
     //dialogViewFun("请选择要上传的文件","#")
     function dialogViewFun(title, url, fun){//title：弹框标题  url：表单提交地址
-    	var str = '<div class="modal-header">' +
-    	'<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
-    	'<h4 class="modal-title">' + title + '</h4></div>'+ fun(url); 	//内容部分
+    	var tags = fun(url);
+    	var str = tags
     	
-    	if($(".modal-content").has(".modal-header").length == 0){
+    	if($(".modal-content").has(".modal-body").length == 0){
     		$(".modal .modal-content").append(str);
     	}else{
     		$(".modal .modal-content").empty();
@@ -178,23 +177,6 @@
 		    '</div>';
     }
     
-    function dialogViewImg(url){
-    	 $.ajax({
-    	        type:"GET",
-    	        url:url,
-    	        data:"",
-    	        dataType:"json",
-    	        success: function(str){
-    	        var tags = '<div class="modal-body">' +
-    	    	'<div>'+
-    	    	'<img style="position: absolute;top: 0px;left: 0px;" src="/workflow/viewImage?deploymentId='+str.deploymentId +'&imageName='+str.imageName+'>'+
-    	    	'<div style="position: absolute;border:1px solid red;top:'+str.acs.y+'px;left: ' + str.acs.x + 'px;width: ' + str.acs.width + 'px;height:' +  str.acs.height + 'px;"></div>'+
-    	    	'</div>'+
-    				'</div>';
-    	    }
-    	    });
-    	return tags;
-    }
     
     
     
