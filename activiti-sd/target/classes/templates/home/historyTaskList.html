@@ -13,7 +13,7 @@
     <div class="row">
         <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
         
- 			<div th:include="menu :: copy"></div>
+ 			<div th:include="/menu :: copy"></div>
         </aside>
         <!-- 导航 end -->
         <article class="col-lg-9 col-md-9 col-sm-9 pull-right"
@@ -97,6 +97,7 @@
 <script src="/js/jqPaginator.js"></script>
 <script src="/js/util.js"></script>
 <script src="/js/home.js"></script>
+<script src="/js/form/allocateBill.js"></script>
 <script th:inline="javascript">
 	var currentUser =  [[${realname}]];
 	collapseTasksList();

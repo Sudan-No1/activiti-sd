@@ -116,7 +116,7 @@ public class BillController {
 		model.addAttribute("unit", unit);
 		model.addAttribute("department", department);
 		model.addAttribute("description", description);
-		return billName+"/add";
+		return "/"+billName+"/add";
 	}
 	
 	@RequestMapping(value="/updateBill",method=RequestMethod.POST)
@@ -150,7 +150,8 @@ public class BillController {
 		}
 		String billName = map.get("BillName")[0].replace("\"", "");
 		billService.updateBill(map);
-		return "redirect: billList?billName="+billName;
+		return "redirect: toBill";
+//		return "redirect: /billList?billName="+billName;
 	}
 	
 	@RequestMapping(value="/billList",method=RequestMethod.GET)
@@ -174,7 +175,9 @@ public class BillController {
 			Model model){
 		billName = billName.replace("\"", "");
 		billService.deleteBillByIdAndBillName(id,billName);
-		return "redirect: billList?billName="+billName;
+//		return "redirect: billList?billName="+billName;
+		return "redirect: toBill";
+
 	}
 	
 	@RequestMapping(value="/findBill",method=RequestMethod.GET)

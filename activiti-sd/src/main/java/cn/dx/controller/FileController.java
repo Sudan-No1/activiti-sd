@@ -64,19 +64,19 @@ public class FileController {
 		int count = fileService.getFileSize(fileName);
 		map.put("total", count);
 		map.put("fileName", fileName);
-		return "index";
+		return "/index";
 	}
 
 	@RequestMapping("/toDownload")
 	public String toDownloadPage() {
-		return "download";
+		return "/download";
 	}
 
 	@RequestMapping(value = "/upload", method = RequestMethod.POST)
 	public String uploadFile(@RequestParam(value = "file") MultipartFile file, HttpServletRequest request)
 			throws Exception {
 		if (file.isEmpty()) {
-			return "redirect:file";
+			return "redirect:/file";
 		}
 		String fileName = file.getOriginalFilename();
 		String suffixName = fileName.substring(fileName.lastIndexOf("."));

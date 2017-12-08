@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.impl.util.json.JSONObject;
 import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
@@ -26,9 +25,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.google.gson.JsonObject;
-import com.google.gson.annotations.JsonAdapter;
-
 import cn.dx.form.WorkflowBean;
 import cn.dx.service.BillService;
 import cn.dx.service.WorkflowService;
@@ -36,7 +32,7 @@ import cn.dx.utils.StringUtils;
 import cn.dx.utils.UserUtil;
 
 @Controller
-@RequestMapping("workflow")
+@RequestMapping("/workflow")
 public class WorkflowController{
     @Autowired
     private WorkflowService workflowService;
@@ -45,18 +41,18 @@ public class WorkflowController{
     private BillService billService;
     
     /** 发布首页	*/
-    @RequestMapping("deployHome")
+    @RequestMapping("/deployHome")
     public String deployHome(Model model)
     {
         List<Deployment> depList = workflowService.findDeploymentList();
         List<ProcessDefinition> pdList = workflowService.findProcessDefinitionList();
         model.addAttribute("depList", depList);
         model.addAttribute("pdList", pdList);
-        return "workflow/workflow";
+        return "/workflow/workflow";
     }
     
     /** 发布流程	*/
-    @RequestMapping(value="deploy",method=RequestMethod.POST)
+    @RequestMapping(value="/deploy",method=RequestMethod.POST)
     public String newdeploy(MultipartFile file, 
     		RedirectAttributes redirectAttributes){
         if (file.isEmpty()){
@@ -71,7 +67,7 @@ public class WorkflowController{
     /**
      * 删除部署信息
      */
-    @RequestMapping("delDeployment")
+    @RequestMapping("/delDeployment")
     public String delDeployment(WorkflowBean workflowBean){
         String deploymentId = workflowBean.getDeploymentId();
         workflowService.deleteProcessDefinitionByDeploymentId(deploymentId);
@@ -82,7 +78,7 @@ public class WorkflowController{
      * 查看流程图
      * 
      */
-    @RequestMapping("viewImage")
+    @RequestMapping("/viewImage")
     public void viewImage(WorkflowBean workflowBean, 
     		HttpServletResponse response)
         throws Exception{
@@ -100,7 +96,7 @@ public class WorkflowController{
      * 启动流程
      * 
      */
-    @RequestMapping("startProcess")
+    @RequestMapping("/startProcess")
     public String startProcess(WorkflowBean workflowBean, 
     		HttpServletRequest request){
     	HttpSession session = request.getSession();
@@ -112,7 +108,7 @@ public class WorkflowController{
      * 任务管理首页显示
      * 
      */
-    @RequestMapping("listTask")
+    @RequestMapping("/listTask")
     @ResponseBody
     public List<Map<String,Object>> listTask(HttpSession session, Model model){
         // 1：从Session中获取当前用户名
@@ -137,12 +133,12 @@ public class WorkflowController{
      * 任务管理首页显示
      * 
      */
-    @RequestMapping("toTask")
+    @RequestMapping("/toTask")
     public String toTask(HttpSession session, Model model){
     	Map<String, Object> user = UserUtil.getUserFromSession(session);
     	String loginname = (String)user.get("USER_LOGIN_NAME");
     	if (StringUtils.isEmpty(loginname)){
-    		return "redirect:/login";
+    		return "redirect:login";
     	}
     	return "/workflow/tasklist";
     }
@@ -150,7 +146,7 @@ public class WorkflowController{
     /**
      * 打开任务表单
      */
-    @RequestMapping("viewTaskForm")
+    @RequestMapping("/viewTaskForm")
     public String viewTaskForm(WorkflowBean workflowBean, Model model){
         String taskId = workflowBean.getTaskId();
         String url = workflowService.findTaskFormKeyByTaskId(taskId);
@@ -194,7 +190,7 @@ public class WorkflowController{
     }
     
     // 准备表单数据
-    @RequestMapping("audit")
+    @RequestMapping("/audit")
     public String audit(WorkflowBean workflowBean, Model model){
         String taskId = workflowBean.getTaskId();
         String url = workflowBean.getUrl();
@@ -216,7 +212,7 @@ public class WorkflowController{
     /**
      * 查看当前流程图（查看当前活动节点，并使用红色的框标注）
      */
-    @RequestMapping("viewCurrentImage")
+    @RequestMapping("/viewCurrentImage")
     public String viewCurrentImage(WorkflowBean workflowBean, Model model){
         String taskId = workflowBean.getTaskId();
         /** 一：查看流程图 */
@@ -226,11 +222,11 @@ public class WorkflowController{
         /** 二：查看当前活动，获取当期活动对应的坐标x,y,width,height，将4个值存放到Map<String,Object>中 */
         Map<String, Object> map = workflowService.findCoordingByTask(taskId);
         model.addAttribute("acs", map);
-        return "workflow/image";
+        return "/workflow/image";
     }
     
     
-    @RequestMapping("chaim")
+    @RequestMapping("/chaim")
     public String chaim(WorkflowBean workflowBean,HttpServletRequest request){
     	String taskId = workflowBean.getTaskId();
     	String userId = (String)UserUtil.getUserFromSession(request.getSession()).get("USER_LOGIN_NAME");
@@ -241,7 +237,7 @@ public class WorkflowController{
     /**
      * 提交任务
      */
-    @RequestMapping("submitTask")
+    @RequestMapping("/submitTask")
     public String submitTask(WorkflowBean workflowBean, HttpServletRequest request){
     	HttpSession session = request.getSession();
         workflowService.saveSubmitTask(workflowBean, session);
@@ -251,7 +247,7 @@ public class WorkflowController{
     /**
      * 历史流程页面跳转
      */
-    @RequestMapping("historyTaskList")
+    @RequestMapping("/historyTaskList")
     public String toHistoryTaskList(WorkflowBean workflowBean, HttpServletRequest request,Model model){	
     	HttpSession session = request.getSession();
     	Map<String, Object> user = UserUtil.getUserFromSession(session);
@@ -262,7 +258,7 @@ public class WorkflowController{
     /**
      * 查询历史流程
      */
-    @RequestMapping("queryHistoryTaskList")
+    @RequestMapping("/queryHistoryTaskList")
     @ResponseBody
     public List<HistoricProcessInstance> getHistoryTaskList(WorkflowBean workflowBean, HttpServletRequest request,Model model){	
     	HttpSession session = request.getSession();

@@ -208,13 +208,21 @@ function historyTaskPageList(user){
                                 if(billName == 'AllocateBill'){
                                 	billDescription = '房屋调配';
                                 }
-                                tags1 += "<tr><td>"+billDescription +"</td><td>"+currentUser+
-                                "</td><td>"+formatDateTime(item.startTime)+"</td><td><a class='dx-btn-link' href='javaScript:;'>查看任务</ a></td></tr>";
+                                tags1 += "<tr><td>"+billDescription+
+                                "</td><td>"+currentUser+
+                                "</td><td>"+formatDateTime(item.startTime)+
+                            	"</td><td><a style='margin-right:5px' class='dx-btn-link'"+
+                            	"onclick=\"viewForminfo(\'"+item.businessKey+"\')\""+
+								"data-toggle='modal'"+
+								"data-target='#viewForminfo'>查看表单信息</a>"+
+							    "<a class='dx-btn-link'"+
+								"onclick=\"viewExamineRecord(\'"+item.businessKey+"\')\""+
+								"data-toggle='modal'"+
+								"data-target='#viewExamineRecord'>查看审批记录</a>"+
+                                "</td></tr>";
                             }
                             $('#taskSubPage-3 .table tbody').empty().append(tags1);
                         }
-                    }else{
-                        alert("很抱歉，没有数据")
                     }
                 }
             });
