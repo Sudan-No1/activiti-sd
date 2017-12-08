@@ -104,21 +104,22 @@ function viewForminfo(key){
         data:{"businessKey":key},
         dataType:"json",
         success: function(str){
+        	console.log(str);
             tags = "<form class='form-horizontal'><div class='row'>" +
-                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起人</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Unit+"</p></div></div>" +
-                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起单位</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Department+"</p></div></div>" +
-                    "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起部门</label><div class='col-sm-8'><p class='form-control-static'>"+ str.LaunchDate+"</p></div></div>" +
-                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起日期</label><div class='col-sm-8'><p class='form-control-static'>"+ str.BillDescription+"</p></div></div>" +
+                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起人</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Applicant +"</p></div></div>" +
+                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起单位</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Department +"</p></div></div>" +
+                    "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起部门</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Unit +"</p></div></div>" +
+                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>发起日期</label><div class='col-sm-8'><p class='form-control-static'>"+ str.LaunchDate +"</p></div></div>" +
                     "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>编号</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Description+"</p></div></div>" +
                     "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>联系人</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Contact+"</p></div></div>" +
-                    "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>联系方式</label><div class='col-sm-8'><p class='form-control-static'>"+ str.BudgetType+"</p></div></div>" +
+                    "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>联系方式</label><div class='col-sm-8'><p class='form-control-static'>"+ str.ContactNo+"</p></div></div>" +
                     "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋用途</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Purpose+"</p></div></div>" +
                     "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋名称</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Name+"</p></div></div>" +
                     "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋地址</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Address+"</p></div></div>" +
                     "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>需求情况说明</label><div class='col-sm-8'><p class='form-control-static'>"+ str.DemandRemark+"</p></div></div>" +
                     "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋名称(实际)</label><div class='col-sm-8'><p class='form-control-static'>"+ str.AuditName+"</p></div></div>" +
                     "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋地址(实际)</label><div class='col-sm-8'><p class='form-control-static'>"+ str.AuditAddress+"</p></div></div>" +
-                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋面积</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Area+"</p></div></div>" +
+                    "<div class='form-group col-sm-6'><label class='col-sm-4 control-label'>房屋面积</label><div class='col-sm-8'><p class='form-control-static'>"+ str.Area+"&ensp;平方米</p></div></div>" +
                     "</div><div class='row'><div class='form-group col-sm-6'><label class='col-sm-4 control-label'>审核情况说明</label><div class='col-sm-8'><p class='form-control-static'>"+ str.AuditRemark+"</p></div></div>" +
                     "</div></form>";
             $("#viewForminfo .modal-body").append(tags);

@@ -96,7 +96,7 @@
 					</a>
 					<h4 class="modal-title">审核记录</h4>
 				</div>
-				<div class="modal-body"></div>
+				<!-- <div class="modal-body"></div> -->
 
 			</div>
 			<!--/.modal-content-->
@@ -129,10 +129,10 @@
 	    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, billList);
 	   
 		function auditRecordModal(id, billName) {
-			if ($("#auditRecordModal .modal-content").has(".modal-body").length) {
-				$("#auditRecordModal .modal-body").empty();
+			if ($(".modal .modal-content").has(".modal-body").length) {
+				$(".modal .modal-body").empty();
 			} else {
-				$("#auditRecordModal .modal-content").append(
+				$(".modal .modal-content").append(
 						"<div class='modal-body'></div>");
 			}
 			$.ajax({
