@@ -145,7 +145,7 @@
 				<input type="hidden" id="taskId" name="Purpose" th:value="${bill.Purpose }" />
 				<input type="hidden" id="taskId" name="flag" value="true" />
 				<input type="hidden" id="billName" name="billName" value="AllocateBill" /> 
-				<input type="hidden" id="group" name="RoomId" th:value="${bill.RoomId }" />
+				<input type="hidden" id="RoomId" name="RoomId" th:value="${bill.RoomId }" />
 				<div class="row">
                     <div class="form-group">
                         <label class="col-sm-2 control-label">房屋名称</label>
@@ -377,7 +377,8 @@
 	            $("#approvalAddForm input[name='Name']").val(str[current].Description);
 	            $("#approvalAddForm input[name='Address']").val(str[current].RoomLocation);
 	            $("#approvalAddForm input[name='Area']").val(str[current].Area);
-	            $("#approvalAddForm input[name='RoomId']").val(str[current].RoomId);
+	            $("#approvalAddForm input[name='RoomId']").val(str[current].Id);
+	            
 	        });
 	}
 	</script>
