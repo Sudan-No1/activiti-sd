@@ -182,20 +182,20 @@
 				<input type="hidden" id="taskId" name="taskId" th:value="${taskId }" />
 				<input type="hidden" id="id" name="id" th:value="${bill.Id }" /> 
 				<input type="hidden" name="conditionName" value="Purpose,flag"><br>
-				<input type="hidden" id="taskId" name="Purpose" th:value="${bill.Purpose }" />
-				<input type="hidden" id="taskId" name="flag" value="true" />
+				<input type="hidden" id="Purpose" name="Purpose" th:value="${bill.Purpose }" />
+				<input type="hidden" id="flag" name="flag" value="true" />
 				<input type="hidden" id="billName" name="billName" value="AllocateBill" /> 
 				<input type="hidden" id="group" name="nextGroup" value="" />
-                <!-- <div class="form-group">
-                    <label class="col-sm-2 control-label">意见</label>
-                    <div class="col-sm-3">
-                        <select class="form-control" name="">
-                            <option value="" selected>请选择您的意见</option>
-                            <option value="">通过</option>
-                            <option value="">不通过</option>
-                        </select>
-                    </div>
-                </div> -->
+                 <div class="form-group">
+	                    <label class="col-sm-2 control-label">意见</label>
+	                    <div class="col-sm-3">
+	                        <select class="form-control" name="outcome">
+	                            <option value="" selected>请选择您的意见</option>
+	                            <option value="同意">同意</option>
+	                            <option value="不同意">不同意</option>
+	                        </select>
+	                    </div>
+	                </div>
 
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-7">
@@ -207,11 +207,12 @@
                         
                     </div>
                 </div>
-
                 <div class="form-group">
                 	<div class="col-sm-2" ></div>
-                    <div class="col-sm-2" th:each="outcome : ${outcomeList }">
-						<input type="submit" th:onclick="'javascript:fillGroup(\''+${outcome.group }+'\')'" name="outcome" th:value="${outcome.name }" class="btn btn-default" >
+                    <div class="col-sm-2" >
+						<input type="submit" value="提交" class="btn btn-default" >
+<!--                    <div class="col-sm-2" th:each="outcome : ${outcomeList }"> -->
+<!-- 					<input type="submit" th:onclick="'javascript:fillGroup(\''+${outcome.group }+'\')'" name="outcome" th:value="${outcome.name }" class="btn btn-default" > -->
                     </div>
                 </div>
             </form>

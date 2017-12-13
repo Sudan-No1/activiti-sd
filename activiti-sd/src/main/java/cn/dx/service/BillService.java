@@ -19,4 +19,6 @@ public interface BillService {
 
 	void updateBillByAudit(Map<String, Object> params);
 
+	Long findBillIdByDescription(String billName, String description);
+
 }

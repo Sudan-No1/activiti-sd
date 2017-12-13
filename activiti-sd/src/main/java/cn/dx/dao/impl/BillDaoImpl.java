@@ -89,4 +89,10 @@ public class BillDaoImpl implements BillDao{
 		
 	}
 
+	@Override
+	public Long findBillIdByDescription(String billName, String description) {
+		String sql = "select \"Id\" from \""+billName+"\" where \"Description\" = ? and \"Status\" = 'A';";
+		return jdbcTemplate.queryForObject(sql, Long.class,description);
+	}
+
 }

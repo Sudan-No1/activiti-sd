@@ -188,6 +188,26 @@
 						    <p class="form-control-static">平方米</p >
 						</div>
                     </div>
+	                <div class="form-group">
+	                    <label class="col-sm-2 control-label">意见</label>
+	                    <div class="col-sm-3">
+	                        <select class="form-control" name="outcome">
+	                            <option value="" selected>请选择您的意见</option>
+	                            <option value="0">同意</option>
+	                            <option value="1">不同意</option>
+	                        </select>
+	                    </div>
+	                </div>
+	                <div class="form-group">
+                    <label class="col-sm-2 control-label">送往</label>
+                    <div class="col-sm-3">
+                        <select class="form-control"  name="outcome">
+                            <option value="" selected>请选择送往目标</option>
+							<option value="2">送回申请人</option>
+							<option value="2">送上级审批</option>
+                        </select>
+                    </div>
+                </div> 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">审核情况说明</label>
                         <div class="col-sm-7">
@@ -201,8 +221,10 @@
                 </div>
                 <div class="form-group">
                 	<div class="col-sm-2" ></div>
-                    <div class="col-sm-2" th:each="outcome : ${outcomeList }">
-						<input type="submit" name="outcome" th:value="${outcome.name }" class="btn btn-default" >
+                    <div class="col-sm-2">
+<!--                     <div class="col-sm-2" th:each="outcome : ${outcomeList }"> -->
+                    		<input type="submit" value="提交" class="btn btn-default" >
+<!-- 						<input type="submit" name="outcome" th:value="${outcome.name }" class="btn btn-default" > -->
                     </div>
                 </div>
             </form>

@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -20,9 +21,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.dx.form.WorkflowBean;
 import cn.dx.service.BillService;
 import cn.dx.service.CmdbService;
 import cn.dx.service.UserService;
+import cn.dx.service.WorkflowService;
 import cn.dx.utils.UserUtil;
 
 @Controller
@@ -37,6 +40,9 @@ public class BillController {
 	
 	@Autowired
 	private CmdbService cmdbService;
+	
+	@Autowired
+	private WorkflowService workflowService;
 	
 	@RequestMapping(value="/addBill",method=RequestMethod.POST)
 	public String addBill(@RequestParam(value = "file") MultipartFile file,HttpServletRequest request){
@@ -59,6 +65,7 @@ public class BillController {
 				e.printStackTrace();
 			}
 		}
+		HttpSession session = request.getSession();
 		Map<String ,String[]> map=request.getParameterMap();
 		map.put("Attachment", new String[]{fileName});
 		map.put("Path", new String[]{path});
@@ -66,6 +73,13 @@ public class BillController {
 		String username = (String)user.get("USER_LOGIN_NAME");
 		billService.addBill(username,map);
 		String billName = map.get("billName")[0];
+		String description = map.get("Description")[0];
+		Long id = billService.findBillIdByDescription(billName, description);
+		WorkflowBean workflowBean = new WorkflowBean();
+		workflowBean.setBillName(billName);
+		workflowBean.setId(id);
+		workflowBean.setOutcome("提交申请");;
+		workflowService.saveStartProcess(workflowBean,session);
 		return "/bill/list";
 	}
 	

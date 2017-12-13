@@ -22,4 +22,6 @@ public interface BillDao {
 
 	void update(String billName, Map<String, Object> params);
 
+	Long findBillIdByDescription(String billName, String description);
+
 }

@@ -341,6 +341,12 @@ public class WorkflowServiceImpl implements WorkflowService {
 	public void saveSubmitTask(WorkflowBean workflowBean, HttpSession session) {
 		String taskId = workflowBean.getTaskId();
 		String outcome = workflowBean.getOutcome();
+		String message = workflowBean.getComment();
+		if(outcome.equals("同意")){
+			message = "【同意】  "+message;
+		}else if(outcome.equals("不同意")){
+			message = "【不同意】  "+message;
+		}
 		Long id = workflowBean.getId();
 		String billName = workflowBean.getBillName();
 		Map<String, Object> currentUser = UserUtil.getUserFromSession(session);
@@ -351,7 +357,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 				.taskId(taskId)
 				.taskAssignee(username).singleResult();
 		//添加批注信息
-		String message = workflowBean.getComment();
 		String processInstanceId = task.getProcessInstanceId();
 		if(message != null){
 			Authentication.setAuthenticatedUserId(realName);

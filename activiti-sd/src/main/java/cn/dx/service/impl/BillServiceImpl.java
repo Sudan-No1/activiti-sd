@@ -80,4 +80,9 @@ public class BillServiceImpl implements BillService {
 		billDao.update(billName,params);
 	}
 
+	@Override
+	public Long findBillIdByDescription(String billName, String description) {
+		return billDao.findBillIdByDescription(billName,description);
+	}
+
 }
