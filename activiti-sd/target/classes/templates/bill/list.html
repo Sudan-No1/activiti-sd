@@ -1,164 +1,105 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
-<meta charset="UTF-8">
-<title>bill/list</title>
-    <link rel="stylesheet" href="/css/Normalize.css"/>
-<link rel="stylesheet" href="/css/bootstrap.css" />
-<link rel="stylesheet" href="/css/common.css" />
+<html lang="en">
+<head xmlns:th="http://www.thymeleaf.org">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/Normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/pager.css">
+    <title>bill/list</title>
 </head>
 <body>
-	<div class="container-fluid">
-		<div class="row">
-			<aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+<header class="clearfix" th:include="/menu :: copy"></header>
+<main class="clearfix">
+    <aside class="sidebarNav pull-left">
+        <div class="sidebarTitle clearfix">
+            <p class="pull-left"></p>
+        </div>
+        <ul class="nav">
+            <li class="active">
+                <a href="/billController/toBill">表单管理</a>
+            </li>
+            <li>
+                <a href="/workflow/toTask">代办任务</a>
+            </li>
+            <li>
+                <a href="/workflow/historyTaskList">历史任务</a>
+            </li>
 
-				<div th:include="/menu :: copy"></div>
-			</aside>
-			<!-- 导航 end -->
-			<article class="col-lg-9 col-md-9 col-sm-9 pull-right">
-				<a class="foldBtnRight smallIcon"> <span
-					class="expandIcon"></span>
-				</a>
-				<div class="header clearfix">
-					<div class="row">
-						<div class="col-sm-3 selectBox pull-right">
-							<select class="form-control"
-								onchange="window.location=this.value">
-								<option selected value="billList" class="text-center">---------新建表单---------</option>
-								<option
-									value="/billController/AllocateBill/add?billDescription=房屋调配"
-									class="text-center">房屋调配表单</option>
-							</select>
-						</div>
-					</div>
-				</div>
-				<section>
-					<div class="clearfix" id="billListPage">
-						<div class="panel panel-default" id="billList">
-							<div class="panel-body">
-								<table class="table table-condensed table-hover">
-									<thead>
-										<tr>
-											<th width="20%">申请人</th>
-											<th width="20%">申请类型</th>
-											<th width="20%">描述</th>
-											<th width="20%">申请状态</th>
-											<th width="20%">操作</th>
-										</tr>
-									</thead>
-									<tbody>
-									<!-- 
-										<tr th:each="bill : ${list}">
-											<td th:text="${bill.Applicant }"></td>
-											<td th:text="${bill.BillDescription }"></td>
-											<td th:text="${bill.Description }"></td>
-											<td th:text="${bill.ProcessStatus }"></td>
-											<td th:if="${bill.ProcessStatus=='初始录入' }"><a
-												th:href="@{/billController/findBill(id=${bill.Id},billName=${bill.IdClass})}">编辑</a><a
-												th:href="@{/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a><a
-												th:href="@{/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a></td>
-											<td th:if="${bill.ProcessStatus=='审核中' }">
-												<a  style="cursor: pointer;"
-													data-toggle="modal"
-													data-target=".modal"
-													th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a>
-											</td>
-										</tr>
-										 -->
-									</tbody>
-								</table>
-							</div>
+            <li><a></a></li><!--置空 用于样式，勿删-->
+        </ul>
+    </aside>
 
-						</div>
-						<!-- /.panel-->
+    <article class="content pull-right">
+        <a class="cpsMenuBtn collapseX" onclick="sideMenuCollapse('x')">
+            <span class="glyphicon glyphicon-triangle-left"></span>
+        </a>
 
-						<!--/page 分页-->
-						<div aria-label="Page navigation" class="pull-right pages-box">
-							<ul class="pagination" id="billListPages"></ul>
-						</div>
-						<!--/Page-->
+        <div class="searchBar clearfix row">
+            <div class="btn-group pull-left">
+                <button type="button"
+                        class="btn btn-info dropdown-toggle"
+                        data-toggle="dropdown"
+                        aria-haspopup="true"
+                        aria-expanded="false">
+                    新建表单
+                    <span class="glyphicon glyphicon-plus" style="font-size: 12px"></span>
+                </button>
+                <ul class="dropdown-menu">
+                    <li><a href="/billController/AllocateBill/add?billDescription=房屋调配">房屋调配表单</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#">假装有个房租表单</a></li>
+                </ul>
+            </div>
+        </div>
+        <hr>
 
-					</div>
-					<!-- /#billListPage-->
-				</section>
-			</article>
-		</div>
-	</div>
+        <div style="padding-left: 15px;padding-right: 15px;">
+            <div class="panel panel-info">
+                <div class="panel-heading">
+                    表单列表
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="30%">文件名</th>
+                            <th width="15%">版本</th>
+                            <th width="30%">上传日期</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
 
-	<!--添加modal-->
-	<div class="modal fade" tabindex="-1"
-		role="dialog" aria-labelledby="auditRecordLabel">
-		<div class="modal-dialog modal-lg" role="document">
-			<div class="modal-content">
-				<div class="modal-header">
-					<a class="close" data-dismiss="modal"
-						aria-label="Close"> <span aria-hidden="true">&times;</span>
-					</a>
-					<h4 class="modal-title">审核记录</h4>
-				</div>
-				<!-- <div class="modal-body"></div> -->
-
-			</div>
-			<!--/.modal-content-->
-		</div>
-		<!--/.modal-dialog-->
-	</div>
-	<!--/.modal-->
+                        </tbody>
+                    </table>
+                    
+			        <!--分页-->
+			        <div class="pageBox pull-right clearfix">
+			            <ul class="pagination pull-left" id="billListPage1">
+			            </ul>
+			            <div class="pageJump pull-left">
+			                <label class="control-label pull-left">跳页到</label>
+			                <input type="text" class="pull-left"/>
+			                <button type="button" class="button btn btn-primary pull-left">GO</button>
+			            </div>
+			        </div><!-- /.pageBox -->
+                </div>
+            </div>
+        </div>
+    </article>
+</main>
 
 
-	<script src="/js/jquery-3.2.1.js"></script>
-	<script src="/js/bootstrap.min.js"></script>
-	<script src="/js/jqPaginator.js"></script>
-	<script src="/js/util.js"></script>
-	<script src="/js/home.js"></script>
-
-	<script type="text/javascript">
-		var y = ($("#logoImg").outerHeight(true) - $(".selectBox").outerHeight(
-				true)) / 2;
-		$(".selectBox").css("margin-top", y);
-
-		collapseTasksList();
-		
-		var pageObj = {
-		        pUrl: "/billController/billList",
-		        pContainer: "#billListPages",
-		        appendId:"#billList .table tbody",
-		        pNum: 10
-		    };
-		//加载数据
-	    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, billList);
-	   
-		function auditRecordModal(id, billName) {
-			if ($(".modal .modal-content").has(".modal-body").length) {
-				$(".modal .modal-body").empty();
-			} else {
-				$(".modal .modal-content").append(
-						"<div class='modal-body'></div>");
-			}
-			$.ajax({
-				type : "GET",
-				url : "/workflow/viewHisComment?Id=" + id + "&billName="
-						+ billName,
-				dataType : "json",
-				success : function(str) {
-					console.log(str)
-					var tags = '<table class="table table-hover"><thead><tr>'
-							+ '<th width="20%">审核人</th>'
-							+ '<th width="25%">审核时间</th>'
-							+ '<th>审核意见</th></tr></thead><tbody>';
-					$.each(str, function(index, item) {
-						console.log(item.userId)
-						console.log(item.time)
-						console.log(item.fullMessage)
-						tags += '<tr><td>' + item.userId + '</td><td>'
-								+ item.time + '</td><td>' + item.fullMessage
-								+ '</td></tr>';
-					});
-					$(".modal .modal-body").append(tags);
-					tags += '</tbody></table>';
-				}
-			})
-		}
-	</script>
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/pager.js"></script>
+<script src="/js/homeView.js"></script>
+<!--<script src="/js/homeData.js"></script>-->
+<script>
+    /* 导航状态样式 */
+    $("header nav a[href='/billController/toBill']").parent("li").siblings().removeClass("active");
+    $("header nav a[href='/billController/toBill']").parent("li").addClass("active");
+</script>
 </body>
 </html>

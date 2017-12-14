@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+<meta charset="UTF-8">
+<title>bill/list</title>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
+<link rel="stylesheet" href="/css/bootstrap.css" />
+<link rel="stylesheet" href="/css/common.css" />
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+
+				<div th:include="/menu :: copy"></div>
+			</aside>
+			<!-- 导航 end -->
+			<article class="col-lg-9 col-md-9 col-sm-9 pull-right">
+				<a class="foldBtnRight smallIcon"> <span
+					class="expandIcon"></span>
+				</a>
+				<div class="header clearfix">
+					<div class="row">
+						<div class="col-sm-3 selectBox pull-right">
+							<select class="form-control"
+								onchange="window.location=this.value">
+								<option selected value="billList" class="text-center">---------新建表单---------</option>
+								<option
+									value="/billController/AllocateBill/add?billDescription=房屋调配"
+									class="text-center">房屋调配表单</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<section>
+					<div class="clearfix" id="billListPage">
+						<div class="panel panel-default" id="billList">
+							<div class="panel-body">
+								<table class="table table-condensed table-hover">
+									<thead>
+										<tr>
+											<th width="20%">申请人</th>
+											<th width="20%">申请类型</th>
+											<th width="20%">描述</th>
+											<th width="20%">申请状态</th>
+											<th width="20%">操作</th>
+										</tr>
+									</thead>
+									<tbody>
+									<!-- 
+										<tr th:each="bill : ${list}">
+											<td th:text="${bill.Applicant }"></td>
+											<td th:text="${bill.BillDescription }"></td>
+											<td th:text="${bill.Description }"></td>
+											<td th:text="${bill.ProcessStatus }"></td>
+											<td th:if="${bill.ProcessStatus=='初始录入' }"><a
+												th:href="@{/billController/findBill(id=${bill.Id},billName=${bill.IdClass})}">编辑</a><a
+												th:href="@{/billController/deleteBill(id=${bill.Id},billName=${bill.IdClass})}">删除</a><a
+												th:href="@{/workflow/startProcess(id=${bill.Id},billName=${bill.IdClass})}">申请房间</a></td>
+											<td th:if="${bill.ProcessStatus=='审核中' }">
+												<a  style="cursor: pointer;"
+													data-toggle="modal"
+													data-target=".modal"
+													th:onclick="'auditRecordModal(\''+${bill.Id}+'\',\''+${bill.IdClass}+'\')'">查看审核记录</a>
+											</td>
+										</tr>
+										 -->
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+						<!-- /.panel-->
+
+						<!--/page 分页-->
+						<div aria-label="Page navigation" class="pull-right pages-box">
+							<ul class="pagination" id="billListPages"></ul>
+						</div>
+						<!--/Page-->
+
+					</div>
+					<!-- /#billListPage-->
+				</section>
+			</article>
+		</div>
+	</div>
+
+	<!--添加modal-->
+	<div class="modal fade" tabindex="-1"
+		role="dialog" aria-labelledby="auditRecordLabel">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<a class="close" data-dismiss="modal"
+						aria-label="Close"> <span aria-hidden="true">&times;</span>
+					</a>
+					<h4 class="modal-title">审核记录</h4>
+				</div>
+				<!-- <div class="modal-body"></div> -->
+
+			</div>
+			<!--/.modal-content-->
+		</div>
+		<!--/.modal-dialog-->
+	</div>
+	<!--/.modal-->
+
+
+	<script src="/js/jquery-3.2.1.js"></script>
+	<script src="/js/bootstrap.min.js"></script>
+	<script src="/js/jqPaginator.js"></script>
+	<script src="/js/util.js"></script>
+	<script src="/js/home.js"></script>
+
+	<script type="text/javascript">
+		var y = ($("#logoImg").outerHeight(true) - $(".selectBox").outerHeight(
+				true)) / 2;
+		$(".selectBox").css("margin-top", y);
+
+		collapseTasksList();
+		
+		var pageObj = {
+		        pUrl: "/billController/billList",
+		        pContainer: "#billListPages",
+		        appendId:"#billList .table tbody",
+		        pNum: 10
+		    };
+		//加载数据
+	    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, billList);
+	   
+		function auditRecordModal(id, billName) {
+			if ($(".modal .modal-content").has(".modal-body").length) {
+				$(".modal .modal-body").empty();
+			} else {
+				$(".modal .modal-content").append(
+						"<div class='modal-body'></div>");
+			}
+			$.ajax({
+				type : "GET",
+				url : "/workflow/viewHisComment?Id=" + id + "&billName="
+						+ billName,
+				dataType : "json",
+				success : function(str) {
+					console.log(str)
+					var tags = '<table class="table table-hover"><thead><tr>'
+							+ '<th width="20%">审核人</th>'
+							+ '<th width="25%">审核时间</th>'
+							+ '<th>审核意见</th></tr></thead><tbody>';
+					$.each(str, function(index, item) {
+						console.log(item.userId)
+						console.log(item.time)
+						console.log(item.fullMessage)
+						tags += '<tr><td>' + item.userId + '</td><td>'
+								+ item.time + '</td><td>' + item.fullMessage
+								+ '</td></tr>';
+					});
+					$(".modal .modal-body").append(tags);
+					tags += '</tbody></table>';
+				}
+			})
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>drawing</title>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+	
+            <div th:include="/menu :: copy"></div>
+        </aside>
+        <!-- 导航 end -->
+
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right ">
+
+            <a href="javaScript:;"
+               class="foldBtnRight smallIcon">
+                <span class="expandIcon"></span>
+            </a>
+
+            <div class="header clearfix">
+                <div class="row">
+                    <a class="btn btn-default pull-right upLoadBtn"
+                       id="uploadBtn"
+                       data-toggle="modal"
+                       data-target=".modal" >上传
+                    </a><!--drawing upload button-->
+                </div>
+            </div>
+            <section><!--图纸管理-->
+                <div class="clearfix" id="drawingPage">
+                    <!--search 搜索框-->
+                    <div class="row">
+                        <div class="col-lg-12 col-md-12 col-sm-12 dataListSearch">
+                            <form class="input-group" method="get">
+                                <input type="text"
+                                       class="form-control"
+                                       id="drawSearchInp"
+                                       placeholder="请输入搜索条件...">
+                                <span class="input-group-btn">
+                                    <a href="javaScript:;"
+                                       class="btn btn-default"
+                                       id="drawSearchBtn">
+                                        <i class="glyphicon glyphicon-search"></i>
+                                    </a>
+                                </span>
+                            </form><!-- /input-group -->
+                        </div><!-- /.col-lg-10 -->
+                    </div><!-- /.row-->
+
+                    <div class="dataList panel panel-default" id="drawingList">
+                        <div class="panel-body">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+                                    <th width="50%">文件名</th>
+                                    <th width="20%">版本</th>
+                                    <th width="20%">上传日期</th>
+                                    <th width="10%">操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <!-- 数据 加载 -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </div><!-- /.dataList-->
+
+                    <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box">
+                        <ul class="pagination" id="drawingPages"></ul>
+                    </div><!--/Page-->
+
+                </div><!-- /#drawingPage-->
+            </section>
+        </article>
+    </div>
+</div>
+
+<!--上传弹窗-->
+<div class="modal fade"
+     tabindex="-1"
+     role="dialog">
+     <div class="modal-dialog modal-lg">
+	    <div class="modal-content"> 
+	    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!--/.modal-->
+
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jqPaginator.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/home.js"></script>
+<script>
+	var pageObj = {
+	        pUrl: "/json/ex1.json",
+	        pContainer: "#drawingPages",
+	        appendId:"#drawingList .table tbody",
+	        pNum: 10
+	    };
+	//加载数据
+    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, drawingFunc);
+    
+	$("#uploadBtn").click(function(){
+		dialogFormFun("请选择要上传的文件","#",dialogDrawUpload);
+	})
+    
+</script>
+</body>
+</html>

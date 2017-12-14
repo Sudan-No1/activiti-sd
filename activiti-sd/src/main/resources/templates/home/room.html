@@ -1,44 +1,103 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="../css/Normalize.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/pager.css">
     <title>room</title>
-    <link rel="stylesheet" href="css/Normalize.css"/>
-    <link rel="stylesheet" href="css/bootstrap.css"/>
-    <link rel="stylesheet" href="css/common.css"/>
 </head>
 <body>
+<header class="clearfix" th:include="/menu :: copy"></header>
 
-<div class="container-fluid">
-    <div class="row">
-        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+<main class="clearfix">
+	<aside class="sidebarNav pull-left">
+		<div class="sidebarTitle clearfix">
+            <p class="pull-left">房屋列表</p>
+        </div>
+        <ul class="nav">
+            <li class="active">
+                <a href="#">恒基大厦</a>
+            </li>
+            <li>
+                <a href="#">应氏大厦</a>
+            </li>
+            <li>
+                <a href="#">武胜大楼</a>
+            </li>
+            <li>
+                <a href="#">信息大楼</a>
+            </li>
 
-            <div th:include="/menu :: copy"></div>
-        </aside>
-        <!-- 导航 end -->
 
-        <article class="col-lg-9 col-md-9 col-sm-9 pull-right"
-                style="padding-top: 15px;padding-bottom: 15px;">
+            <li>
+                <a href="#">武胜大楼</a>
+            </li>
+            <li>
+                <a href="#">信息大楼</a>
+            </li>
+            <li>
+                <a href="#">应氏大厦</a>
+            </li>
+            <li>
+                <a href="#">武胜大楼</a>
+            </li>
+            <li>
+                <a href="#">信息大楼</a>
+            </li>
+            <li>
+                <a href="#">应氏大厦</a>
+            </li>
+            <li>
+                <a href="#">应氏大厦</a>
+            </li>
+            <li>
+                <a href="#">应氏大厦</a>
+            </li>
+            <li>
+                <a href="#">应氏大厦</a>
+            </li>
+            <li>
+                <a href="#">武胜大楼</a>
+            </li>
+            <li>
+                <a href="#">信息大楼</a>
+            </li>
+            <li>
+                <a></a>
+            </li>
+        </ul>
+    </aside>
 
-            <a href="javaScript:;"
-               class="foldBtnRight smallIcon">
-                <span class="expandIcon"></span>
-            </a>
+    <article class="content pull-right">
+        <a class="cpsMenuBtn collapseX" onclick="sideMenuCollapse('x')">
+            <span class="glyphicon glyphicon-triangle-left"></span>
+        </a>
 
-            <section><!--房间筛选-->
-                <div class="panel panel-default iFrame" id="roomPage" style="margin-bottom: 0;">
-                    <iframe src="" frameborder="0" id="3dFrame" width="100%" height="100%">
+        <a class="cpsMenuBtn collapseY" onclick="sideMenuCollapse('y')">
+            <span class="glyphicon glyphicon-triangle-top"></span>
+        </a>
 
-                    </iframe>
-                </div><!-- /#roomPage-->
-            </section>
-        </article>
-    </div>
-</div>
+        <iframe src=""
+                frameborder="0"
+                id="3dFrame"
+                class="iframe iframe3D"
+                width="100%" height="100%">
 
-<script src="js/jquery-3.2.1.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/jqPaginator.js"></script>
-<script type="text/javascript" src="js/dx-z.js"></script>
+        </iframe>
+    </article>
+</main>
+
+
+<script src="../js/jquery-3.2.1.js"></script>
+<script src="../js/homeView.js"></script>
+<script src="../js/pager.js"></script>
+<script>
+/* 导航状态样式 */
+$("header nav a[href='/room']").parent("li").siblings().removeClass("active");
+$("header nav a[href='/room']").parent("li").addClass("active");
+
+</script>
 </body>
 </html>

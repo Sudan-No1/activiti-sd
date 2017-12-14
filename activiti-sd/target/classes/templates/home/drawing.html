@@ -1,117 +1,115 @@
 <!DOCTYPE html>
-<html>
-<head lang="en">
+<html lang="en">
+<head xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="/css/Normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/pager.css">
     <title>drawing</title>
-    <link rel="stylesheet" href="/css/Normalize.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/css/common.css"/>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
-	
-            <div th:include="/menu :: copy"></div>
-        </aside>
-        <!-- 导航 end -->
+<header class="clearfix" th:include="/menu :: copy"></header>
+   
+<main class="clearfix">
+	<article class="content pull-right">
+		<div class="searchBar clearfix">
+			<div class="input-group col-lg-9 col-md-9 col-sm-9 pull-left">
+				<input type="text" class="form-control">
+				<span class="input-group-btn">
+					<a href="#" class="btn btn-primary">
+						<span class="glyphicon glyphicon-search"></span>
+					</a>
+				</span>
+			</div>
 
-        <article class="col-lg-9 col-md-9 col-sm-9 pull-right ">
+			<a class="btn btn-info pull-left"
+				data-toggle="modal"
+				data-target=".modal"
+				onclick="modalShow('请上传图纸', true, drawUploadFunc)">
+				上传
+				<span class="glyphicon glyphicon-share-alt"></span>
+			</a>
+		</div>
+            
+		<hr>
 
-            <a href="javaScript:;"
-               class="foldBtnRight smallIcon">
-                <span class="expandIcon"></span>
-            </a>
+		<div style="padding-left: 15px;padding-right: 15px;">
+			<div class="panel panel-info">
+				<div class="panel-heading">
+					图纸列表
+				</div>
+				<div class="panel-body">
+					<table class="table">
+	                    <thead>
+	                    <tr>
+	                        <th width="30%">文件名</th>
+	                        <th width="15%">版本</th>
+							<th width="30%">上传日期</th>
+							<th>操作</th>
+						</tr>
+						</thead>
+						<tbody>
 
-            <div class="header clearfix">
-                <div class="row">
-                    <a class="btn btn-default pull-right upLoadBtn"
-                       id="uploadBtn"
-                       data-toggle="modal"
-                       data-target=".modal" >上传
-                    </a><!--drawing upload button-->
-                </div>
-            </div>
-            <section><!--图纸管理-->
-                <div class="clearfix" id="drawingPage">
-                    <!--search 搜索框-->
-                    <div class="row">
-                        <div class="col-lg-12 col-md-12 col-sm-12 dataListSearch">
-                            <form class="input-group" method="get">
-                                <input type="text"
-                                       class="form-control"
-                                       id="drawSearchInp"
-                                       placeholder="请输入搜索条件...">
-                                <span class="input-group-btn">
-                                    <a href="javaScript:;"
-                                       class="btn btn-default"
-                                       id="drawSearchBtn">
-                                        <i class="glyphicon glyphicon-search"></i>
-                                    </a>
-                                </span>
-                            </form><!-- /input-group -->
-                        </div><!-- /.col-lg-10 -->
-                    </div><!-- /.row-->
+						</tbody>
+					</table>
+					
+					<!--分页-->
+					<div class="pageBox pull-right clearfix">
+						<ul class="pagination pull-left" id="drawpage1">
+						</ul>
+						<div class="pageJump pull-left">
+							<label class="control-label pull-left">跳页到</label>
+							<input type="text" class="pull-left"/>
+							<button type="button" class="button btn btn-primary pull-left">GO</button>
+						</div>
+					</div><!-- /.pageBox -->
+				</div>
+			</div>
+		</div>
+	</article>
+</main>
 
-                    <div class="dataList panel panel-default" id="drawingList">
-                        <div class="panel-body">
-                            <table class="table table-condensed table-hover">
-                                <thead>
-                                <tr>
-                                    <th width="50%">文件名</th>
-                                    <th width="20%">版本</th>
-                                    <th width="20%">上传日期</th>
-                                    <th width="10%">操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <!-- 数据 加载 -->
-                                </tbody>
-                            </table>
-                        </div>
-
-                    </div><!-- /.dataList-->
-
-                    <!--/page 分页-->
-                    <div aria-label="Page navigation" class="pull-right pages-box">
-                        <ul class="pagination" id="drawingPages"></ul>
-                    </div><!--/Page-->
-
-                </div><!-- /#drawingPage-->
-            </section>
-        </article>
-    </div>
-</div>
 
 <!--上传弹窗-->
 <div class="modal fade"
-     tabindex="-1"
-     role="dialog">
-     <div class="modal-dialog modal-lg">
-	    <div class="modal-content"> 
-	    </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
+		tabindex="-1"
+		role="dialog">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content"></div><!-- /.modal-content -->
+	</div><!-- /.modal-dialog -->
 </div><!--/.modal-->
 
 <script src="/js/jquery-3.2.1.js"></script>
 <script src="/js/bootstrap.min.js"></script>
-<script src="/js/jqPaginator.js"></script>
-<script src="/js/util.js"></script>
-<script src="/js/home.js"></script>
+<script src="/js/pager.js"></script>
+<script src="/js/homeView.js"></script>
+<script src="/js/homeData.js"></script>
 <script>
-	var pageObj = {
-	        pUrl: "/json/ex1.json",
-	        pContainer: "#drawingPages",
-	        appendId:"#drawingList .table tbody",
-	        pNum: 10
-	    };
-	//加载数据
-    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, drawingFunc);
-    
-	$("#uploadBtn").click(function(){
-		dialogFormFun("请选择要上传的文件","#",dialogDrawUpload);
-	})
-    
+/* 导航状态样式 */
+$("header nav a[href='/drawing']").parent("li").siblings().removeClass("active");
+$("header nav a[href='/drawing']").parent("li").addClass("active");
+
+    /*显示弹框*/
+
+    function drawUploadFunc(){
+        return  '<div class="modal-body">' +
+                '<form class="form-horizontal" action="#">' +
+                '<div class="form-group">' +
+                '<div class="col-lg-offset-1 col-lg-6 attachText">' +
+                '<div class="input-group">' +
+                '<div class="form-control"></div>' +
+                '<div class="input-group-btn">' +
+                '<a class="btn btn-default">' +
+                '<span class="glyphicon glyphicon-folder-open"></span>上传' +
+                '<input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />' +
+                '</a></div></div></div></div></form></div>';
+    }
+
+    /*上传输入框显示文件名*/
+    function loadFile(file){
+        $(".attachText div.form-control").text(file.name);
+    }
 </script>
 </body>
 </html>

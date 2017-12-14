@@ -1,0 +1,257 @@
+/*滚动条*/
+::-webkit-scrollbar {
+    width: 12px;
+    background-color: transparent;
+} /* 这是针对缺省样式 (必须的) */
+
+::-webkit-scrollbar-track {
+    background-color: transparent;
+} /* 滚动条的滑轨背景颜色 */
+
+::-webkit-scrollbar-thumb {
+    background-color: rgba(240, 240, 240, 0.7);
+    border: 1px solid rgba(161, 161, 161, 0.5);
+    border-radius: 5px;
+} /* 滑块颜色 */
+
+::-webkit-scrollbar-button {
+    display: none;
+} /* 滑轨两头的监听按钮颜色 */
+
+::-webkit-scrollbar-corner {
+    background-color: transparent;
+} /* 横向滚动条和纵向滚动条相交处尖角的颜色 */
+
+
+/*reset bootstrap-css*/
+.navbar-right {
+    float: right!important;
+    margin-right: 0;
+}
+hr{
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+
+.table>thead:first-child>tr:first-child>th{
+    border-right: 1px solid #e8e8e8;
+}
+.table>thead:first-child>tr:first-child>th:last-child{
+    border-right: 0;
+}
+
+.table{
+    margin-bottom: 15px;
+}
+
+.pagination {
+    margin: 15px 0;
+}
+
+select.form-control optgroup{
+    height: 20px;
+    line-height: 20px;
+    font-size: 14px;
+}
+
+select.form-control optgroup option{
+
+}
+
+/*layout*/
+body{
+    overflow: hidden;
+}
+
+header, main{
+    width: 100%;
+}
+
+.sidebarNav{
+    width: 16.666667%;
+}
+.content{
+    width: 83.333333%;
+    background-color: #f5f5f5;
+}
+
+/*style*/
+header{
+    background-color: #04a6a8;
+}
+
+header nav .nav li a{
+    color: #fff;
+    padding-right: 20px;
+    padding-left: 20px;
+    border-left: 1px solid #0eb0b1;
+}
+header nav .nav li.active a{
+    background-color: #037f7e;
+    color: #fff;
+}
+
+header nav .nav li a .glyphicon{
+    display: block;
+    text-align: center;
+    font-size: 26px;
+    padding-bottom: 5px;
+
+}
+
+header nav .nav li a:hover, header nav .nav li a:focus{
+    background-color: #037f7e;
+    color: #fff;
+}
+
+header nav ul:last-child li a{
+    cursor: pointer;
+}
+
+/*aside*/
+.sidebarNav{
+    background-color: #34343c;
+}
+
+.sidebarNav .sidebarTitle{
+    padding: 10px 15px;
+    background-color: #34343c;
+    border-top: 1px solid #3a3a43;
+    border-bottom: 1px solid #303139;
+}
+
+.sidebarNav .sidebarTitle p{
+    margin: 0;
+    height: 30px;
+    color: #ebebeb;
+    font-size: 17px;
+    font-weight: bold;
+    line-height: 32px;
+}
+
+.sidebarNav ul{
+    background-color: #34343c;
+}
+
+.sidebarNav ul li a{
+    padding-left: 30px;
+    color: #bababa;
+    border-top: 1px solid #3a3a43;
+    border-bottom: 1px solid #303139;
+}
+
+.sidebarNav ul li:last-child a{
+    border-bottom: 0;
+}
+
+.sidebarNav ul li.active a{
+    background-color: #04a6a8;
+    border-top: 1px solid #52c2de;
+    border-bottom: 1px solid #52c2de;
+    color: #333;
+}
+
+.sidebarNav ul li a:hover, .sidebarNav ul li a:focus{
+    background-color: #04a6a8;
+    color: #333;
+    border-top: 1px solid #52c2de;
+    border-bottom: 1px solid #52c2de;
+}
+
+.sidebarNav ul li:last-child a:hover, .sidebarNav ul li:last-child a:focus{
+    background-color: #34343c;
+    border-top: 1px solid #3a3a43;
+    border-bottom: 1px solid #34343c;
+}
+
+
+/*article*/
+article{
+    position: relative;
+    overflow-y: scroll;
+}
+
+/*侧栏折叠按钮*/
+article a.cpsMenuBtn{
+    text-decoration: none;
+    cursor: pointer;
+}
+
+article .cpsMenuBtn{
+    position: absolute;
+    background-color: rgba(54, 54, 61, 0.5);
+    color: #e5e5e5;
+    font-size: 12px;
+    z-index: 20;
+}
+
+article .cpsMenuBtn .glyphicon{
+    display: block;
+    top: 0;
+}
+
+article .collapseX{
+    top: 50%;
+    left: 0;
+    padding: 20px 0;
+    width: 16px;
+    border-top-right-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+article .collapseY{
+    top: 0;
+    left: 50%;
+    padding: 0 20px;
+    height: 16px;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+}
+
+.searchBar{
+    margin: 15px;
+}
+
+.searchBar>a{
+    margin-left: 15px;
+}
+
+main article table.table tr:last-child td{
+    border-bottom: 1px solid #ddd;
+}
+
+/*文件上传样式*/
+.attachText .btn{
+    position: relative;
+    overflow: hidden;
+}
+
+.attachText .btn input[type='file']{
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 34px;
+    opacity: 0;
+    z-index: 20;
+}
+
+.attachText .btn .glyphicon{
+    margin-right: 5px;
+    text-align: center;
+}
+
+/*iframe 嵌套*/
+article .iframe{
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 19;
+}
+
+article .iframe3D{
+
+}
+
+
+

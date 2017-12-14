@@ -1,106 +1,88 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
-<head lang="en">
+<html lang="en">
+<head xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
-    <title>dx</title>
-    <link rel="stylesheet" href="/css/Normalize.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.css"/>
-    <link rel="stylesheet" href="/css/common.css"/>
+    <link rel="stylesheet" href="../css/Normalize.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/home.css">
+    <link rel="stylesheet" href="../css/pager.css">
+    <title>taskList</title>
 </head>
 <body>
-<div class="container-fluid">
-    <div class="row">
-        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
- 			<div th:include="/menu :: copy"></div>
-        </aside>
-        <!-- 导航 end -->
-        <article class="col-lg-9 col-md-9 col-sm-9 pull-right"
-                style="padding-top: 25px;">
-             <a href="javaScript:;"
-             class="foldBtnRight smallIcon">
-              <span class="expandIcon"></span>
-            </a>
-            <section><!--任务管理 -- 待办任务-->
-                <div class="clearfix" id="taskSubPage-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading">
-                            	个人任务  
-                        </div>
-                        <div class="panel-body">
-                            <table class="table table-condensed table-hover">
-                                <thead>
-                                <tr>
-	                                <th width="10%">任务ID</th>
-									<th width="20%">任务类型</th>
-									<th width="20%">任务名称</th>
-									<th width="20%">创建时间</th>
-									<th width="10%">办理人</th>
-									<th>操作</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                
-                                <!-- <tr th:each="task : ${userTasks}">
-									<td th:text="${task.id  }"></td>
-                                    <td th:if="${#strings.arraySplit(task.formKey,'/')[0] =='AllocateBill'}">
-                                	房调流程
-                                	</td>
-									<td th:text="${task.name }"></td>
-									<td th:text="${#dates.format(task.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
-									<td th:text="${realName}"></td>
-									<td>
-										<a th:href="@{/workflow/viewTaskForm(taskId=${task.id})}">办理任务</a> 
-										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a>	
-									</td>
-                                </tr> -->
-                                
-                                </tbody>
-                            </table>
-                        </div>
-						<!--/page 分页-->
-	                    <div aria-label="Page navigation" class="pull-right pages-box">
-	                        <ul class="pagination" id="taskListPages"></ul>
-	                    </div><!--/Page-->
-	                    </div>
+<header class="clearfix" th:include="/menu :: copy"></header>
 
-                </div><!-- /#taskSubPage2-->
-            </section>
-        </article>
-    </div>
-</div>
+<main class="clearfix">
+    <aside class="sidebarNav pull-left">
+        <div class="sidebarTitle clearfix">
+            <p class="pull-left"></p>
+        </div>
+        <ul class="nav">
+            <li>
+                <a href="/billController/toBill">表单管理</a>
+            </li>
+            <li class="active">
+                <a href="/workflow/toTask">代办任务</a>
+            </li>
+            <li>
+                <a href="/workflow/historyTaskList">历史任务</a>
+            </li>
 
-<!--查看弹窗-->
-<div class="modal fade"
-     tabindex="-1"
-     role="dialog">
-     <div class="modal-dialog modal-lg">
-	    <div class="modal-content">
-	
-	    </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div><!--/.modal-->
+            <li><a></a></li><!--置空 用于样式，勿删-->
+        </ul>
+    </aside>
+
+    <article class="content pull-right">
+        <a class="cpsMenuBtn collapseX" onclick="sideMenuCollapse('x')">
+            <span class="glyphicon glyphicon-triangle-left"></span>
+        </a>
+
+        <div style="padding-left: 15px; padding-right: 15px; padding-top: 15px;">
+            <div class="panel panel-success">
+                <div class="panel-heading">
+                    个人任务
+                </div>
+                <div class="panel-body">
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th width="30%">文件名</th>
+                            <th width="15%">版本</th>
+                            <th width="30%">上传日期</th>
+                            <th>操作</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        </tbody>
+                    </table>
+                    
+			        <!--分页-->
+			        <div class="pageBox pull-right clearfix">
+			            <ul class="pagination pull-left" id="taskListPage1">
+			            </ul>
+			            <div class="pageJump pull-left">
+			                <label class="control-label pull-left">跳页到</label>
+			                <input type="text" class="pull-left"/>
+			                <button type="button" class="button btn btn-primary pull-left">GO</button>
+			            </div>
+			        </div><!-- /.pageBox -->
+				</div>
+			</div>
+        </div>
+    </article>
+</main>
 
 
-
-
-<script src="/js/jquery-3.2.1.js"></script>
-<script src="/js/bootstrap.min.js"></script>
-<script src="/js/jqPaginator.js"></script>
-<script src="/js/util.js"></script>
-<script src="/js/home.js"></script>
-<script type="text/javascript">
-	collapseTasksList();
-	
-	var pageObj = {
-	        pUrl: "/workflow/listTask",
-	        pContainer: "#taskListPages",
-	        appendId:"#taskSubPage-2 .table tbody",
-	        pNum: 10
-	    };
-	//加载数据
-    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, taskListFunc);
+<script src="../js/jquery-3.2.1.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/pager.js"></script>
+<script src="../js/homeView.js"></script>
+<!--<script src="../js/homeData.js"></script>-->
+<script>
+/* 导航状态样式 */
+$("header nav a[href='/billController/toBill']").parent("li").siblings().removeClass("active");
+$("header nav a[href='/billController/toBill']").parent("li").addClass("active");
     
-	
 </script>
 </body>
 </html>

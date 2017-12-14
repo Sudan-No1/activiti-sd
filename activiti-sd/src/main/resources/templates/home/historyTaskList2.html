@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>historyTaskList</title>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+   
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+        
+ 			<div th:include="/menu :: copy"></div>
+        </aside>
+        <!-- 导航 end -->
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right"
+                style="padding-top: 15px;">
+                
+			<a href="javaScript:;"
+               class="foldBtnRight smallIcon">
+                <span class="expandIcon"></span>
+            </a>
+            <section><!--任务管理 -- 历史任务-->
+                <div class="panel panel-default clearfix" id="taskSubPage-3">
+                    <div class="panel-body">
+                        <table class="table table-condensed table-hover text-center">
+                            <thead >
+                            <tr >
+                                <th width="25%" class="text-center">申请类型</th>
+                                <th width="20%" class="text-center">申请人</th>
+                                <th width="20%" class="text-center">申请日期</th>
+                                <th width="35%" class="text-center">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                     <!--/page 分页-->
+                    <div aria-label="Page navigation" class="pull-right pages-box" style="margin-right: 15px;">
+                        <ul class="pagination" id="processPages-3"></ul>
+                    </div><!--/Page-->
+                </div><!-- /#taskSubPage3-->
+            </section>
+        </article>
+    </div>
+</div>
+<!--查看表单信息-->
+<div class="modal fade"
+     id="viewForminfo"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="viewRecordLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="javaScript:;"
+                   class="close"
+                   data-dismiss="modal"
+                   aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title">
+                    表单信息
+                </h4>
+            </div>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#viewExamineRecord-->
+<!--查看审批记录-->
+<div class="modal fade"
+     id="viewExamineRecord"
+     tabindex="-1"
+     role="dialog"
+     aria-labelledby="viewRecordLabel">
+    <div class="modal-dialog modal-lg" role="document"><!--修改弹窗大小 modal-lg / modal-sm -->
+        <div class="modal-content">
+            <div class="modal-header">
+                <a href="javaScript:;"
+                   class="close"
+                   data-dismiss="modal"
+                   aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </a>
+                <h4 class="modal-title">
+                    审批记录
+                </h4>
+            </div>
+        </div><!--/.modal-content-->
+    </div><!--/.modal-dialog-->
+</div><!--/#viewExamineRecord-->
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jqPaginator.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/home.js"></script>
+<script src="/js/form/allocateBill.js"></script>
+<script th:inline="javascript">
+	var currentUser =  [[${realname}]];
+	collapseTasksList();
+	var pageObj = {
+	        pUrl: "/workflow/queryHistoryTaskList",
+	        pContainer: "#processPages-3",
+	        appendId:"#taskSubPage-3 .table tbody",
+	        pNum: 10
+	    };
+
+    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, historyTaskPageList);
+    
+	
+</script>
+</body>
+</html>

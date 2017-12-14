@@ -1,0 +1,72 @@
+	
+	<div th:fragment="copy" >
+            <a href="javaScript:;"
+               class="foldBtnLeft smallIcon">
+                <span class="collapseIcon"></span>
+            </a>
+
+            <div class="header clearfix">
+                <div class="row">
+                    <!--网站名 or logo-->
+                    <a href="javaScript:;" target="_blank">
+                        <img class="logoImg col-lg-12 col-md-12 col-sm-12"
+                             id="logoImg"
+                             src="/images/logo.png"
+                             alt="Logo" />
+                    </a>
+                </div>
+            </div>
+
+            <ul class="nav navbar-default menu" role="navigation">
+                <li class="">
+                    <a href="/drawing"
+                       id="drawingLabel">
+                        <span class="glyphicon glyphicon-picture"></span> 图纸管理
+                    </a>
+                </li>
+                 <li>
+                    <a href="/room"
+                       id="roomLabel"
+                       data-toggle="collapse"
+                       data-target="#navCollapse-3">
+                        <span class="glyphicon glyphicon-home"></span> 房屋信息
+                    </a>
+                    <ul class="collapse nav" id="navCollapse-3"><!--下拉菜单2-->
+                        <li>
+                            <a href="javaScript:getBuildingInfo('http://192.168.170.128:1517/dcv-web/dcv/home.html?ID=10001&userName=admin&userPassword=admin123')" id="roomSubLabel-1">信息大楼</a>
+                        </li>
+                        <li>
+                            <a href="javaScript:getBuildingInfo('http://www.jq22.com/jquery-info122')" id="roomSubLabel-2">武胜大楼</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                	<a href="/workflow/deployHome"
+                       id="flowLabel">
+                        <span class="glyphicon glyphicon-retweet"></span> 流程管理
+                    </a>
+                </li>
+                 <li>
+                    <a href="javaScript:;"
+                       id="tasksLabel"
+                       data-toggle="collapse"
+                       data-target="#navCollapse-2">
+                        <span class="glyphicon glyphicon-tasks"></span> 任务管理
+                    </a>
+                    <ul class="collapse nav" id="navCollapse-2"><!--下拉菜单2-->
+                        <li>
+                            <a href="/billController/toBill" id="taskSubLabel-1">表单管理</a>
+                        </li>
+                        <li>
+                            <a href="/workflow/toTask" id="taskSubLabel-2">待办任务</a>
+                        </li>
+                        <li>
+                            <a href="/workflow/historyTaskList" id="taskSubLabel-3">历史任务</a>
+                        </li>
+                    </ul>
+                </li>
+            </ul>
+</div>
+
+
+

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>dx</title>
+    <link rel="stylesheet" href="/css/Normalize.css"/>
+    <link rel="stylesheet" href="/css/bootstrap.css"/>
+    <link rel="stylesheet" href="/css/common.css"/>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <aside class="col-lg-3 col-md-3 col-sm-3 pull-left">
+ 			<div th:include="/menu :: copy"></div>
+        </aside>
+        <!-- 导航 end -->
+        <article class="col-lg-9 col-md-9 col-sm-9 pull-right"
+                style="padding-top: 25px;">
+             <a href="javaScript:;"
+             class="foldBtnRight smallIcon">
+              <span class="expandIcon"></span>
+            </a>
+            <section><!--任务管理 -- 待办任务-->
+                <div class="clearfix" id="taskSubPage-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            	个人任务  
+                        </div>
+                        <div class="panel-body">
+                            <table class="table table-condensed table-hover">
+                                <thead>
+                                <tr>
+	                                <th width="10%">任务ID</th>
+									<th width="20%">任务类型</th>
+									<th width="20%">任务名称</th>
+									<th width="20%">创建时间</th>
+									<th width="10%">办理人</th>
+									<th>操作</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                
+                                <!-- <tr th:each="task : ${userTasks}">
+									<td th:text="${task.id  }"></td>
+                                    <td th:if="${#strings.arraySplit(task.formKey,'/')[0] =='AllocateBill'}">
+                                	房调流程
+                                	</td>
+									<td th:text="${task.name }"></td>
+									<td th:text="${#dates.format(task.createTime, 'yyyy-MM-dd HH:mm:ss')}"></td>
+									<td th:text="${realName}"></td>
+									<td>
+										<a th:href="@{/workflow/viewTaskForm(taskId=${task.id})}">办理任务</a> 
+										<a target="_blank" th:href="@{/workflow/viewCurrentImage(taskId=${task.id})}">查看当前流程图</a>	
+									</td>
+                                </tr> -->
+                                
+                                </tbody>
+                            </table>
+                        </div>
+						<!--/page 分页-->
+	                    <div aria-label="Page navigation" class="pull-right pages-box">
+	                        <ul class="pagination" id="taskListPages"></ul>
+	                    </div><!--/Page-->
+	                    </div>
+
+                </div><!-- /#taskSubPage2-->
+            </section>
+        </article>
+    </div>
+</div>
+
+<!--查看弹窗-->
+<div class="modal fade"
+     tabindex="-1"
+     role="dialog">
+     <div class="modal-dialog modal-lg">
+	    <div class="modal-content">
+	
+	    </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!--/.modal-->
+
+
+
+
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/jqPaginator.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/home.js"></script>
+<script type="text/javascript">
+	collapseTasksList();
+	
+	var pageObj = {
+	        pUrl: "/workflow/listTask",
+	        pContainer: "#taskListPages",
+	        appendId:"#taskSubPage-2 .table tbody",
+	        pNum: 10
+	    };
+	//加载数据
+    pageList(pageObj.pUrl, pageObj.pContainer, pageObj.pNum, pageObj.appendId, taskListFunc);
+    
+	
+</script>
+</body>
+</html>
