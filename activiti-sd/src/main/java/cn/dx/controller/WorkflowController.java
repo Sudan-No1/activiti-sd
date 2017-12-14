@@ -11,7 +11,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -25,6 +24,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import cn.dx.domain.PageBean;
 import cn.dx.form.WorkflowBean;
 import cn.dx.service.BillService;
 import cn.dx.service.WorkflowService;
@@ -42,14 +42,28 @@ public class WorkflowController{
     
     /** 发布首页	*/
     @RequestMapping("/deployHome")
-    public String deployHome(Model model)
+    public String deployHome()
     {
-        List<Deployment> depList = workflowService.findDeploymentList();
-        List<ProcessDefinition> pdList = workflowService.findProcessDefinitionList();
-        model.addAttribute("depList", depList);
-        model.addAttribute("pdList", pdList);
         return "/workflow/workflow";
     }
+    
+    @RequestMapping("/getDepList")
+    @ResponseBody
+    public PageBean<Map<String,Object>> getDepList(Integer pageNum,Integer pageSize){
+    	PageBean<Map<String,Object>> depList = workflowService.findDeploymentList(pageNum,pageSize);
+    	return depList;
+    }
+    
+    /** 发布首页	*/
+    @RequestMapping("/getPdList")
+    @ResponseBody
+    public PageBean<Map<String,Object>>  getPdList(Integer pageNum,Integer pageSize)
+    {
+    	PageBean<Map<String,Object>> pdList = workflowService.findProcessDefinitionList(pageNum,pageSize);
+    	return pdList;
+    }
+    
+    
     
     /** 发布流程	*/
     @RequestMapping(value="/deploy",method=RequestMethod.POST)

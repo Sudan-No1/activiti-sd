@@ -32,11 +32,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.dx.dao.BillDao;
+import cn.dx.dao.CmdbDao;
 import cn.dx.dao.UserDao;
+import cn.dx.domain.PageBean;
 import cn.dx.form.WorkflowBean;
 import cn.dx.service.WorkflowService;
 import cn.dx.utils.StringUtils;
 import cn.dx.utils.UserUtil;
+import cn.dx.wsdl.service.OAService;
 
 @Service("workflowService")
 public class WorkflowServiceImpl implements WorkflowService {
@@ -60,6 +63,14 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private CmdbDao cmdbDao;
+	
+	@Autowired
+	private OAService oaService;
+	
+	
 
 	/** 部署流程定义 */
 	@Override
@@ -96,20 +107,57 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	/** 查询部署对象信息，对应表（act_re_deployment） */
 	@Override
-	public List<Deployment> findDeploymentList() {
-		List<Deployment> list = repositoryService.createDeploymentQuery()// 创建部署对象查询
+	public PageBean<Map<String,Object>> findDeploymentList(Integer pageNum, Integer pageSize) {
+		int totalRecord  = repositoryService.createDeploymentQuery()// 创建部署对象查询
 				.orderByDeploymenTime().asc()//
-				.list();
-		return list;
+				.list()
+				.size();
+		PageBean<Map<String,Object>> pb = new PageBean<>(pageNum, pageSize, totalRecord);
+		int startIndex = pb.getStartIndex();
+		List<Deployment> listDeployment = repositoryService.createDeploymentQuery()// 创建部署对象查询
+				.orderByDeploymenTime().asc()//
+				.list()
+				.subList(startIndex, startIndex+pageSize);
+		List<Map<String,Object>> list = new ArrayList<>();
+		for (Deployment deployment : listDeployment) {
+			Map<String,Object> map = new HashMap<>();
+			map.put("id", deployment.getId());
+			map.put("name", deployment.getName());
+			map.put("getDeploymentTime",  deployment.getDeploymentTime());
+			list.add(map);
+		}
+		pb.setList(list);
+		return pb;
 	}
 
 	/** 查询流程定义的信息，对应表（act_re_procdef） */
 	@Override
-	public List<ProcessDefinition> findProcessDefinitionList() {
-		List<ProcessDefinition> list = repositoryService.createProcessDefinitionQuery()// 创建流程定义查询
+	public PageBean<Map<String,Object>> findProcessDefinitionList(Integer pageNum, Integer pageSize) {
+		int totalRecord = repositoryService.createProcessDefinitionQuery()// 创建流程定义查询
 				.orderByProcessDefinitionVersion().asc()//
-				.list();
-		return list;
+				.list()
+				.size();
+		
+		PageBean<Map<String,Object>> pb = new PageBean<>(pageNum, pageSize, totalRecord);
+		int startIndex = pb.getStartIndex();
+		List<ProcessDefinition> listProcessDefinition = repositoryService.createProcessDefinitionQuery()// 创建流程定义查询
+				.orderByProcessDefinitionVersion().asc()//
+				.list()
+				.subList(startIndex, startIndex+pageSize);
+		List<Map<String,Object>> list = new ArrayList<>();
+		for (ProcessDefinition processDefinition : listProcessDefinition) {
+			Map<String,Object> map = new HashMap<>();
+			map.put("id", processDefinition.getId());
+			map.put("name", processDefinition.getName());
+			map.put("key",  processDefinition.getKey());
+			map.put("version",  processDefinition.getVersion());
+			map.put("resourceName",  processDefinition.getResourceName());
+			map.put("diagramResourceName",  processDefinition.getDiagramResourceName());
+			map.put("deploymentId",  processDefinition.getDeploymentId());
+			list.add(map);
+		}
+		pb.setList(list);
+		return pb;
 	}
 
 	/** 使用部署对象ID和资源图片名称，获取图片的输入流 */
@@ -352,6 +400,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Map<String, Object> currentUser = UserUtil.getUserFromSession(session);
 		String username = (String) currentUser.get("USER_LOGIN_NAME");
 		String realName = (String) currentUser.get("REAL_NAME");
+		String createOrg = (String) currentUser.get("ORGANIZATION_NAME");
 		
 		Task task = taskService.createTaskQuery()
 				.taskId(taskId)
@@ -370,10 +419,20 @@ public class WorkflowServiceImpl implements WorkflowService {
 		}
 		
 		taskService.complete(taskId, variables);
-
+		String result = oaService.completeTask(taskId, billName, "",null,null, createOrg, username, realName);
 		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
 				.processInstanceId(processInstanceId)// 使用流程实例ID查询
 				.singleResult();
+		String assignee = taskService.createTaskQuery()
+					.processInstanceId(pi.getId())
+					.singleResult()
+					.getAssignee();
+		Map<String, Object> nextUser = userDao.getUserByUserName(assignee);
+		String receiveUser = (String) nextUser.get("USER_LOGIN_NAME");
+		String receiveUserName = (String) nextUser.get("REAL_NAME");
+		String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
+		System.out.println(result);
+		System.out.println(result2);
 		// 流程结束了
 		if (pi == null) {
 			// 更新请假单表的状态从1变成2（审核中-->审核完成）

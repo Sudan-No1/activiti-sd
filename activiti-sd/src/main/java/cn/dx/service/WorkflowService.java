@@ -13,14 +13,15 @@ import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.dx.domain.PageBean;
 import cn.dx.form.WorkflowBean;
 
 public interface WorkflowService
 {
     
-    List<Deployment> findDeploymentList();
+	PageBean<Map<String,Object>> findDeploymentList(Integer pageNum, Integer pageSize);
     
-    List<ProcessDefinition> findProcessDefinitionList();
+    PageBean<Map<String,Object>> findProcessDefinitionList(Integer pageNum, Integer pageSize);
     
     InputStream findImageInputStream(String deploymentId, String imageName);
     
