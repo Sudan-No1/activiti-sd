@@ -39,7 +39,6 @@ import cn.dx.form.WorkflowBean;
 import cn.dx.service.WorkflowService;
 import cn.dx.utils.StringUtils;
 import cn.dx.utils.UserUtil;
-import cn.dx.wsdl.service.OAService;
 
 @Service("workflowService")
 public class WorkflowServiceImpl implements WorkflowService {
@@ -67,8 +66,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	@Autowired
 	private CmdbDao cmdbDao;
 	
-	@Autowired
-	private OAService oaService;
+	/*@Autowired
+	private OAService oaService;*/
 	
 	
 
@@ -417,8 +416,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		}
 		
 		taskService.complete(taskId, variables);
-		String result = oaService.completeTask(taskId, billName, "",null,null, createOrg, username, realName);
-		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
+/*		String result = oaService.completeTask(taskId, billName, "",null,null, createOrg, username, realName);
+*/		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
 				.processInstanceId(processInstanceId)// 使用流程实例ID查询
 				.singleResult();
 		String assignee = taskService.createTaskQuery()
@@ -428,9 +427,9 @@ public class WorkflowServiceImpl implements WorkflowService {
 		Map<String, Object> nextUser = userDao.getUserByUserName(assignee);
 		String receiveUser = (String) nextUser.get("USER_LOGIN_NAME");
 		String receiveUserName = (String) nextUser.get("REAL_NAME");
-		String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
+	/*	String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
 		System.out.println(result);
-		System.out.println(result2);
+		System.out.println(result2);*/
 		// 流程结束了
 		if (pi == null) {
 			// 更新请假单表的状态从1变成2（审核中-->审核完成）
