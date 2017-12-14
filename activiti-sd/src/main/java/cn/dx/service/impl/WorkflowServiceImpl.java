@@ -116,8 +116,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		int startIndex = pb.getStartIndex();
 		List<Deployment> listDeployment = repositoryService.createDeploymentQuery()// 创建部署对象查询
 				.orderByDeploymenTime().asc()//
-				.list()
-				.subList(startIndex, startIndex+pageSize);
+				.listPage(startIndex, pageSize);
 		List<Map<String,Object>> list = new ArrayList<>();
 		for (Deployment deployment : listDeployment) {
 			Map<String,Object> map = new HashMap<>();
@@ -142,8 +141,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 		int startIndex = pb.getStartIndex();
 		List<ProcessDefinition> listProcessDefinition = repositoryService.createProcessDefinitionQuery()// 创建流程定义查询
 				.orderByProcessDefinitionVersion().asc()//
-				.list()
-				.subList(startIndex, startIndex+pageSize);
+				.listPage(startIndex, pageSize);
 		List<Map<String,Object>> list = new ArrayList<>();
 		for (ProcessDefinition processDefinition : listProcessDefinition) {
 			Map<String,Object> map = new HashMap<>();
