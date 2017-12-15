@@ -3,7 +3,7 @@
 function getTopage(totalPages,currentPage, pageSize, labelCont, url, func){
     Page({
         num:totalPages,					//总页码
-        startnum:currentPage,				//指定页码
+        startnum:currentPage,			//指定页码
         elem:$(labelCont),			//指定的元素
         callback:function(n){
             getDataChange(n);
@@ -50,31 +50,112 @@ function workflowA(str){
 		tags1 += "<tr><td>"+item.id+"</td><td>"+item.name+"</td><td>"+formatDateTime(item.getDeploymentTime)+"</td><td><a href='/workflow/delDeployment?deploymentId=" + item.id + "'>删除</a></td></tr>";
 	}
 
-	$("#workflowDeploy .table tbody").empty();
-	$("#workflowDeploy .table tbody").append(tags1);
+	$("article #workflowDeploy .table tbody").empty();
+	$("article #workflowDeploy .table tbody").append(tags1);
 }
 
 function workflowB(str){
 	var tags1 = "";
 	var item;
-	console.log(str.list[0]);
 	for(var i = 0; i<=str.list.length-1; i++){
 		item = str.list[i];
-		tags1 += "<tr><td>"+item.deploymentId+"</td><td>"+item.id+"</td><td>"+item.name+"</td><td>"+item.key+"</td><td>"+item.resourceName+"</td><td>"+item.diagramResourceName+"</td><td>"+item.version+"</td><td><a class='btn btn-link' target='_blank' href='/workflow/viewImage?deploymentId=" + item.deploymentId + "&imageName=" + item.diagramResourceName + "'>查看流程图</a></td></tr>";
+		tags1 += "<tr><td>"+item.deploymentId+"</td><td>"+item.id+"</td><td>"+item.name+"</td><td>"+item.key+"</td><td>"+item.resourceName+"</td><td>"+item.diagramResourceName+"</td><td>"+item.version+"</td><td><a target='_blank' href='/workflow/viewImage?deploymentId=" + item.deploymentId + "&imageName=" + item.diagramResourceName + "'>查看流程图</a></td></tr>";
 	}
 
-	$("#workflowDefined .table tbody").empty();
-	$("#workflowDefined .table tbody").append(tags1);
+	$("article #workflowDefined .table tbody").empty();
+	$("article #workflowDefined .table tbody").append(tags1);
+}
+
+//bill/list页面list
+function billListData(str){
+	var tags = "";
+	var tag1 = "";
+	var item;
+	for(var i = 0; i<=str.list.length-1; i++){
+		item = str.list[i];
+  		if(item.ProcessStatus == "初始录入"){
+  			tag1 = "<tr><td>" + item.Applicant +
+  					"</td><td>" + item.BillDescription +
+  					"</td><td>" + item.Description +
+  					"</td><td>" + item.ProcessStatus +
+  					"</td><td>" +
+  					"<a href='/billController/findBill?id="+item.Id+"&billName="+item.IdClass+"'>编辑</a>" +
+  					"<a href='/billController/deleteBill?id="+item.Id+"&billName="+item.IdClass+"'>删除</a>" +
+  					"<a href='/workflow/startProcess?id="+item.Id+"&billName="+item.IdClass+"'>申请房间</a>" +
+  					"</td></tr>";
+  		}else if(item.ProcessStatus == "审核中"){
+  			tag1 = "<tr><td>" + item.Applicant +
+					"</td><td>" + item.BillDescription +
+					"</td><td>" + item.Description +
+					"</td><td>" + item.ProcessStatus +
+					"</td><td>" +
+					"<a style='cursor: pointer;' data-toggle='modal' data-target='.modal' onclick='recordViewModal("+item.Id+","+item.IdClass+")'>查看审核记录</a>" +
+					"</td></tr>";
+  		}
+		tags += tag1;
+	}
+	
+	$("article .table tbody").empty();
+	$("article .table tbody").append(tags);
+}
+
+//taskList页面list
+function taskListData(str){
+	var tags = "";
+	var taskType = "";
+	var item;
+	console.log(str);
+	for(var i = 0; i<=str.list.length-1; i++){
+		item = str.list[i];
+		if(item.taskFormKey.split("/")[1] == "AllocateBill"){
+			taskType = "房调流程";
+		}
+		tags += "<tr><td>" + item.taskId +
+		"</td><td>"+ taskType +
+		"</td><td>" + item.taskName +
+		"</td><td>" + formatDateTime(item.taskCreateTime) +
+		"</td><td>" + item.realName +
+		"</td><td>" +
+		"<a href='/workflow/viewTaskForm?taskId=" + item.taskId + "}'>办理任务</a>" +
+		"<a target='_blank' href='/workflow/viewCurrentImage?taskId=" + item.taskId + "'>查看流程图</a>" +
+		"</td></tr>";
+	}
+	
+	$("article .table tbody").empty();
+	$("article .table tbody").append(tags);
+}
+
+//historyTaskList页面list
+function historyTaskListData(str){
+	var tags = "";
+	var billDescription = "";
+	var item;
+	console.log(str);
+	for(var i = 0; i<=str.list.length-1; i++){
+		item = str.list[i];
+		if(item.businessKey.split("/")[1] == "AllocateBill"){
+			billDescription = "房屋调配";
+		}
+		tags += "<tr><td>" + billDescription + 
+		"</td><td>" + item.currentUser + 
+		"</td><td>" + formatDateTime(item.startTime) +
+		"</td><td>" +
+		"<a data-toggle='modal' data-target='.modal' onclick='viewForminfo(" + item.businessKey + ")'>查看表单信息</a>" +
+		"<a data-toggle='modal' data-target='.modal' onclick='viewExamineRecord(" + item.businessKey + ")'>查看审批记录</a>" +
+		"</td></tr>";
+	}
+	
+	$("article .table tbody").empty();
+	$("article .table tbody").append(tags);
 }
 
 
 //显示弹窗
 //modalShow(false, false, form, modalBodyFunc);
-function modalShow(titleVal, footerVal, form, func){
+function modalShow(titleVal, footerVal, type, func){
     var modalTitle;
     var modalFooter;
     var modalContent = func();
-    console.log(modalContent);
     if($(".modal .modal-content").has(".modal-header").length == 0){
         $(".modal .modal-content").append(modalContent);
     }else{
@@ -90,11 +171,11 @@ function modalShow(titleVal, footerVal, form, func){
     $(".modal .modal-content .modal-header").append(modalTitle);
     
     if(footerVal){
-    	if(form == "form"){
+    	if(type == "form"){
     		modalFooter = '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
             			'<input type="submit" class="btn btn-primary" value="确定"/>';
     	}else{
-    		if(form == "view"){
+    		if(type == "view"){
     			modalFooter = '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
                 			'<a class="btn btn-primary">确定</a>';
     		}
@@ -105,7 +186,25 @@ function modalShow(titleVal, footerVal, form, func){
     $(".modal .modal-content .modal-footer").append(modalFooter);
 }
 
-
+function recordView(id, billName){
+	$.ajax({
+		type : "GET",
+		url : "/workflow/viewHisComment?Id=" + id + "&billName="+ billName,
+		dataType : "json",
+		success : function(str) {
+			console.log(str)
+			var tags = '';
+			console.log(str);
+			$.each(str, function(index, item) {
+				tags += '<tr><td>' + item.userId + 
+						'</td><td>'+ item.time + 
+						'</td><td>' + item.fullMessage + 
+						'</td></tr>';
+			});
+			return tags;
+		}
+	})
+}
 
 
 

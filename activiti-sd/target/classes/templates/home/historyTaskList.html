@@ -2,10 +2,10 @@
 <html lang="en">
 <head xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/Normalize.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="../css/pager.css">
+    <link rel="stylesheet" href="/css/Normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/pager.css">
     <title>historyTaskList</title>
 </head>
 <body>
@@ -43,11 +43,11 @@
                 <div class="panel-body">
                     <table class="table">
                         <thead>
-                        <tr>
-                            <th width="30%">文件名</th>
-                            <th width="15%">版本</th>
-                            <th width="30%">上传日期</th>
-                            <th>操作</th>
+                        <tr >
+                            <th width="25%">申请类型</th>
+                            <th width="20%">申请人</th>
+                            <th width="20%">申请日期</th>
+                            <th width="35%">操作</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -57,7 +57,7 @@
                     
 			        <!--分页-->
 			        <div class="pageBox pull-right clearfix">
-			            <ul class="pagination pull-left" id="historyTaskListPage1">
+			            <ul class="pagination pull-left" id="historyTaskListPage">
 			            </ul>
 			            <div class="pageJump pull-left">
 			                <label class="control-label pull-left">跳页到</label>
@@ -72,15 +72,22 @@
 </main>
 
 
-<script src="../js/jquery-3.2.1.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/pager.js"></script>
-<script src="../js/homeView.js"></script>
-<!--<script src="../js/homeData.js"></script>-->
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/pager.js"></script>
+<script src="/js/homeView.js"></script>
+<script src="/js/homeData.js"></script>
 <script>
-/* 导航状态样式 */
-$("header nav a[href='/billController/toBill']").parent("li").siblings().removeClass("active");
-$("header nav a[href='/billController/toBill']").parent("li").addClass("active");
+	/* 导航状态样式 */
+	$("header nav a[href='/billController/toBill']").parent("li").siblings().removeClass("active");
+	$("header nav a[href='/billController/toBill']").parent("li").addClass("active");
+
+	getDataChange(1);
+	function getDataChange(currentPage){
+	    getData(currentPage, 10, '#historyTaskListPage', '/workflow/queryHistoryTaskList', historyTaskListData);
+	};
+
 </script>
 </body>
 </html>
