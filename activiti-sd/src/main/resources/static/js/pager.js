@@ -3,7 +3,6 @@ function Page(opt){
 		if(set.startnum>set.num||set.startnum<1){
 			set.startnum = 1;
 		}
-		console.log(opt)
 		var n = 0,htm = '';
 		var clickpages = {
 			elem:set.elem,

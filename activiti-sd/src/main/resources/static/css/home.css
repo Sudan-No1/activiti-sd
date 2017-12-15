@@ -240,6 +240,11 @@ main article table.table tr:last-child td{
     text-align: center;
 }
 
+article .panel-body .table tbody tr td a{
+	cursor: pointer;
+	margin-right: 10px;
+}
+
 /*iframe 嵌套*/
 article .iframe{
     height: 100%;
