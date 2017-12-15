@@ -234,7 +234,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 				.size();
 		PageBean<Map<String,Object>> pb = new PageBean<>(pageNum, pageSize, totalRecord);
 		int startIndex = pb.getStartIndex();
-		
 		List<Task> userTasks = taskService.createTaskQuery()//
 				.taskAssignee(name)// 指定个人任务查询
 				.orderByTaskCreateTime().asc()
@@ -576,10 +575,28 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	@Override
-	public List<HistoricProcessInstance> getHistoryTaskList(String username) {
-		return historyService.createHistoricProcessInstanceQuery()
+	public PageBean<Map<String, Object>> getHistoryTaskList(String username, Integer pageNum, Integer pageSize) {
+		int totalRecord  = historyService.createHistoricProcessInstanceQuery()
 				.variableValueEquals("Applicant", username)
 				.finished()
-				.list();
+				.list()
+				.size();
+		PageBean<Map<String,Object>> pb = new PageBean<>(pageNum, pageSize, totalRecord);
+		int startIndex = pb.getStartIndex();
+		List<HistoricProcessInstance> listPage = historyService.createHistoricProcessInstanceQuery()
+		.variableValueEquals("Applicant", username)
+		.finished()
+		.orderByProcessInstanceEndTime()
+		.desc()
+		.listPage(startIndex, pageSize);
+		List<Map<String,Object>> list = new ArrayList<>();
+		for (HistoricProcessInstance hpi : listPage) {
+			Map<String,Object> map = new HashMap<>();
+			map.put("businessKey", hpi.getBusinessKey());
+			map.put("currentUser", hpi.getStartTime());
+			list.add(map);
+		}
+		pb.setList(list);
+		return pb;
 	}
 }

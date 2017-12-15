@@ -6,7 +6,6 @@ import java.util.Map;
 
 import javax.servlet.http.HttpSession;
 
-import org.activiti.engine.history.HistoricProcessInstance;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -53,6 +52,6 @@ public interface WorkflowService
 
 	void claim(String taskId, String userId);
 
-	List<HistoricProcessInstance> getHistoryTaskList(String username);
+	PageBean<Map<String, Object>> getHistoryTaskList(String username, Integer pageNum, Integer pageSize);
 
 }

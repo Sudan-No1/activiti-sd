@@ -261,11 +261,11 @@ public class WorkflowController{
      */
     @RequestMapping("/queryHistoryTaskList")
     @ResponseBody
-    public List<HistoricProcessInstance> getHistoryTaskList(WorkflowBean workflowBean, HttpServletRequest request,Model model){	
+    public PageBean<Map<String,Object>> getHistoryTaskList(HttpServletRequest request,Integer pageNum,Integer pageSize){	
     	HttpSession session = request.getSession();
     	Map<String, Object> user = UserUtil.getUserFromSession(session);
     	String username = (String)user.get("USER_LOGIN_NAME");
-    	List<HistoricProcessInstance> hpiList = workflowService.getHistoryTaskList(username);
+    	PageBean<Map<String,Object>> hpiList = workflowService.getHistoryTaskList(username, pageNum, pageSize);
     	return hpiList;
     }
     

@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import cn.dx.domain.PageBean;
 import cn.dx.form.WorkflowBean;
 import cn.dx.service.BillService;
 import cn.dx.service.CmdbService;
@@ -169,10 +170,10 @@ public class BillController {
 	
 	@RequestMapping(value="/billList",method=RequestMethod.GET)
 	@ResponseBody
-	public List<Map<String,Object>> billList(HttpServletRequest request){
+	public PageBean<Map<String,Object>> billList(HttpServletRequest request,Integer pageNum,Integer pageSize){
 		Map<String, Object> user = UserUtil.getUserFromSession(request.getSession());
 		String username = (String)user.get("USER_LOGIN_NAME");
-		List<Map<String,Object>> list = billService.findBillListByUser(username);
+		PageBean<Map<String,Object>> list = billService.findBillListByUser(username,pageNum,pageSize);
 		return list;
 	}
 	

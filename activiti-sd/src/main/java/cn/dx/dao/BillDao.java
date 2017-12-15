@@ -24,4 +24,8 @@ public interface BillDao {
 
 	Long findBillIdByDescription(String billName, String description);
 
+	int getTotalBillListByUser(String username);
+
+	List<Map<String, Object>> findPageBillListByUser(String username, int startIndex, Integer pageSize);
+
 }

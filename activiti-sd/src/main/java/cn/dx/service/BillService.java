@@ -1,7 +1,8 @@
 package cn.dx.service;
 
-import java.util.List;
 import java.util.Map;
+
+import cn.dx.domain.PageBean;
 
 public interface BillService {
 
@@ -9,7 +10,7 @@ public interface BillService {
 
 	void addBill(String username, Map<String, String[]> map);
 
-	List<Map<String, Object>> findBillListByUser(String username);
+	PageBean<Map<String, Object>> findBillListByUser(String username, Integer pageNum, Integer pageSize);
 
 	void deleteBillByIdAndBillName(String id, String billName);
 

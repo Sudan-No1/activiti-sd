@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import cn.dx.dao.BillDao;
+import cn.dx.domain.PageBean;
 import cn.dx.service.BillService;
 
 @Service
@@ -38,8 +39,13 @@ public class BillServiceImpl implements BillService {
 	}
 
 	@Override
-	public List<Map<String, Object>> findBillListByUser(String username) {
-		return billDao.findBillListByUser(username);
+	public PageBean<Map<String, Object>> findBillListByUser(String username, Integer pageNum, Integer pageSize) {
+		int totalRecord  = billDao.getTotalBillListByUser(username);
+		PageBean<Map<String,Object>> pb = new PageBean<>(pageNum, pageSize, totalRecord);
+		int startIndex = pb.getStartIndex();
+		List<Map<String, Object>> list = billDao.findPageBillListByUser(username,startIndex,pageSize);
+		pb.setList(list);
+		return pb;
 	}
 
 	@Override

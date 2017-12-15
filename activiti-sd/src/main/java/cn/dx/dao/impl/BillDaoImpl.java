@@ -95,4 +95,16 @@ public class BillDaoImpl implements BillDao{
 		return jdbcTemplate.queryForObject(sql, Long.class,description);
 	}
 
+	@Override
+	public int getTotalBillListByUser(String username) {
+		String sql = "select count(1) from \"Bill\" where \"loginname\" = ? and \"Status\" = 'A' and \"ProcessStatus\" != '流程结束';";
+		return jdbcTemplate.queryForObject(sql, Integer.class,username);
+	}
+
+	@Override
+	public List<Map<String, Object>> findPageBillListByUser(String username, int startIndex, Integer pageSize) {
+		String sql = "select * from \"Bill\" where \"loginname\" = ? and \"Status\" = 'A' and \"ProcessStatus\" != '流程结束' offset ? limit ?;";
+		return jdbcTemplate.queryForList(sql,new Object[]{username,startIndex,pageSize});
+	}
+
 }
