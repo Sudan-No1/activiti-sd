@@ -2,10 +2,10 @@
 <html lang="en">
 <head xmlns:th="http://www.thymeleaf.org">
     <meta charset="UTF-8">
-    <link rel="stylesheet" href="../css/Normalize.css">
-    <link rel="stylesheet" href="../css/bootstrap.min.css">
-    <link rel="stylesheet" href="../css/home.css">
-    <link rel="stylesheet" href="../css/pager.css">
+    <link rel="stylesheet" href="/css/Normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/pager.css">
     <title>workflow</title>
 </head>
 <body>
@@ -26,7 +26,7 @@
             <a class="btn btn-info pull-left"
                 data-toggle="modal"
                 data-target=".modal"
-                onclick="modalShow('请上传需部署的文件', true, drawUploadFunc)">
+                onclick="modalShow('请上传需部署的文件', true, 'form', flowUploadFunc)">
                 流程部署
                 <span class="glyphicon glyphicon-share-alt"></span>
             </a>
@@ -35,9 +35,9 @@
 
         <div style="padding-left: 15px;padding-right: 15px;">
 
-            <div class="panel panel-success">
+            <div class="panel panel-success" id="workflowDeploy">
                 <div class="panel-heading">
-                    流程部署管理
+					流程部署管理
                 </div>
                 <div class="panel-body">
                     <table class="table table-condensed table-hover">
@@ -50,34 +50,12 @@
                        </tr>
                        </thead>
                         <tbody>
-                        <tr>
-                            <td>565043</td>
-                            <td>activitiBPMN.zip</td>
-                            <td>2017-12-05 10:05:53</td>
-                            <td>
-                                <a class="btn btn-link">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>565043</td>
-                            <td>activitiBPMN.zip</td>
-                            <td>2017-12-05 10:05:53</td>
-                            <td>
-                                <a class="btn btn-link">删除</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>565043</td>
-                            <td>activitiBPMN.zip</td>
-                            <td>2017-12-05 10:05:53</td>
-                            <td>
-                                <a class="btn btn-link">删除</a>
-                            </td>
-                        </tr>
+                        
                         </tbody>
                     </table>
                     
-			        <!--分页-->
+
+					<!-- 分页	-->
 			        <div class="pageBox pull-right clearfix">
 			            <ul class="pagination pull-left" id="wfPage1">
 			            </ul>
@@ -86,11 +64,11 @@
 			                <input type="text" class="pull-left"/>
 			                <button type="button" class="button btn btn-primary pull-left">GO</button>
 			            </div>
-			        </div><!-- /.pageBox -->
+			        </div><!-- /.pageBox  -->
                 </div>
             </div>
 
-            <div class="panel panel-info">
+            <div class="panel panel-info" id="workflowDefined">
                 <div class="panel-heading">
                     流程定义管理
                 </div>
@@ -98,69 +76,33 @@
                     <table class="table table-condensed table-hover">
                         <thead>
                         <tr>
-                            <th width="20%">ID</th>
-                            <th>名称</th>
-                            <th>流程定义的KEY</th>
-                            <th>版本</th>
-                            <th>BPMN文件名称</th>
-                            <th>图片名称</th>
-                            <th>部署ID</th>
+                            <th width="8%">部署ID</th>
+                            <th width="15%">ID</th>
+                            <th width="10%">名称</th>
+                            <th width="10%">流程定义的KEY</th>
+                            <th width="16%">BPMN文件名称</th>
+                            <th width="16%">图片名称</th>
+                            <th width="5%">版本</th>
                             <th>操作</th>
                         </tr>
                         </thead>
                         <tbody>
-                        <tr>
-                            <td>AllocateBill:1:565046</td>
-                            <td>AllocateBill Process</td>
-                            <td>AllocateBill</td>
-                            <td>1</td>
-                            <td>AllocateBill.bpmn</td>
-                            <td>AllocateBill.png</td>
-                            <td>565043</td>
-                            <td>
-                                <a class="btn btn-link">查看流程图</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>AllocateBill:1:565046</td>
-                            <td>AllocateBill Process</td>
-                            <td>AllocateBill</td>
-                            <td>1</td>
-                            <td>AllocateBill.bpmn</td>
-                            <td>AllocateBill.png</td>
-                            <td>565043</td>
-                            <td>
-                                <a class="btn btn-link">查看流程图</a>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>AllocateBill:1:565046</td>
-                            <td>AllocateBill Process</td>
-                            <td>AllocateBill</td>
-                            <td>1</td>
-                            <td>AllocateBill.bpmn</td>
-                            <td>AllocateBill.png</td>
-                            <td>565043</td>
-                            <td>
-                                <a class="btn btn-link">查看流程图</a>
-                            </td>
-                        </tr>
+                        
                         </tbody>
                     </table>
-                    
-			        <!--分页-->
-			        <div class="pageBox pull-right clearfix">
-			            <ul class="pagination pull-left" id="wfPage2">
-			            </ul>
-			            <div class="pageJump pull-left">
-			                <label class="control-label pull-left">跳页到</label>
-			                <input type="text" class="pull-left"/>
-			                <button type="button" class="button btn btn-primary pull-left">GO</button>
-			            </div>
-			        </div><!-- /.pageBox -->
+
+					<!--分页-->
+					<div class="pageBox pull-right clearfix">
+					    <ul class="pagination pull-left" id="wfPage2">
+					    </ul>
+					    <div class="pageJump pull-left">
+					        <label class="control-label pull-left">跳页到</label>
+					        <input type="text" class="pull-left"/>
+					        <button type="button" class="button btn btn-primary pull-left">GO</button>
+					    </div>
+					</div><!-- /.pageBox -->
                 </div>
             </div>
-
         </div>
 
 
@@ -178,44 +120,56 @@
     </div><!-- /.modal-dialog -->
 </div><!--/.modal-->
 
-<script src="../js/jquery-3.2.1.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/pager.js"></script>
-<script src="../js/homeView.js"></script>
-<script src="../js/homeData.js"></script>
+<script src="/js/jquery-3.2.1.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="/js/util.js"></script>
+<script src="/js/homeView.js"></script>
+<script src="/js/pager.js"></script>
+<script src="/js/homeData.js"></script>
 <script>
-/* 导航状态样式 */
-$("header nav a[href='/workflow/deployHome']").parent("li").siblings().removeClass("active");
-$("header nav a[href='/workflow/deployHome']").parent("li").addClass("active");
+	/* 导航状态样式 */
+	$("header nav a[href='/workflow/deployHome']").parent("li").siblings().removeClass("active");
+	$("header nav a[href='/workflow/deployHome']").parent("li").addClass("active");
 
-
+	/*列表加载*/
+	getDataChange(1);
+	function getDataChange(currentPage){
+	    getData(currentPage, 5, '#wfPage1', '/workflow/getDepList', workflowA);
+	    getData(currentPage, 5, '#wfPage2', '/workflow/getPdList', workflowB);
+	};
+	
     /*显示弹框*/
 
-    function drawUploadFunc(){
-        return  '<div class="modal-body">' +
-                    '<form class="form-horizontal" action="#">' +
-                        '<div class="form-group">' +
-                            '<label class="control-label col-lg-2">文件上传：</label>' +
-                            '<div class="col-lg-6">' +
-                                '<div class="input-group attachText">' +
-                                    '<div class="form-control"></div>' +
-                                    '<div class="input-group-btn">' +
-                                        '<a class="btn btn-default">' +
-                                            '<span class="glyphicon glyphicon-folder-open"></span>上传' +
-                                            '<input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />' +
-                                        '</a>' +
-                                    '</div>' +
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                            '<label class="control-label col-lg-2">名称：</label>' +
-                            '<div class="col-lg-6">' +
-                                '<input type="text" class="form-control" />' +
-                            '</div>' +
-                        '</div>' +
-                    '</form>' +
-                '</div>';
+    function flowUploadFunc(){
+        return '<form class="form-horizontal" action="/workflow/deploy" method="POST" enctype="multipart/form-data">' +
+	        		'<div class="modal-header">' +
+	        			'<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
+	        		'</div>'+
+	        		'<div class="modal-body">' +
+		                '<div class="form-group">' +
+			                '<label class="control-label col-lg-2">文件上传：</label>' +
+			                '<div class="col-lg-6">' +
+				                '<div class="input-group attachText">' +
+				                	'<div class="form-control"></div>' +
+				                	'<div class="input-group-btn">' +
+				                		'<a class="btn btn-default">' +
+				                			'<span class="glyphicon glyphicon-folder-open"></span>上传' +
+				                			'<input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />' +
+				                		'</a>' +
+				                	'</div>' +
+				                '</div>' +
+			                '</div>' +
+		                '</div>' +
+		                '<div class="form-group">' +
+		                	'<label class="control-label col-lg-2">名称：</label>' +
+		                	'<div class="col-lg-6">' +
+		                		'<input type="text" class="form-control" />' +
+		                	'</div>' +
+		                '</div>' +
+	                '</div>'+
+	                '<div class="modal-footer">' +
+	                '</div>'
+                '</form>';
     }
 
     /*上传输入框显示文件名*/

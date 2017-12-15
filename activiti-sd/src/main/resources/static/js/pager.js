@@ -3,6 +3,7 @@ function Page(opt){
 		if(set.startnum>set.num||set.startnum<1){
 			set.startnum = 1;
 		}
+		console.log(opt)
 		var n = 0,htm = '';
 		var clickpages = {
 			elem:set.elem,
@@ -107,7 +108,7 @@ function Page(opt){
 				var HL = '<li><a>...</a></li>';
 				html = '<li class="next"><a><</a></li>'
 				for (var n = 0;n<3;n++){
-					htmlC += '<li '+((n-1)==0?'class="active"':'')+' page="'+(i+n-1)+'"><a onclick="getTopage(15,'+ (i+n-1) +')">'+(i+n-1)+'</a></li>';
+					htmlC += '<li '+((n-1)==0?'class="active"':'')+' page="'+(i+n-1)+'"><a onclick="getDataChange('+ (i+n-1) +')">'+(i+n-1)+'</a></li>';
 					htmlLeft += '<li '+((n+2)==i?'class="active"':'')+' page="'+(n+2)+'"><a>'+(n+2)+'</a></li>';
 					htmlRight += '<li '+((set.num+n-3)==i?'class="active"':'')+' page="'+(set.num+n-3)+'"><a>'+(set.num+n-3)+'</a></li>';
 				}

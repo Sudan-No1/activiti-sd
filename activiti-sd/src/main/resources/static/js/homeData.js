@@ -1,42 +1,34 @@
+//读写数据    totalPages, currentPage, pageSize
 
-
-/*
-//读写数据
-
-getdata(10, 1, '#page1', '#', drawingdata);//html页面调用
-//getdata(pageNum: 总页数 ，num:当前页码 ，url:接口路径 ， labelCont:页码容器标签）
-
-function getTopage(pageNum, pageCurrent, labelCont, url, func){
+function getTopage(totalPages,currentPage, pageSize, labelCont, url, func){
     Page({
-        num:pageNum,					//总页码
-        startnum:pageCurrent,			//指定页码
-        elem:$(labelCont),		    //指定的页码容器标签
-        callback:function(num){	    //回调函数  num:当前页数
-            getdata(pageNum, num, labelCont, url, func);
+        num:totalPages,					//总页码
+        startnum:currentPage,				//指定页码
+        elem:$(labelCont),			//指定的元素
+        callback:function(n){
+            getDataChange(n);
         }
     });
 }
 
-function getdata(pageNum ,num, labelCont, url, func){
-//pageNum: 总页数 ，num:当前页码 ，url:接口路径 ， labelCont:页码容器标签
+function getData(currentPage, pageSize, labelCont, url, func){
     $.ajax({
-        type: "POST",
+        type: "GET",
         url: url,
         dataType: "json",
         data:{
-            page: num
-        },
-        error:function(data){
-            console.log("error:"+data);
+            pageNum:currentPage,
+            pageSize:pageSize
         },
         success: function (str) {
             func(str);
-            getTopage(pageNum, num, labelCont, url, func);
+            getTopage(str.totalPage, currentPage, pageSize, labelCont, url, func);
         }
     })
 }
 
-function drawingdata(str){
+//drawing页面list
+function drawingData(str){
     if(str.length > 0){
         var tags1 = "";
         var item;
@@ -49,43 +41,68 @@ function drawingdata(str){
     }
 }
 
-*/
+//workflow页面list
+function workflowA(str){
+	var tags1 = "";
+	var item;
+	for(var i = 0; i<=str.list.length-1; i++){
+		item = str.list[i];
+		tags1 += "<tr><td>"+item.id+"</td><td>"+item.name+"</td><td>"+formatDateTime(item.getDeploymentTime)+"</td><td><a href='/workflow/delDeployment?deploymentId=" + item.id + "'>删除</a></td></tr>";
+	}
+
+	$("#workflowDeploy .table tbody").empty();
+	$("#workflowDeploy .table tbody").append(tags1);
+}
+
+function workflowB(str){
+	var tags1 = "";
+	var item;
+	console.log(str.list[0]);
+	for(var i = 0; i<=str.list.length-1; i++){
+		item = str.list[i];
+		tags1 += "<tr><td>"+item.deploymentId+"</td><td>"+item.id+"</td><td>"+item.name+"</td><td>"+item.key+"</td><td>"+item.resourceName+"</td><td>"+item.diagramResourceName+"</td><td>"+item.version+"</td><td><a class='btn btn-link' target='_blank' href='/workflow/viewImage?deploymentId=" + item.deploymentId + "&imageName=" + item.diagramResourceName + "'>查看流程图</a></td></tr>";
+	}
+
+	$("#workflowDefined .table tbody").empty();
+	$("#workflowDefined .table tbody").append(tags1);
+}
 
 
 //显示弹窗
-//modalShow(false, false, modalBodyFunc);
-function modalShow(titleVal, footerVal, func){
-    var modalContent;
+//modalShow(false, false, form, modalBodyFunc);
+function modalShow(titleVal, footerVal, form, func){
     var modalTitle;
     var modalFooter;
-    if(titleVal){
-        modalTitle= '<h4 class="modal-title">' + titleVal + '</h4>';
-    }else {
-        modalTitle= '';
-    }
-
-    if(footerVal){
-        modalFooter = '<div class="modal-footer">' +
-            '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
-            '<a class="btn btn-primary">确定</a>' +
-            '</div>';
-    }else {
-        modalFooter = '';
-    }
-
-    var modalHeader = '<div class="modal-header">' +
-        '<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
-        modalTitle +
-        '</div>';
-    var modalBody = func();
-    modalContent = modalHeader + modalBody + modalFooter;
-    $(".modal .modal-content").append(modalContent);
-    if($(".modal .modal-content").has(".modal-body").length == 0){
+    var modalContent = func();
+    console.log(modalContent);
+    if($(".modal .modal-content").has(".modal-header").length == 0){
         $(".modal .modal-content").append(modalContent);
     }else{
         $(".modal .modal-content").empty();
         $(".modal .modal-content").append(modalContent);
     }
+    
+    if(titleVal){
+        modalTitle= '<h4 class="modal-title">' + titleVal + '</h4>';
+    }else {
+        modalTitle= '';
+    }
+    $(".modal .modal-content .modal-header").append(modalTitle);
+    
+    if(footerVal){
+    	if(form == "form"){
+    		modalFooter = '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
+            			'<input type="submit" class="btn btn-primary" value="确定"/>';
+    	}else{
+    		if(form == "view"){
+    			modalFooter = '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
+                			'<a class="btn btn-primary">确定</a>';
+    		}
+    	}
+    }else {
+        modalFooter = '';
+    }
+    $(".modal .modal-content .modal-footer").append(modalFooter);
 }
 
 
