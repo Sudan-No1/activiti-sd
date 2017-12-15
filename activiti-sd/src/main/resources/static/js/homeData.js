@@ -81,7 +81,7 @@ function billListData(str){
   					"</td><td>" +
   					"<a href='/billController/findBill?id="+item.Id+"&billName="+item.IdClass+"'>编辑</a>" +
   					"<a href='/billController/deleteBill?id="+item.Id+"&billName="+item.IdClass+"'>删除</a>" +
-  					"<a href='/workflow/startProcess?id="+item.Id+"&billName="+item.IdClass+"'>申请房间</a>" +
+  					"<a href='/workflow/startProcess?id="+item.Id+"&billName="+item.IdClass.value+"&outcome=提交申请'>申请房间</a>" +
   					"</td></tr>";
   		}else if(item.ProcessStatus == "审核中"){
   			tag1 = "<tr><td>" + item.Applicant +
@@ -89,7 +89,7 @@ function billListData(str){
 					"</td><td>" + item.Description +
 					"</td><td>" + item.ProcessStatus +
 					"</td><td>" +
-					"<a style='cursor: pointer;' data-toggle='modal' data-target='.modal' onclick='recordViewModal(" + item.Id + "," + item.IdClass + ")'>查看审核记录</a>" +
+					"<a style='cursor: pointer;' data-toggle='modal' data-target='.modal' onclick='recordViewModal(" + item.Id + "," + item.IdClass.value + ")'>查看审核记录</a>" +
 					"</td></tr>";
   		}
 		tags += tag1;
@@ -117,7 +117,7 @@ function taskListData(str){
 		"</td><td>" + formatDateTime(item.taskCreateTime) +
 		"</td><td>" + item.realName +
 		"</td><td>" +
-		"<a href='/workflow/viewTaskForm?taskId=" + item.taskId + "}'>办理任务</a>" +
+		"<a href='/workflow/viewTaskForm?taskId=" + item.taskId + "'>办理任务</a>" +
 		"<a target='_blank' href='/workflow/viewCurrentImage?taskId=" + item.taskId + "'>查看流程图</a>" +
 		"</td></tr>";
 	}
