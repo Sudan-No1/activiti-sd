@@ -93,7 +93,6 @@ function billListData(str){
 					"</td></tr>";
   		}
 		tags += tag1;
-		console.log(item);
 	}
 	
 	$("article .table tbody").empty();
@@ -156,12 +155,12 @@ function historyTaskListData(str){
 function modalShow(titleVal, footerVal, type, func){
     var modalTitle;
     var modalFooter;
-    var modalContent = func();
+    var modalContent = "";
     if($(".modal .modal-content").has(".modal-header").length == 0){
-        $(".modal .modal-content").append(modalContent);
+    	func();
     }else{
         $(".modal .modal-content").empty();
-        $(".modal .modal-content").append(modalContent);
+        func();
     }
     
     if(titleVal){
@@ -173,39 +172,61 @@ function modalShow(titleVal, footerVal, type, func){
     
     if(footerVal){
     	if(type == "form"){
-    		modalFooter = '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
-            			'<input type="submit" class="btn btn-primary" value="确定"/>';
+    		modalFooter = '<div class="modal-footer">' +
+                		'<a class="btn btn-default" data-dismiss="modal">取消</a>' +
+            			'<input type="submit" class="btn btn-primary" value="确定"/></div>';
     	}else{
     		if(type == "view"){
-    			modalFooter = '<a class="btn btn-default" data-dismiss="modal">取消</a>' +
-                			'<a class="btn btn-primary">确定</a>';
+    			modalFooter = '<div class="modal-footer">' +
+    						'<a class="btn btn-default" data-dismiss="modal">取消</a>' +
+                			'<a class="btn btn-primary">确定</a></div>';
     		}
     	}
     }else {
         modalFooter = '';
     }
-    $(".modal .modal-content .modal-footer").append(modalFooter);
+    $(".modal .modal-content form").append(modalFooter);
 }
 
 function recordView(id, billName){
+	var contentStr = '<div class="modal-header">' +
+					'<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
+					'</div><div class="modal-body"></div>';
+	$(".modal .modal-content").append(contentStr);
 	$.ajax({
 		type : "GET",
 		url : "/workflow/viewHisComment?Id=" + id + "&billName=" + billName,
 		dataType : "json",
+		error:function(data){
+            console.log("没有数据");
+            var tags = "<div>抱歉，暂时没有记录</div>"
+            $(".modal .modal-content .modal-body").append(tags);
+        },
 		success : function(str) {
 			console.log(str);
-			var tags = '';
-			console.log(str);
-			$.each(str, function(index, item) {
+			var tags = '<table class="table table-hover">' +
+						'<thead><tr>' +
+						'<th width="25%">任务ID</th>' +
+						'<th width="25%">审核时间</th>' +
+						'<th width="50%">审核意见</th>' +
+						'</tr></thead>' +
+						'<tbody>';
+			var item = '';
+			for(var i = 0; i<=str.length-1; i++){
+				item = str[i];
+				console.log(item);
 				tags += '<tr><td>' + item.userId + 
-						'</td><td>'+ item.time + 
+						'</td><td>'+ formatDateTime(item.time) + 
 						'</td><td>' + item.fullMessage + 
 						'</td></tr>';
-			});
-			return tags;
+				}
+
+			tags += '</tbody>' +
+					'</table>';
+			
+			$(".modal .modal-content .modal-body").append(tags);
 		}
 	});
 }
-
 
 

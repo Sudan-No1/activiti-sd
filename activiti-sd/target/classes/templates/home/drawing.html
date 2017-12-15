@@ -26,7 +26,7 @@
 			<a class="btn btn-info pull-left"
 				data-toggle="modal"
 				data-target=".modal"
-				onclick="modalShow('请上传图纸', true, drawUploadFunc)">
+				onclick="modalShow('请上传图纸', true, 'form', drawUploadFunc)">
 				上传
 				<span class="glyphicon glyphicon-share-alt"></span>
 			</a>
@@ -86,24 +86,28 @@
 <script src="/js/homeView.js"></script>
 <script src="/js/homeData.js"></script>
 <script>
-/* 导航状态样式 */
-$("header nav a[href='/drawing']").parent("li").siblings().removeClass("active");
-$("header nav a[href='/drawing']").parent("li").addClass("active");
+	/* 导航状态样式 */
+	$("header nav a[href='/drawing']").parent("li").siblings().removeClass("active");
+	$("header nav a[href='/drawing']").parent("li").addClass("active");
 
     /*显示弹框*/
-
+	var bodyStr = drawUploadFunc();
     function drawUploadFunc(){
-        return  '<div class="modal-body">' +
-                '<form class="form-horizontal" action="#">' +
-                '<div class="form-group">' +
-                '<div class="col-lg-offset-1 col-lg-6 attachText">' +
-                '<div class="input-group">' +
-                '<div class="form-control"></div>' +
-                '<div class="input-group-btn">' +
-                '<a class="btn btn-default">' +
-                '<span class="glyphicon glyphicon-folder-open"></span>上传' +
-                '<input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />' +
-                '</a></div></div></div></div></form></div>';
+        var contentStr = '<form class="form-horizontal" action="/workflow/deploy" method="POST" enctype="multipart/form-data">' +
+						'<div class="modal-header">' +
+						'<a class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></a>' +
+						'</div>'+
+						'<div class="modal-body">' +
+		                '<div class="form-group">' +
+		                '<div class="col-lg-offset-1 col-lg-6 attachText">' +
+		                '<div class="input-group">' +
+		                '<div class="form-control"></div>' +
+		                '<div class="input-group-btn">' +
+		                '<a class="btn btn-default">' +
+		                '<span class="glyphicon glyphicon-folder-open"></span>上传' +
+		                '<input type="file" name="file" class="form-control" id="jobData" onchange="loadFile(this.files[0])" />' +
+		                '</a></div></div></div></div></div></form>';
+		$(".modal .modal-content").append(contentStr);
     }
 
     /*上传输入框显示文件名*/
