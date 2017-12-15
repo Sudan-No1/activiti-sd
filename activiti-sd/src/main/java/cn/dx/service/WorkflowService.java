@@ -52,6 +52,6 @@ public interface WorkflowService
 
 	void claim(String taskId, String userId);
 
-	PageBean<Map<String, Object>> getHistoryTaskList(String username, Integer pageNum, Integer pageSize);
+	PageBean<Map<String, Object>> getHistoryTaskList(String username, String realName, Integer pageNum, Integer pageSize);
 
 }

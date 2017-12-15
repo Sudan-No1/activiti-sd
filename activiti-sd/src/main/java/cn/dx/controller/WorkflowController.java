@@ -265,7 +265,8 @@ public class WorkflowController{
     	HttpSession session = request.getSession();
     	Map<String, Object> user = UserUtil.getUserFromSession(session);
     	String username = (String)user.get("USER_LOGIN_NAME");
-    	PageBean<Map<String,Object>> hpiList = workflowService.getHistoryTaskList(username, pageNum, pageSize);
+        String realName = (String)user.get("REAL_NAME");
+    	PageBean<Map<String,Object>> hpiList = workflowService.getHistoryTaskList(username, realName,pageNum, pageSize);
     	return hpiList;
     }
     

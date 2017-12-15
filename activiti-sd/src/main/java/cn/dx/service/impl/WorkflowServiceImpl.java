@@ -575,7 +575,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 	}
 
 	@Override
-	public PageBean<Map<String, Object>> getHistoryTaskList(String username, Integer pageNum, Integer pageSize) {
+	public PageBean<Map<String, Object>> getHistoryTaskList(String username,  String realName, Integer pageNum, Integer pageSize) {
 		int totalRecord  = historyService.createHistoricProcessInstanceQuery()
 				.variableValueEquals("Applicant", username)
 				.finished()
@@ -593,7 +593,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 		for (HistoricProcessInstance hpi : listPage) {
 			Map<String,Object> map = new HashMap<>();
 			map.put("businessKey", hpi.getBusinessKey());
-			map.put("currentUser", hpi.getStartTime());
+			map.put("startTime", hpi.getStartTime());
+			map.put("currentUser", realName);
 			list.add(map);
 		}
 		pb.setList(list);
