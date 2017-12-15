@@ -7,7 +7,6 @@ import java.util.Map;
 import javax.servlet.http.HttpSession;
 
 import org.activiti.engine.history.HistoricProcessInstance;
-import org.activiti.engine.repository.Deployment;
 import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.task.Comment;
 import org.activiti.engine.task.Task;
@@ -27,7 +26,7 @@ public interface WorkflowService
     
     void deleteProcessDefinitionByDeploymentId(String deploymentId);
     
-    List<Task> findUserTaskListByName(String name);
+    PageBean<Map<String, Object>> findUserTaskListByName(String name, String realName, Integer pageNum, Integer pageSize);
     
     List<Task> findGroupTaskListByName(String name);
 

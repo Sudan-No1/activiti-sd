@@ -32,7 +32,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import cn.dx.dao.BillDao;
-import cn.dx.dao.CmdbDao;
 import cn.dx.dao.UserDao;
 import cn.dx.domain.PageBean;
 import cn.dx.form.WorkflowBean;
@@ -62,9 +61,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	@Autowired
 	private UserDao userDao;
-	
-	@Autowired
-	private CmdbDao cmdbDao;
 	
 	/*@Autowired
 	private OAService oaService;*/
@@ -230,12 +226,31 @@ public class WorkflowServiceImpl implements WorkflowService {
 
 	/** 2：使用当前用户名查询正在执行的任务表，获取当前任务的集合List<Task> */
 	@Override
-	public List<Task> findUserTaskListByName(String name) {
-		List<Task> list = taskService.createTaskQuery()//
+	public PageBean<Map<String,Object>> findUserTaskListByName(String name, String realName, Integer pageNum, Integer pageSize) {
+		int totalRecord  = taskService.createTaskQuery()//
 				.taskAssignee(name)// 指定个人任务查询
 				.orderByTaskCreateTime().asc()//
-				.list();
-		return list;
+				.list()
+				.size();
+		PageBean<Map<String,Object>> pb = new PageBean<>(pageNum, pageSize, totalRecord);
+		int startIndex = pb.getStartIndex();
+		
+		List<Task> userTasks = taskService.createTaskQuery()//
+				.taskAssignee(name)// 指定个人任务查询
+				.orderByTaskCreateTime().asc()
+				.listPage(startIndex, pageSize);
+		List<Map<String,Object>> list = new ArrayList<>();
+		for (Task task : userTasks) {
+        	Map<String, Object> map = new HashMap<>();
+        	map.put("taskId", task.getId());
+        	map.put("taskFormKey", task.getFormKey());
+        	map.put("taskName", task.getName());
+        	map.put("taskCreateTime", task.getCreateTime());
+        	map.put("realName",realName);
+        	list.add(map);
+		}
+		pb.setList(list);
+		return pb;
 	}
 
 	@Override
@@ -420,22 +435,26 @@ public class WorkflowServiceImpl implements WorkflowService {
 */		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
 				.processInstanceId(processInstanceId)// 使用流程实例ID查询
 				.singleResult();
-		String assignee = taskService.createTaskQuery()
-					.processInstanceId(pi.getId())
-					.singleResult()
-					.getAssignee();
-		Map<String, Object> nextUser = userDao.getUserByUserName(assignee);
-		String receiveUser = (String) nextUser.get("USER_LOGIN_NAME");
-		String receiveUserName = (String) nextUser.get("REAL_NAME");
-	/*	String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
-		System.out.println(result);
-		System.out.println(result2);*/
+
 		// 流程结束了
 		if (pi == null) {
 			// 更新请假单表的状态从1变成2（审核中-->审核完成）
 			Map<String, Object> bill = billDao.findBillById(billName, id);
 			bill.put("ProcessStatus", "流程结束");
 			billDao.updateBillState(billName, bill);
+		}else{
+			//添加统一代办
+			/*String assignee = taskService.createTaskQuery()
+					.processInstanceId(pi.getId())
+					.singleResult()
+					.getAssignee();
+			Map<String, Object> nextUser = userDao.getUserByUserName(assignee);
+			String receiveUser = (String) nextUser.get("USER_LOGIN_NAME");
+			String receiveUserName = (String) nextUser.get("REAL_NAME");
+				String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
+			System.out.println(result);
+			System.out.println(result2);*/
+			
 		}
 	}
 	
