@@ -102,6 +102,7 @@
 
 <script src="/js/jquery-3.2.1.js"></script>
 <script src="/js/bootstrap.min.js"></script>
+<script src="/js/util.js"></script>
 <script src="/js/pager.js"></script>
 <script src="/js/homeView.js"></script>
 <script src="/js/homeData.js"></script>
@@ -115,8 +116,11 @@
 	    getData(currentPage, 10, '#billListPage', '/billController/billList', billListData);
 	};
 	
-	function recordViewModal(id ,idClass){
-		modalShow("审核记录", false, view, recordView);
+	function recordViewModal(id ,name){
+		function bodyStr(){
+			recordView(id, name);
+		}
+		modalShow("审核记录", false, "view", bodyStr);
 	};
 
 </script>

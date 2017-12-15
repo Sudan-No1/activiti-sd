@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/comment.css"/>
+    <script src="js/jquery-3.2.1.js"></script>
+    <script src="js/bootstrap.js"></script>
+    <title>房屋房修需求-申请人填写申请表-</title>
+</head>
+<body>
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">房屋房修需求</h3>
+            </div>
+            <div class="panel-body">
+                <!--提示信息-->
+                <div class="alert alert-info alert-dismissible" role="alert">
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <strong>提示：</strong> 标*为必填项，请认真填写
+                </div>
+
+                <!--表单-->
+
+                <form class="form-horizontal" action="#" method="post">
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起人</label>
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   class="form-inp-static"
+                                   name="Unit"
+                                   value="张兰"
+                                   readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起单位</label>
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   class="form-inp-static"
+                                   name="Department"
+                                   value="上海总部"
+                                   readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起部门</label>
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   class="form-inp-static"
+                                   name="LaunchDate"
+                                   value="网络发展部"
+                                   readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">发起日期</label>
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   class="form-inp-static"
+                                   name="BillDescription"
+                                   value="2017-11-17"
+                                   readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">编号</label>
+                        <div class="col-sm-4">
+                            <input type="text"
+                                   class="form-inp-static"
+                                   name="Description"
+                                   value="2017XXXX294"
+                                   readonly/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">联系方式</label>
+                        <div class="col-sm-4">
+                            <input type="tel"
+                                   class="form-control"
+                                   name="BudgetType"
+                                   placeholder="发起人的联系方式" />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">房屋地址</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   class="form-control"
+                                   name="Content"
+                                   placeholder="房屋地址" />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">主要改造内容</label>
+                        <div class="col-sm-7">
+                            <input type="text"
+                                   class="form-control"
+                                   name="ReformType"
+                                   placeholder="具体可上传附件" />
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="radioRepair1" class="col-sm-2 control-label">改造类型</label>
+                        <div class="col-sm-3">
+                            <div class="radio" style="display: inline-block; margin-right: 20px;">
+                                <label>
+                                    <input type="radio" name="ReformArea" id="radioRepair1" value="" checked />
+                                    维保
+                                </label>
+                            </div>
+                            <div class="radio" style="display: inline-block; margin-right: 20px;">
+                                <label>
+                                    <input type="radio" name="ReformArea" id="radioRepair2" value="" />
+                                    维修
+                                </label>
+                            </div>
+                            <div class="radio" style="display: inline-block; margin-right: 20px;">
+                                <label>
+                                    <input type="radio" name="ReformArea" id="radioRepair3" value="" />
+                                    大修
+                                </label>
+                            </div>
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">改造面积</label>
+                        <div class="col-sm-2">
+                            <input type="text"
+                                   class="form-control"
+                                   name="ReformStandard"
+                                   placeholder="需要改造的面积" />
+                        </div>
+                        <div class="col-sm-1">
+                            <p class="form-control-static">㎡</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">改造标准</label>
+                        <div class="col-sm-2">
+                            <input type="text"
+                                   class="form-control"
+                                   name="ReformTotalCost"
+                                   placeholder="改造标准" />
+                        </div>
+                        <div class="col-sm-1">
+                            <p class="form-control-static">元/平方米</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">改造总费用</label>
+                        <div class="col-sm-2">
+                            <input type="text"
+                                   class="form-control"
+                                   name="ProjectManager"
+                                   placeholder="改造总费用（概算）" />
+                        </div>
+                        <div class="col-sm-1">
+                            <p class="form-control-static">万元</p>
+                        </div>
+                        <span class="emMark">*</span>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">附件</label>
+                        <div class="col-sm-4">
+                            <input type="file" />
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-offset-2 col-sm-10">
+                            <a href="javaScript:;" class="btn btn-default">提交</a>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
