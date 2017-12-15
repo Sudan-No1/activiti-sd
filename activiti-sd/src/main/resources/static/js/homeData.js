@@ -89,10 +89,11 @@ function billListData(str){
 					"</td><td>" + item.Description +
 					"</td><td>" + item.ProcessStatus +
 					"</td><td>" +
-					"<a style='cursor: pointer;' data-toggle='modal' data-target='.modal' onclick='recordViewModal("+item.Id+","+item.IdClass+")'>查看审核记录</a>" +
+					"<a style='cursor: pointer;' data-toggle='modal' data-target='.modal' onclick='recordViewModal(" + item.Id + "," + item.IdClass + ")'>查看审核记录</a>" +
 					"</td></tr>";
   		}
 		tags += tag1;
+		console.log(item);
 	}
 	
 	$("article .table tbody").empty();
@@ -189,10 +190,10 @@ function modalShow(titleVal, footerVal, type, func){
 function recordView(id, billName){
 	$.ajax({
 		type : "GET",
-		url : "/workflow/viewHisComment?Id=" + id + "&billName="+ billName,
+		url : "/workflow/viewHisComment?Id=" + id + "&billName=" + billName,
 		dataType : "json",
 		success : function(str) {
-			console.log(str)
+			console.log(str);
 			var tags = '';
 			console.log(str);
 			$.each(str, function(index, item) {
@@ -203,7 +204,7 @@ function recordView(id, billName){
 			});
 			return tags;
 		}
-	})
+	});
 }
 
 
