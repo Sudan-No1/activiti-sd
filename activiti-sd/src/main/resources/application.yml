@@ -17,7 +17,7 @@ spring:
     driverClassName: org.postgresql.Driver
   datasource:
     platform: postgres
-    url: jdbc:postgresql://localhost:5432/cmdbuild
+    url: jdbc:postgresql://localhost:5432/cmdbuild_ziguan
     username: postgres
     password: postgres
 server:

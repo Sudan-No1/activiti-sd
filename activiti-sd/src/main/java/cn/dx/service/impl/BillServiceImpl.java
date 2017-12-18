@@ -29,7 +29,10 @@ public class BillServiceImpl implements BillService {
 		Map<String,Object> params = new HashMap<>();
 		Set<Entry<String, String[]>> entrySet = map.entrySet();
 		for (Entry<String, String[]> entry : entrySet) {
-			params.put(entry.getKey(), entry.getValue()[0]);
+			String value = entry.getValue()[0];
+			if(value!= null && !"".endsWith(value)){
+				params.put(entry.getKey(), value);
+			}
 		}
 		params.put("ProcessStatus", "初始录入");
 		params.put("loginname", username);
@@ -64,7 +67,10 @@ public class BillServiceImpl implements BillService {
 		Map<String,Object> params = new HashMap<>();
 		Set<Entry<String, String[]>> entrySet = map.entrySet();
 		for (Entry<String, String[]> entry : entrySet) {
-			params.put(entry.getKey(), entry.getValue()[0]);
+			String value = entry.getValue()[0];
+			if(value!= null && !"".endsWith(value)){
+				params.put(entry.getKey(), value);
+			}
 		}
 		String billName = ((String)params.get("BillName")).replace("\"", "");
 		params.remove("BillName");

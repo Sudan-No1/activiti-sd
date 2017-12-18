@@ -32,19 +32,25 @@ public class CommonController {
 			@RequestParam("Address")String address,
 			@RequestParam("Area")String area,
 			@RequestParam("RoomId")String roomId,
+			@RequestParam("message")String message,
+			@RequestParam("Purpose")String purpose,
 			WorkflowBean workflowBean, 
 			HttpServletRequest request){
 		Long id = workflowBean.getId();
 		String comment = workflowBean.getComment();
-		Map<String,Object> params = new HashMap<>();
-		params.put("BillName","AllocateBill");		
-		params.put("Id",id+"");		
-		params.put("AuditName",name);		
-		params.put("AuditAddress",address);		
-		params.put("RoomId",Integer.parseInt(roomId));		
-		params.put("Area",area);	
-		params.put("AuditRemark",comment);	
-		billService.updateBillByAudit(params);
+		workflowBean.setComment("【"+message+"】"+comment);
+		if(roomId != null && !"".endsWith(roomId)){
+			Map<String,Object> params = new HashMap<>();
+			params.put("BillName","AllocateBill");		
+			params.put("Id",id+"");		
+			params.put("AuditName",name);		
+			params.put("AuditAddress",address);	
+			params.put("Purpose",purpose);	
+			params.put("RoomId",Integer.parseInt(roomId));		
+			params.put("Area",area);	
+			params.put("AuditRemark",comment);	
+			billService.updateBillByAudit(params);
+		}
 		HttpSession session = request.getSession();
         workflowService.saveSubmitTask(workflowBean, session);
         return "/workflow/taskList";

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html xmlns:th="http://www.thymeleaf.org">
 <head lang="en">
     <meta charset="UTF-8">
     <link rel="stylesheet" href="css/bootstrap.css"/>
@@ -22,14 +22,14 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">发起人</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">张兰</p>
+                            <p class="form-control-static"  th:text="${bill.Applicant }"></p>
                         </div>
                     </div>
 
                     <div class="form-group col-sm-7">
                         <label class="col-sm-3 control-label">改造类型</label>
                         <div class="col-sm-8">
-                            <p class="form-control-static">大修</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }"></p>
                         </div>
                     </div>
                 </div>
@@ -38,14 +38,14 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">发起单位</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">上海总部</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">上海总部</p>
                         </div>
                     </div>
 
                     <div class="form-group col-sm-7">
                         <label class="col-sm-3 control-label">改造面积</label>
                         <div class="col-sm-8">
-                            <p class="form-control-static">500㎡</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">500㎡</p>
                         </div>
                     </div>
                 </div>
@@ -54,14 +54,14 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">发起部门</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">网络发展部</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">网络发展部</p>
                         </div>
                     </div>
 
                     <div class="form-group col-sm-7">
                         <label class="col-sm-3 control-label">改造标准</label>
                         <div class="col-sm-8">
-                            <p class="form-control-static">1000 元/平方米</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">1000 元/平方米</p>
                         </div>
                     </div>
                 </div>
@@ -70,14 +70,14 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">发起日期</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">2017-11-17</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">2017-11-17</p>
                         </div>
                     </div>
 
                     <div class="form-group col-sm-7">
                         <label class="col-sm-3 control-label">改造总费用</label>
                         <div class="col-sm-8">
-                            <p class="form-control-static">30 万元</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">30 万元</p>
                         </div>
                     </div>
                 </div>
@@ -86,14 +86,14 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">编号</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">2017XXXX294</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">2017XXXX294</p>
                         </div>
                     </div>
 
                     <div class="form-group col-sm-7">
                         <label class="col-sm-3 control-label">主要改造内容</label>
                         <div class="col-sm-8">
-                            <p class="form-control-static">主要改造内容改造改造</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">主要改造内容改造改造</p>
                         </div>
                     </div>
                 </div>
@@ -102,14 +102,14 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">联系方式</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">13945612345</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">13945612345</p>
                         </div>
                     </div>
 
                     <div class="form-group col-sm-7">
                         <label class="col-sm-3 control-label">附件</label>
                         <div class="col-sm-3">
-                            <p class="form-control-static">主要改造内容.xls</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">主要改造内容.xls</p>
                         </div>
                         <div>
                             <a class="form-control-static"
@@ -125,7 +125,7 @@
                     <div class="form-group col-sm-5">
                         <label class="col-sm-6 control-label">房屋地址</label>
                         <div class="col-sm-6">
-                            <p class="form-control-static">上海市浦东新区张江路789号上海市浦东新区张江路789号</p>
+                            <p class="form-control-static" th:text="${bill.Applicant }">上海市浦东新区张江路789号上海市浦东新区张江路789号</p>
                         </div>
                     </div>
                 </div>

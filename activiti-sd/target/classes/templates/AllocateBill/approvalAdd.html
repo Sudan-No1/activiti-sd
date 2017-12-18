@@ -191,10 +191,10 @@
 	                <div class="form-group">
 	                    <label class="col-sm-2 control-label">意见</label>
 	                    <div class="col-sm-3">
-	                        <select class="form-control" name="outcome">
+	                        <select class="form-control" name="message">
 	                            <option value="" selected>请选择您的意见</option>
-	                            <option value="0">同意</option>
-	                            <option value="1">不同意</option>
+	                            <option value="同意">同意</option>
+	                            <option value="不同意">不同意</option>
 	                        </select>
 	                    </div>
 	                </div>
@@ -203,8 +203,8 @@
                     <div class="col-sm-3">
                         <select class="form-control"  name="outcome">
                             <option value="" selected>请选择送往目标</option>
-							<option value="2">送回申请人</option>
-							<option value="2">送上级审批</option>
+							<option value="不同意">送回申请人</option>
+							<option value="同意">送上级审批</option>
                         </select>
                     </div>
                 </div> 
@@ -400,7 +400,7 @@
 	            $("#approvalAddForm input[name='Address']").val(str[current].RoomLocation);
 	            $("#approvalAddForm input[name='Area']").val(str[current].Area);
 	            $("#approvalAddForm input[name='RoomId']").val(str[current].Id);
-	            
+	            $("#approvalAddForm input[name='Purpose']").val(str[current].BuildingPurpose);
 	        });
 	}
 	</script>

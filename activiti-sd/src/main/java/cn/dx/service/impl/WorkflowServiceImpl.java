@@ -38,6 +38,7 @@ import cn.dx.form.WorkflowBean;
 import cn.dx.service.WorkflowService;
 import cn.dx.utils.StringUtils;
 import cn.dx.utils.UserUtil;
+import cn.dx.wsdl.service.OAService;
 
 @Service("workflowService")
 public class WorkflowServiceImpl implements WorkflowService {
@@ -62,8 +63,8 @@ public class WorkflowServiceImpl implements WorkflowService {
 	@Autowired
 	private UserDao userDao;
 	
-	/*@Autowired
-	private OAService oaService;*/
+	@Autowired
+	private OAService oaService;
 	
 	
 
@@ -219,6 +220,7 @@ public class WorkflowServiceImpl implements WorkflowService {
 			.getId();
 		workflowBean.setTaskId(taskId);
 		workflowBean.setBillName(billName);
+		workflowBean.setApplicant(applicant);
 		this.saveSubmitTask(workflowBean, session);
 		
 
@@ -301,7 +303,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 	@Override
 	public List<Map<String,Object>> findOutComeListByTaskId(String taskId) {
 		// 返回存放连线的名称集合
-		
 		List<Map<String,Object>> list = new ArrayList<>();
 		// 1:使用任务ID，查询任务对象
 		Task task = taskService.createTaskQuery()//
@@ -398,16 +399,35 @@ public class WorkflowServiceImpl implements WorkflowService {
 	/** 指定连线的名称完成任务 */
 	@Override
 	public void saveSubmitTask(WorkflowBean workflowBean, HttpSession session) {
+		Map<String, Object> variables = new HashMap<String, Object>();
+		String billName = workflowBean.getBillName().replace("\"", "");
+		Long id = workflowBean.getId();
+		Map<String, Object> bill = billDao.findBillById(billName, id);
+		String conditionName = (String)bill.get("conditionName");
+    	if(conditionName!=null){
+    		if(conditionName.contains(",")){
+    			String[] split = conditionName.split(",");
+    			for (String string : split) {
+    	    		Object conditionValue = bill.get(string);
+    	    		variables.put(string, conditionValue);
+				}
+    		}else{
+    			Object conditionValue = bill.get(conditionName);
+    			variables.put(conditionName, conditionValue);
+    		}
+    	}
 		String taskId = workflowBean.getTaskId();
 		String outcome = workflowBean.getOutcome();
 		String message = workflowBean.getComment();
-		if(outcome.equals("同意")){
-			message = "【同意】  "+message;
-		}else if(outcome.equals("不同意")){
-			message = "【不同意】  "+message;
+		if(message != null &&message.contains("【")){
+			
+		}else{
+			if(outcome.equals("同意")){
+				message = "【同意】  "+message;
+			}else if(outcome.equals("不同意")){
+				message = "【不同意】  "+message;
+			}
 		}
-		Long id = workflowBean.getId();
-		String billName = workflowBean.getBillName();
 		Map<String, Object> currentUser = UserUtil.getUserFromSession(session);
 		String username = (String) currentUser.get("USER_LOGIN_NAME");
 		String realName = (String) currentUser.get("REAL_NAME");
@@ -422,7 +442,6 @@ public class WorkflowServiceImpl implements WorkflowService {
 			Authentication.setAuthenticatedUserId(realName);
 			taskService.addComment(taskId, processInstanceId, message);
 		}
-		Map<String, Object> variables = new HashMap<String, Object>();
 		
 		//更具连线名称跳转下一任务节点
 		if (outcome != null && !outcome.equals("提交")) {
@@ -430,29 +449,33 @@ public class WorkflowServiceImpl implements WorkflowService {
 		}
 		
 		taskService.complete(taskId, variables);
-/*		String result = oaService.completeTask(taskId, billName, "",null,null, createOrg, username, realName);
-*/		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
+		
+		if(!username.equals(workflowBean.getApplicant())){
+			
+		}
+		String result = oaService.completeTask(taskId, billName, "",null,null, createOrg, username, realName);
+		ProcessInstance pi = runtimeService.createProcessInstanceQuery()//
 				.processInstanceId(processInstanceId)// 使用流程实例ID查询
 				.singleResult();
 
 		// 流程结束了
 		if (pi == null) {
 			// 更新请假单表的状态从1变成2（审核中-->审核完成）
-			Map<String, Object> bill = billDao.findBillById(billName, id);
 			bill.put("ProcessStatus", "流程结束");
 			billDao.updateBillState(billName, bill);
+			//更新业务数据
 		}else{
 			//添加统一代办
-			/*String assignee = taskService.createTaskQuery()
+			String assignee = taskService.createTaskQuery()
 					.processInstanceId(pi.getId())
 					.singleResult()
 					.getAssignee();
 			Map<String, Object> nextUser = userDao.getUserByUserName(assignee);
 			String receiveUser = (String) nextUser.get("USER_LOGIN_NAME");
 			String receiveUserName = (String) nextUser.get("REAL_NAME");
-				String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
+			String result2 = oaService.addTask(taskId, billName,  "", username, realName, createOrg, receiveUser, receiveUserName);
 			System.out.println(result);
-			System.out.println(result2);*/
+			System.out.println(result2);
 			
 		}
 	}

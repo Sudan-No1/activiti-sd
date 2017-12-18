@@ -15,7 +15,7 @@ public class WorkflowBean
     private String taskId; // 任务ID
     private String outcome; // 连线名称
     private String comment; // 备注
-    private String billName; // 备注
+    private String billName; // 表单名称
     private String url; // form表单url
     private String applicant; // 申请人
     

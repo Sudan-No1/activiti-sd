@@ -41,4 +41,22 @@ public class CmdbDaoImpl implements CmdbDao {
 		return jdbcTemplate.queryForObject(sql, String.class,year+billName);
 	}
 
+	@Override
+	public Integer addCTUser(Object[] params) {
+		String sql = "insert into \"CTUser\"(\"Description\",\"USER_LOGIN_NAME\",\"REAL_NAME\",\"ORGANIZATION_NAME\",\"ORGANIZATION_CODE\",\"EMPLOYEE_NUMBER\",\"EMAIL\") values(?,?,?,?,?,?,?);";
+		return jdbcTemplate.update(sql, params);
+	}
+
+	@Override
+	public Integer updateCTUser(Object[] params) {
+		String sql = "update \"CTUser\" set \"REAL_NAME\" = ?,\"ORGANIZATION_NAME\" = ?,\"ORGANIZATION_CODE\" = ?,\"EMPLOYEE_NUMBER\" = ?,\"EMAIL\" = ? where \"Description\" = ? and \"Status\" = 'A';";
+		return jdbcTemplate.update(sql, params);
+	}
+
+	@Override
+	public Integer deleteCTUser(String loginname) {
+		String sql = "delete from \"CTUser\" where \"USER_LOGIN_NAME\" = ? and \"Status\" = 'A';";
+		return jdbcTemplate.update(sql, loginname);
+	}
+
 }

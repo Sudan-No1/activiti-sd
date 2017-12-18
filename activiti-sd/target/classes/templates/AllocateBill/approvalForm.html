@@ -181,11 +181,7 @@
             <form class="form-horizontal" action="/workflow/submitTask" method="post">
 				<input type="hidden" id="taskId" name="taskId" th:value="${taskId }" />
 				<input type="hidden" id="id" name="id" th:value="${bill.Id }" /> 
-				<input type="hidden" name="conditionName" value="Purpose,flag"><br>
-				<input type="hidden" id="Purpose" name="Purpose" th:value="${bill.Purpose }" />
-				<input type="hidden" id="flag" name="flag" value="true" />
 				<input type="hidden" id="billName" name="billName" value="AllocateBill" /> 
-				<input type="hidden" id="group" name="nextGroup" value="" />
                  <div class="form-group">
 	                    <label class="col-sm-2 control-label">意见</label>
 	                    <div class="col-sm-3">
@@ -237,10 +233,10 @@
         </div>
     </div>
 </div>
-<script type="text/javascript">
+<!-- <script type="text/javascript">
 	function fillGroup(group){
 		$("group").val(group);
 	}
-</script>
+</script> -->
 </body>
 </html>

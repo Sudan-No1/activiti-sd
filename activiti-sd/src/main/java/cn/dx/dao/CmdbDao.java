@@ -11,4 +11,10 @@ public interface CmdbDao {
 
 	String getSerialNumber(String year, String billName);
 
+	Integer addCTUser(Object[] params);
+
+	Integer updateCTUser(Object[] params);
+
+	Integer deleteCTUser(String loginname);
+
 }
